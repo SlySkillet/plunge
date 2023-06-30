@@ -73,3 +73,15 @@ CREATE TABLE reservations (
     class_id SMALLINT REFERENCES classes("id") ON DELETE CASCADE,
     student_id SMALLINT REFERENCES accounts("id") ON DELETE CASCADE
 );
+
+INSERT INTO categories (name) VALUES ('Music')
+, ('Design & Style')
+, ('Arts & Entertainment')
+, ('Business')
+, ('Sports & Gaming')
+, ('Writing')
+, ('Science & Tech')
+, ('Home & Lifestyle')
+, ('Community & Government')
+, ('Health & Wellness')
+, ('Food')
