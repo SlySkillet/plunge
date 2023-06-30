@@ -12,7 +12,7 @@ CREATE TABLE locations (
     address VARCHAR(100) NOT NULL,
     city VARCHAR(50) NOT NULL,
     state VARCHAR(50) NOT NULL,
-    zip_code SMALLINT NOT NULL,
+    zip_code INT NOT NULL,
     latitude VARCHAR(100),
     longitude VARCHAR(100)
 );

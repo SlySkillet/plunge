@@ -11,6 +11,6 @@ router = APIRouter()
 
 @router.get("/categories", response_model=Union[List[CategoryOut], Error])
 def get_all(
-    repo: CategoryQueries = Depends()
+    query: CategoryQueries = Depends()
 ):
-    return repo.get_all()
+    return query.get_all()
