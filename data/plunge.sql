@@ -35,7 +35,7 @@ CREATE TABLE account_details (
     id SERIAL NOT NULL UNIQUE,
     account_id INTEGER REFERENCES accounts("id") ON DELETE CASCADE,
     avatar VARCHAR(100),
-    phone_number INTEGER,
+    phone_number BIGINT,
     biography TEXT,
     mock_credit_card VARCHAR(100),
     interests INTEGER REFERENCES categories("id") ON DELETE CASCADE,
@@ -86,13 +86,28 @@ INSERT INTO categories (name) VALUES ('Music')
 , ('Health & Wellness')
 , ('Food');
 
-INSERT INTO accounts (username, first_name, last_name, email, password) VALUES ('gherren', 'Greg', 'Herren', 'gherren@email.com', 'password')
-, ('sconrad', 'Simon', 'Conrad', 'sconrad@email.com', 'password')
-, ('tsemeniv', 'Travis', 'Semeniv', 'tsemeniv@email.com', 'password')
-, ('hkim', 'Henry', 'Kim', 'hkim@email.com', 'password')
-, ('kporter', 'Khalid', 'Porter', 'kporter@email.com', 'password')
-, ('enguyen', 'Ellen', 'Nguyen', 'enguyen@email.com', 'password')
-, ('cpatrick', 'Claire', 'Patrick', 'cpatrick@email.com', 'password')
-, ('lgray', 'Louie', 'Gray', 'lgray@email.com', 'password')
-, ('charrell', 'Corey', 'Harrell', 'charrell@email.com', 'password')
-, ('kyork', 'Kelsie', 'York', 'kyork@email.com', 'password');
+INSERT INTO accounts (username, first_name, last_name, email, password) VALUES ('gherren', 'Greg', 'Herren', 'gherren@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('sconrad', 'Simon', 'Conrad', 'sconrad@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('tsemeniv', 'Travis', 'Semeniv', 'tsemeniv@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('hkim', 'Henry', 'Kim', 'hkim@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('kporter', 'Khalid', 'Porter', 'kporter@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('enguyen', 'Ellen', 'Nguyen', 'enguyen@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('cpatrick', 'Claire', 'Patrick', 'cpatrick@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('lgray', 'Louie', 'Gray', 'lgray@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('charrell', 'Corey', 'Harrell', 'charrell@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
+, ('kyork', 'Kelsie', 'York', 'kyork@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG');
+
+INSERT INTO locations (name, address, city, state, zip_code) VALUES ('Culpepper Community Center', '91 Clinton St', 'Culpepper', 'VA', '22701')
+, ('Jackson & Sons Auto', '7467 Market St', 'Cocoa', 'FL', '32927')
+, ('Mary Ellis Park', '7668 Grand Ave', 'Dacula', 'GA', '30019');
+
+INSERT INTO account_details (account_id, avatar, phone_number, biography, mock_credit_card, interests, location_id) VALUES (1, 'https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg', 5551234567, 'I like turtles', '1234567887654321', 1, 1)
+, (2, 'https://place-puppy.com/500x500', 5551111111, 'i like dogs', '2234567887654321', 2, 2)
+, (3, 'https://place-puppy.com/500x500', 5552222222, 'i like cats', '3234567887654321', 3, 3)
+, (4, 'https://place-puppy.com/500x500', 5553333333, 'i like orangutans', '4234567887654321', 4, 1)
+, (5, 'https://place-puppy.com/500x500', 5554444444, 'i like spiders', '5234567887654321', 5, 2)
+, (6, 'https://place-puppy.com/500x500', 5555555555, 'i like baseball', '6234567887654321', 6, 3)
+, (7, 'https://place-puppy.com/500x500', 5556666666, 'i like lemonade', '7234567887654321', 7, 1)
+, (8, 'https://place-puppy.com/500x500', 5557777777, 'i like pasta', '8234567887654321', 8, 2)
+, (9, 'https://place-puppy.com/500x500', 5558888888, 'i like soup', '9234567887654321', 9, 3)
+, (10, 'https://place-puppy.com/500x500', 5559999999, 'i like knitting', '1034567887654321', 10, 1);
