@@ -84,7 +84,7 @@ INSERT INTO categories (name) VALUES ('Music')
 , ('Home & Lifestyle')
 , ('Community & Government')
 , ('Health & Wellness')
-, ('Food')
+, ('Food');
 
 INSERT INTO accounts (username, first_name, last_name, email, password) VALUES ('gherren', 'Greg', 'Herren', 'gherren@email.com', 'password')
 , ('sconrad', 'Simon', 'Conrad', 'sconrad@email.com', 'password')
@@ -95,4 +95,4 @@ INSERT INTO accounts (username, first_name, last_name, email, password) VALUES (
 , ('cpatrick', 'Claire', 'Patrick', 'cpatrick@email.com', 'password')
 , ('lgray', 'Louie', 'Gray', 'lgray@email.com', 'password')
 , ('charrell', 'Corey', 'Harrell', 'charrell@email.com', 'password')
-, ('kyork', 'Kelsie', 'York', 'kyork@email.com', 'password')
+, ('kyork', 'Kelsie', 'York', 'kyork@email.com', 'password');
