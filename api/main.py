@@ -5,6 +5,7 @@ from routers import (
     locations,
     account_details,
     classes,
+    reservations,
 )
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -17,6 +18,7 @@ app.include_router(categories.router)
 app.include_router(locations.router)
 app.include_router(account_details.router)
 app.include_router(classes.router)
+app.include_router(reservations.router)
 
 app.add_middleware(
     CORSMiddleware,
