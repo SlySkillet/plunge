@@ -38,20 +38,6 @@ class ClassOut(BaseModel):
     location_id: int
 
 
-<<<<<<< HEAD
-=======
-class ClassOutDetail(ClassOut):
-    category_name: str
-    location_name: str
-    location_address: str
-    location_city: str
-    location_state: str
-    location_zip_code: str
-    location_latitude: str = None
-    location_longitude: str = None
-
-
->>>>>>> 5668c6e216e0708f0877984fe3f03ba9e4a5fc7c
 class ClassQueries(BaseModel):
     def get_all(self) -> Union[Error, List[ClassOutDetail]]:
         try:
@@ -86,7 +72,6 @@ class ClassQueries(BaseModel):
                         """
                     )
                     return [
-<<<<<<< HEAD
                         ClassOut(
                             id=record[0],
                             class_name=record[1],
@@ -102,9 +87,6 @@ class ClassQueries(BaseModel):
                             image_4=record[11],
                             location_id=record[12],
                         )
-=======
-                        self.record_to_class_detail_out(record)
->>>>>>> 5668c6e216e0708f0877984fe3f03ba9e4a5fc7c
                         for record in db
                     ]
         except Exception as e:
@@ -199,21 +181,33 @@ class ClassQueries(BaseModel):
                     if record is None:
                         return None
 <<<<<<< HEAD
+<<<<<<< HEAD
                     return ClassOut(
                         id=record[0],
                         class_name=record[1],
                         instructor_id=record[2],
+=======
+                    return ClassOut(
+                        id=record[0],
+                        class_name=record[1],
+                        instructor_id = record[2],
+>>>>>>> 3755090 (POST, GET, and GET one. Working Requests)
                         requirements=record[3],
                         category_id=record[4],
                         description=record[5],
                         price=record[6],
                         featured=record[7],
+<<<<<<< HEAD
                         image_1=record[8],
+=======
+                        image_1 = record[8],
+>>>>>>> 3755090 (POST, GET, and GET one. Working Requests)
                         image_2=record[9],
                         image_3=record[10],
                         image_4=record[11],
                         location_id=record[12],
                     )
+<<<<<<< HEAD
 =======
                     return self.record_to_class_detail_out(record)
 >>>>>>> 5668c6e216e0708f0877984fe3f03ba9e4a5fc7c
@@ -245,3 +239,8 @@ class ClassQueries(BaseModel):
             location_latitude=record[19],
             location_longitude=record[20],
         )
+=======
+        except Exception as e:
+            print(e)
+            return {"message": "could not get that class info"}
+>>>>>>> 3755090 (POST, GET, and GET one. Working Requests)
