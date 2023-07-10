@@ -1,19 +1,20 @@
 from pydantic import BaseModel
 from queries.pool import pool
-from typing import (
-    Union,
-    List
-)
+from typing import Union, List
+
 
 class Error(BaseModel):
     message: str
 
+
 class CategoryIn(BaseModel):
     name: str
+
 
 class CategoryOut(BaseModel):
     id: int
     name: str
+
 
 class CategoryQueries(BaseModel):
     def get_all(self) -> Union[Error, List[CategoryOut]]:
