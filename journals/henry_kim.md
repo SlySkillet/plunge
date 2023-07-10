@@ -31,3 +31,15 @@ Today, I worked on:
 - Discussing project plans as a group and agreeing on expectations
 
 Team collaboration using screen share (Simon) to complete the list of tasks above. Finished the authentication framework by watching Curtis' video and using docs. Created the queries and router files for categories, locations, and account_details. Account_details was not completed but gave us a launching point for how we'd work on our project over the break: to build up all the API requests for this table.
+
+## July 10, 2023
+
+Today, I worked on:
+
+- Learning the merge request process
+- Mob programming to complete the "Class" API requests
+- Talked as a group about error handling
+- Accessing the data of foreign keys
+- Created POST, PUT, and GET (by student_id) for reservations
+
+Team collaboration using screen share (Travis) to complete the list of tasks above. We struggled with a few points today that we'll plan to ask an instructor or SEIR about. Where do we filter results, how much detail to include in merge requests, and when/where does error handling take place? Greg wrote the code to access account first_name for the GET all requests but that unfortunately did not transfer to the POST request. Transitioning back from a week off has been a challenge. Pair programming with Travis and spent some time getting to know him.
