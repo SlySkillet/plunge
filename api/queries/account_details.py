@@ -45,7 +45,6 @@ class AccountDetailQueries(BaseModel):
                             , location_id
                         FROM account_details
                         WHERE account_id = %s
-                        ORDER BY id;
                         """,
                         [account_id],
                     )

@@ -132,3 +132,49 @@ class ClassQueries(BaseModel):
     def class_in_to_out(self, id:int, class_info: ClassIn):
         old_data = class_info.dict()
         return ClassOut(id=id, **old_data)
+
+    def get_one(self, class_id: int) -> Optional[ClassOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , location_id
+                        FROM classes
+                        WHERE id = %s
+                        """,
+                        [class_id],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return ClassOut(
+                        id=record[0],
+                        class_name=record[1],
+                        instructor_id = record[2],
+                        requirements=record[3],
+                        category_id=record[4],
+                        description=record[5],
+                        price=record[6],
+                        featured=record[7],
+                        image_1 = record[8],
+                        image_2=record[9],
+                        image_3=record[10],
+                        image_4=record[11],
+                        location_id=record[12],
+                    )
+        except Exception as e:
+            print(e)
+            return {"message": "could not get that class info"}
