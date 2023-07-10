@@ -9,10 +9,6 @@ from typing import (
 class Error(BaseModel):
     message: str
 
-class Instructor(BaseModel):
-    id: int
-    first_name: str
-
 class ClassIn(BaseModel):
     class_name: str
     instructor_id: int
@@ -30,7 +26,7 @@ class ClassIn(BaseModel):
 class ClassOut(BaseModel):
     id: int
     class_name: str
-    instructor_id: Instructor
+    instructor_id: int
     requirements: str
     category_id: int
     description: str
@@ -49,10 +45,9 @@ class ClassQueries(BaseModel):
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT classes.id
+                        SELECT id
                             , class_name
                             , instructor_id
-                            , accounts.first_name
                             , requirements
                             , category_id
                             , description
@@ -64,27 +59,23 @@ class ClassQueries(BaseModel):
                             , image_4
                             , location_id
                         FROM classes
-                        INNER JOIN accounts on classes.instructor_id = accounts.id
                         """
                     )
                     return [
                         ClassOut(
                             id=record[0],
                             class_name=record[1],
-                            instructor_id = Instructor(
-                                id=record[2],
-                                first_name=record[3]
-                            ),
-                            requirements=record[4],
-                            category_id=record[5],
-                            description=record[6],
-                            price=record[7],
-                            featured=record[8],
-                            image_1 = record[9],
-                            image_2=record[10],
-                            image_3=record[11],
-                            image_4=record[12],
-                            location_id=record[13],
+                            instructor_id = record[2],
+                            requirements=record[3],
+                            category_id=record[4],
+                            description=record[5],
+                            price=record[6],
+                            featured=record[7],
+                            image_1 = record[8],
+                            image_2=record[9],
+                            image_3=record[10],
+                            image_4=record[11],
+                            location_id=record[12],
                         )
                         for record in db
                     ]
