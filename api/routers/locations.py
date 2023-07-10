@@ -18,7 +18,6 @@ def get_all(
 @router.post("/locations", response_model=Union[LocationOut, Error])
 def create_location(
     location: LocationIn,
-    response: Response,
     query: LocationQueries = Depends()
 ):
     return query.create(location)
