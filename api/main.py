@@ -4,6 +4,7 @@ from routers import (
     categories,
     locations,
     account_details,
+    events,
     classes,
 )
 from fastapi import FastAPI
@@ -16,6 +17,7 @@ app.include_router(accounts.router)
 app.include_router(categories.router)
 app.include_router(locations.router)
 app.include_router(account_details.router)
+app.include_router(events.router)
 app.include_router(classes.router)
 
 app.add_middleware(
