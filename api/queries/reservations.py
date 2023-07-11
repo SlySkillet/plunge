@@ -53,13 +53,23 @@ class ReservationQuery:
                     result = db.execute(
                         """
                         SELECT id
-                            , event_id
-                            , class_id
-                            , student_id
+                            , events.date_time
+                            , events.capacity
+                            , classes.name
+                            , classes.accounts.first_name
+                            , classes.accounts.last_name
+                            , classes.locations.address
+                            , classes.locations.city
+                            , classes.locations.state
+                            , classes.locations.zip_code
+                            , accounts.first_name
+                            , accounts.last_name
                             , total_price
                             , status
                         FROM reservations
-                        INNER JOIN classes on reservations.class_id = classes.id
+                        INNER JOIN events ON reservations.event_id = events.id
+                        INNER JOIN classes ON reservations.class_id = classes.id
+                        INNER JOIN accounts ON reservations.student_id = accounts.id
                         WHERE classes.instructor_id = %s
                         """,
                         [instructor_id],
