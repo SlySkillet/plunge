@@ -25,7 +25,6 @@ def get_one_account(
 @router.post("/account_details", response_model=Union[AccountDetailOut, Error])
 def create_account_details(
     account_details: AccountDetailIn,
-    response: Response,
     query: AccountDetailQueries = Depends(),
 ) -> Union[AccountDetailOut, Error]:
     return query.create(account_details)

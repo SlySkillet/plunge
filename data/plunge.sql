@@ -33,7 +33,7 @@ CREATE TABLE accounts (
 
 CREATE TABLE account_details (
     id SERIAL NOT NULL UNIQUE,
-    account_id INTEGER REFERENCES accounts("id") ON DELETE CASCADE,
+    account_id INTEGER REFERENCES accounts("id") ON DELETE CASCADE NOT NULL,
     avatar VARCHAR(100),
     phone_number BIGINT,
     biography TEXT,
@@ -45,9 +45,9 @@ CREATE TABLE account_details (
 CREATE TABLE classes (
     id SERIAL NOT NULL UNIQUE,
     class_name VARCHAR(100) NOT NULL,
-    instructor_id INTEGER REFERENCES accounts("id") ON DELETE CASCADE,
+    instructor_id INTEGER REFERENCES accounts("id") ON DELETE CASCADE NOT NULL,
     requirements TEXT NOT NULL,
-    category_id SMALLINT NOT NULL,
+    category_id SMALLINT REFERENCES categories("id") ON DELETE CASCADE NOT NULL,
     description TEXT NOT NULL,
     price SMALLINT NOT NULL,
     featured BOOLEAN NOT NULL,
@@ -55,23 +55,23 @@ CREATE TABLE classes (
     image_2 VARCHAR(100),
     image_3 VARCHAR(100),
     image_4 VARCHAR(100),
-    location_id SMALLINT REFERENCES locations("id") ON DELETE CASCADE
+    location_id SMALLINT REFERENCES locations("id") ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE events (
     id SERIAL NOT NULL UNIQUE,
     date_time TIMESTAMP NOT NULL,
     capacity SMALLINT NOT NULL,
-    class_id INTEGER REFERENCES classes("id") ON DELETE CASCADE
+    class_id INTEGER REFERENCES classes("id") ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE reservations (
     id SERIAL NOT NULL UNIQUE,
     total_price NUMERIC NOT NULL,
     status BOOLEAN NOT NULL DEFAULT true,
-    event_id SMALLINT REFERENCES events("id") ON DELETE CASCADE,
-    class_id SMALLINT REFERENCES classes("id") ON DELETE CASCADE,
-    student_id SMALLINT REFERENCES accounts("id") ON DELETE CASCADE
+    event_id SMALLINT REFERENCES events("id") ON DELETE CASCADE NOT NULL,
+    class_id SMALLINT REFERENCES classes("id") ON DELETE CASCADE NOT NULL,
+    student_id SMALLINT REFERENCES accounts("id") ON DELETE CASCADE NOT NULL
 );
 
 INSERT INTO categories (name) VALUES ('Music')
