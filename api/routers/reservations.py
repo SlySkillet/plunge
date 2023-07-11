@@ -22,7 +22,7 @@ def create_reservation(
 
 
 @router.put(
-    "/reservation/{reservation_id}",
+    "/reservations/{reservation_id}",
     response_model=Union[ReservationOut, Error],
 )
 def update_reservation(
@@ -34,10 +34,22 @@ def update_reservation(
 
 
 @router.get(
-    "/reservations/{student_id}", response_model=Optional[ReservationOut]
+    "/student/reservations/{student_id}",
+    response_model=Optional[ReservationOut],
 )
-def get_student_reservation(
+def get_student_reservations(
     student_id: int,
     query: ReservationOut = Depends(),
 ) -> ReservationOut:
     return query.get_student(student_id)
+
+
+@router.get(
+    "/instructor/reservations/{instructor_id}",
+    response_model=Optional[ReservationOut],
+)
+def get_instructor_reservations(
+    instructor_id: int,
+    query: ReservationOut = Depends(),
+) -> ReservationOut:
+    return query.get_instructor(instructor_id)

@@ -46,8 +46,31 @@ class ReservationQuery:
             print(e)
             return {"message": "Could not get your reservations"}
 
-    # def get_instructor:
-    #     pass
+    def get_instructor(self, instructor_id: int) -> Optional[ReservationOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id
+                            , event_id
+                            , class_id
+                            , student_id
+                            , total_price
+                            , status
+                        FROM reservations
+                        INNER JOIN classes on reservations.class_id = classes.id
+                        WHERE classes.instructor_id = %s
+                        """,
+                        [instructor_id],
+                    )
+                    return [
+                        self.record_to_reservation_out(record)
+                        for record in result
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get your reservations"}
 
     def update(
         self, reservation_id: int, reservation: ReservationIn
