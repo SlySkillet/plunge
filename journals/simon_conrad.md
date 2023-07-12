@@ -19,6 +19,7 @@ Together, we referenced Curtis's video on how to use the galvanized jwtdown-fast
 
 We learned today to pay close attention to our urls - fastAPI swagger is at localhost:8000/docs NOT localhost:8000.
 
+
 ## June 30, 2023
 
 Today we worked on:
@@ -30,3 +31,14 @@ Today we worked on:
 We worked together to get our first endpoints built, referencing the vacations exploration. We are running into a bug now with creating endpoints that have foreign keys. We also seeded our database with some data to work with so we don't need to manually reenter data every time we rebuild docker containers and images.
 
 I learned to build endpoints in FastAPI and to run SQl queries in pg-admin console.
+
+
+## July 10, 2023
+
+Today we worked on:
+
+- Made a merge request for Auccount Details work that Greg debugged over break
+- Completed Classes endpoints (get all, get one, and post) as a group
+- Broke off into pairs to write Events and Reservations endpoints
+
+We worked on Travis's screen together on the classes endpoints which got a little complicated when it comes to foreign key relationships. We will need to come back to revisit those details tomorrow. Probably going to look to the instructors for some guidance on that. Greg and I worked on writing the Events endpoints. We finished POST and GET one. We are seeing some potential problems with DateTime that we should discuss with the group and/or an instructor but, as it stands, the endpoints we've written are working. We need to be sure merging all the branches we've been working doesn't create any issues before we get too far along in writing!

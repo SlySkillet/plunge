@@ -7,11 +7,6 @@ class Error(BaseModel):
     message: str
 
 
-class Instructor(BaseModel):
-    id: int
-    first_name: str
-
-
 class ClassIn(BaseModel):
     class_name: str
     instructor_id: int
@@ -43,21 +38,16 @@ class ClassOut(BaseModel):
     location_id: int
 
 
-class ClassDetailsOut(ClassOut):
-    first_name: str
-
-
 class ClassQueries(BaseModel):
-    def get_all(self) -> Union[Error, List[ClassDetailsOut]]:
+    def get_all(self) -> Union[Error, List[ClassOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT classes.id
+                        SELECT id
                             , class_name
                             , instructor_id
-                            , accounts.first_name
                             , requirements
                             , category_id
                             , description
@@ -69,25 +59,23 @@ class ClassQueries(BaseModel):
                             , image_4
                             , location_id
                         FROM classes
-                        INNER JOIN accounts on classes.instructor_id = accounts.id
                         """
                     )
                     return [
-                        ClassDetailsOut(
+                        ClassOut(
                             id=record[0],
                             class_name=record[1],
                             instructor_id=record[2],
-                            first_name=record[3],
-                            requirements=record[4],
-                            category_id=record[5],
-                            description=record[6],
-                            price=record[7],
-                            featured=record[8],
-                            image_1=record[9],
-                            image_2=record[10],
-                            image_3=record[11],
-                            image_4=record[12],
-                            location_id=record[13],
+                            requirements=record[3],
+                            category_id=record[4],
+                            description=record[5],
+                            price=record[6],
+                            featured=record[7],
+                            image_1=record[8],
+                            image_2=record[9],
+                            image_3=record[10],
+                            image_4=record[11],
+                            location_id=record[12],
                         )
                         for record in db
                     ]
@@ -144,3 +132,49 @@ class ClassQueries(BaseModel):
     def class_in_to_out(self, id: int, class_info: ClassIn):
         old_data = class_info.dict()
         return ClassOut(id=id, **old_data)
+
+    def get_one(self, class_id: int) -> Optional[ClassOut]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , location_id
+                        FROM classes
+                        WHERE id = %s
+                        """,
+                        [class_id],
+                    )
+                    record = result.fetchone()
+                    if record is None:
+                        return None
+                    return ClassOut(
+                        id=record[0],
+                        class_name=record[1],
+                        instructor_id=record[2],
+                        requirements=record[3],
+                        category_id=record[4],
+                        description=record[5],
+                        price=record[6],
+                        featured=record[7],
+                        image_1=record[8],
+                        image_2=record[9],
+                        image_3=record[10],
+                        image_4=record[11],
+                        location_id=record[12],
+                    )
+        except Exception as e:
+            print(e)
+            return {"message": "could not get that class info"}

@@ -4,6 +4,7 @@ from queries.reservations import (
     Error,
     ReservationIn,
     ReservationOut,
+    ReservationDetailsOut,
     ReservationQuery,
 )
 
@@ -17,7 +18,6 @@ def create_reservation(
     response: Response,
     query: ReservationQuery = Depends(),
 ):
-    response.status_code = 400
     return query.create(reservation)
 
 
@@ -34,22 +34,37 @@ def update_reservation(
 
 
 @router.get(
-    "/student/reservations/{student_id}",
-    response_model=Optional[ReservationOut],
+    "/reservations/{reservation_id}",
+    response_model=Optional[ReservationDetailsOut],
 )
-def get_student_reservations(
-    student_id: int,
-    query: ReservationOut = Depends(),
-) -> ReservationOut:
-    return query.get_student(student_id)
+def get_one_reservation(
+    reservation_id: int,
+    response: Response,
+    query: ReservationQuery = Depends(),
+) -> ReservationDetailsOut:
+    reservation = query.get_one(reservation_id)
+    if reservation is None:
+        response.status_code = 404
+    return reservation
 
 
 @router.get(
-    "/instructor/reservations/{instructor_id}",
-    response_model=Optional[ReservationOut],
+    "/student/reservations/{student_id}",
+    response_model=Optional[ReservationDetailsOut],
 )
-def get_instructor_reservations(
-    instructor_id: int,
-    query: ReservationOut = Depends(),
-) -> ReservationOut:
-    return query.get_instructor(instructor_id)
+def get_student_reservations(
+    student_id: int,
+    query: ReservationQuery = Depends(),
+) -> ReservationDetailsOut:
+    return query.get_student(student_id)
+
+
+# @router.get(
+#     "/instructor/reservations/{instructor_id}",
+#     response_model=Optional[ReservationOut],
+# )
+# def get_instructor_reservations(
+#     instructor_id: int,
+#     query: ReservationOut = Depends(),
+# ) -> ReservationOut:
+#     return query.get_instructor(instructor_id)
