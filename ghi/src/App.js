@@ -6,6 +6,7 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import LoginForm from "./LoginForm.js";
 
 function App() {
+  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
 
@@ -31,14 +32,14 @@ function App() {
   return (
     <>
       <>
-        <AuthProvider>
+        <AuthProvider baseUrl={baseUrl}>
           <LoginForm/>
         </AuthProvider>
       </>
-      {/* <div>
+      <div>
         <ErrorNotification error={error} />
         <Construct info={launchInfo} />
-      </div> */}
+      </div>
     </>
   );
 }
