@@ -3,6 +3,7 @@ import Construct from "./Construct.js";
 import ErrorNotification from "./ErrorNotification";
 import "./App.css";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import LoginForm from "./LoginForm.js";
 
 function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
@@ -28,13 +29,17 @@ function App() {
   }, []);
 
   return (
-    <AuthProvider>
-
-    </AuthProvider>
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
-    </div>
+    <>
+      <>
+        <AuthProvider>
+          <LoginForm/>
+        </AuthProvider>
+      </>
+      {/* <div>
+        <ErrorNotification error={error} />
+        <Construct info={launchInfo} />
+      </div> */}
+    </>
   );
 }
 
