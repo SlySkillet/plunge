@@ -42,3 +42,25 @@ Today we worked on:
 - Broke off into pairs to write Events and Reservations endpoints
 
 We worked on Travis's screen together on the classes endpoints which got a little complicated when it comes to foreign key relationships. We will need to come back to revisit those details tomorrow. Probably going to look to the instructors for some guidance on that. Greg and I worked on writing the Events endpoints. We finished POST and GET one. We are seeing some potential problems with DateTime that we should discuss with the group and/or an instructor but, as it stands, the endpoints we've written are working. We need to be sure merging all the branches we've been working doesn't create any issues before we get too far along in writing!
+
+
+## July 11, 2023
+
+Today we worked on:
+
+- finishing put and delete endpoints for events
+- merging updates from yesterday
+- Work on reservations endpoints and foreign key relations
+
+Greg and I worked together to complete our tasks from yesterday - the put and delete endpoints for events api. We got together as a group to review our progress and merge our branches to the main branch. After that we discussed how we should approach the foreign key relations for the reservations table which will be the base for a lot of our functionality in the app.
+
+
+## July 12, 2023
+
+Today we worked on:
+
+- Testing and merging reservation API
+- Testing and merging classes API
+- FrontEnd Authentication (login, logout, signup)
+
+After testing and merging Henry and Greg's work from yesterday we decided to tackle the front end authentication as a group. We are working with the galvanized library jwtdown for react. We had to troubleshoot some connections in Docker-compose.yaml. Once we got that figured out, we were able to complete the most basic login, logout and signup functionality on the frontend with jwt tokens.
