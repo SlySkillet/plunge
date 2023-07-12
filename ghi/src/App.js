@@ -28,6 +28,9 @@ function App() {
   }, []);
 
   return (
+    <AuthProvider>
+
+    </AuthProvider>
     <div>
       <ErrorNotification error={error} />
       <Construct info={launchInfo} />
