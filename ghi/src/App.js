@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
-import Construct from "./Construct.js";
-import ErrorNotification from "./ErrorNotification";
+// import Construct from "./Construct.js";
+// import ErrorNotification from "./ErrorNotification";
 import "./App.css";
+import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 
 function App() {
+  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
 
@@ -27,10 +32,20 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <ErrorNotification error={error} />
-      <Construct info={launchInfo} />
-    </div>
+    <AuthProvider baseUrl={baseUrl}>
+      <BrowserRouter>
+        <div className="container">
+          <Routes>
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/signup" element={<SignupForm />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+      {/* <div>
+        <ErrorNotification error={error} />
+        <Construct info={launchInfo} />
+      </div> */}
+    </AuthProvider>
   );
 }
 
