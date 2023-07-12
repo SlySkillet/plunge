@@ -4,7 +4,10 @@ from queries.reservations import (
     Error,
     ReservationIn,
     ReservationOut,
+<<<<<<< HEAD
     ReservationDetailsOut,
+=======
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
     ReservationQuery,
 )
 
@@ -18,11 +21,19 @@ def create_reservation(
     response: Response,
     query: ReservationQuery = Depends(),
 ):
+<<<<<<< HEAD
+=======
+    response.status_code = 400
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
     return query.create(reservation)
 
 
 @router.put(
+<<<<<<< HEAD
     "/reservations/{reservation_id}",
+=======
+    "/reservation/{reservation_id}",
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
     response_model=Union[ReservationOut, Error],
 )
 def update_reservation(
@@ -34,6 +45,7 @@ def update_reservation(
 
 
 @router.get(
+<<<<<<< HEAD
     "/reservations/{reservation_id}",
     response_model=Optional[ReservationDetailsOut],
 )
@@ -68,3 +80,12 @@ def get_student_reservations(
 #     query: ReservationOut = Depends(),
 # ) -> ReservationOut:
 #     return query.get_instructor(instructor_id)
+=======
+    "/reservations/{student_id}", response_model=Optional[ReservationOut]
+)
+def get_student_reservation(
+    student_id: int,
+    query: ReservationOut = Depends(),
+) -> ReservationOut:
+    return query.get_student(student_id)
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)

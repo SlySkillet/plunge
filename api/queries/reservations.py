@@ -1,6 +1,10 @@
 from pydantic import BaseModel
 from typing import List, Optional, Union
+<<<<<<< HEAD
 from datetime import datetime
+=======
+from datetime import date
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
 from queries.pool import pool
 
 
@@ -25,6 +29,7 @@ class ReservationOut(BaseModel):
     status: bool
 
 
+<<<<<<< HEAD
 class ReservationDetailsOut(BaseModel):
     id: int
     date_time: datetime
@@ -43,11 +48,16 @@ class ReservationDetailsOut(BaseModel):
 
 class ReservationQuery:
     def get_one(self, reservation_id: int) -> Optional[ReservationDetailsOut]:
+=======
+class ReservationQuery:
+    def get_student(self, student_id: int) -> Optional[ReservationOut]:
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
+<<<<<<< HEAD
                         SELECT reservations.id
                             , events.date_time
                             , events.capacity
@@ -105,16 +115,32 @@ class ReservationQuery:
                         INNER JOIN accounts ON reservations.student_id = accounts.id
                         INNER JOIN locations ON classes.location_id = locations.id
                         WHERE student_id = %s;
+=======
+                        SELECT id, event_id, class_id, student_id, total_price, status
+                        FROM reservations
+                        WHERE student_id = %s
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
                         """,
                         [student_id],
                     )
                     return [
+<<<<<<< HEAD
                         self.record_to_reservation_details_out(record)
+=======
+                        self.record_to_reservation_out(record)
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
                         for record in result
                     ]
         except Exception as e:
             print(e)
+<<<<<<< HEAD
             return {"message": "Could not get that reservation"}
+=======
+            return {"message": "Could not get your reservations"}
+
+    # def get_instructor:
+    #     pass
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
 
     def update(
         self, reservation_id: int, reservation: ReservationIn
@@ -188,6 +214,7 @@ class ReservationQuery:
             total_price=record[4],
             status=record[5],
         )
+<<<<<<< HEAD
 
     def record_to_reservation_details_out(self, record):
         return ReservationDetailsOut(
@@ -241,3 +268,5 @@ class ReservationQuery:
     #     except Exception as e:
     #         print(e)
     #         return {"message": "Could not get your reservations"}
+=======
+>>>>>>> e1c9437 (Reservations queries and routers (create_reservation, update_reservation, get_student_reservation) completed)
