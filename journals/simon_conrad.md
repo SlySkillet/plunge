@@ -42,3 +42,14 @@ Today we worked on:
 - Broke off into pairs to write Events and Reservations endpoints
 
 We worked on Travis's screen together on the classes endpoints which got a little complicated when it comes to foreign key relationships. We will need to come back to revisit those details tomorrow. Probably going to look to the instructors for some guidance on that. Greg and I worked on writing the Events endpoints. We finished POST and GET one. We are seeing some potential problems with DateTime that we should discuss with the group and/or an instructor but, as it stands, the endpoints we've written are working. We need to be sure merging all the branches we've been working doesn't create any issues before we get too far along in writing!
+
+
+## July 11, 2023
+
+Today we worked on:
+
+- Finished Events endpoints (put and delete)
+- Merged classes and events API updates
+- Worked on reservation endpoints and foreign key relations
+
+Greg and I wrapped up or work on the events endpoints writing a put and delete method and testing that. We merged our updates to the main branch. As a team, we put our heads together to discuss strategy for reservations and all the relations we need to create to make that table work and be accessible for what we've modeled so far.
