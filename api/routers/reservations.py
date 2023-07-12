@@ -50,7 +50,7 @@ def get_one_reservation(
 
 @router.get(
     "/student/reservations/{student_id}",
-    response_model=Optional[ReservationDetailsOut],
+    response_model=Union[List[ReservationDetailsOut], Error],
 )
 def get_student_reservations(
     student_id: int,

@@ -78,7 +78,9 @@ class ReservationQuery:
             print(e)
             return {"message": "Could not get that reservation"}
 
-    def get_student(self, student_id: int) -> Optional[ReservationDetailsOut]:
+    def get_student(
+        self, student_id: int
+    ) -> Union[Error, List[ReservationDetailsOut]]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -102,14 +104,14 @@ class ReservationQuery:
                         INNER JOIN classes ON reservations.class_id = classes.id
                         INNER JOIN accounts ON reservations.student_id = accounts.id
                         INNER JOIN locations ON classes.location_id = locations.id
-                        WHERE student_id = %s
+                        WHERE student_id = %s;
                         """,
                         [student_id],
                     )
-                    record = result.fetchone()
-                    if record is None:
-                        return None
-                    return self.record_to_reservation_details_out(record)
+                    return [
+                        self.record_to_reservation_details_out(record)
+                        for record in result
+                    ]
         except Exception as e:
             print(e)
             return {"message": "Could not get that reservation"}
