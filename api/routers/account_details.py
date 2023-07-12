@@ -5,17 +5,18 @@ from queries.account_details import (
     AccountDetailIn,
     AccountDetailOut,
     AccountDetailQueries,
+    AccountDetailsOut
 )
 
 router = APIRouter()
 
 
-@router.get("/account/{account_id}", response_model=Optional[AccountDetailOut])
+@router.get("/account/{account_id}", response_model=Optional[AccountDetailsOut])
 def get_one_account(
     account_id: int,
     response: Response,
     query: AccountDetailQueries = Depends(),
-) -> AccountDetailOut:
+) -> AccountDetailsOut:
     account = query.get_one(account_id)
     if account is None:
         response.status_code = 404

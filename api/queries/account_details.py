@@ -28,22 +28,43 @@ class AccountDetailOut(BaseModel):
     location_id: int
 
 
+class AccountDetailsOut(AccountDetailOut):
+    interest_name: str
+    location_name: str
+    location_address: str
+    location_city: str
+    location_state: str
+    location_zip_code: str
+    location_latitude: str = None
+    location_longitude: str = None
+
+
 class AccountDetailQueries(BaseModel):
-    def get_one(self, account_id: int) -> Optional[AccountDetailOut]:
+    def get_one(self, account_id: int) -> Optional[AccountDetailsOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id
+                        SELECT account_details.id
                             , account_id
                             , avatar
                             , phone_number
                             , biography
                             , mock_credit_card
                             , interests
+                            , categories.name
                             , location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
                         FROM account_details
+                        INNER JOIN categories on account_details.interests = categories.id
+                        INNER JOIN locations on account_details.location_id = locations.id
                         WHERE account_id = %s
                         """,
                         [account_id],
@@ -51,16 +72,8 @@ class AccountDetailQueries(BaseModel):
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return AccountDetailOut(
-                        id=record[0],
-                        account_id=record[1],
-                        avatar=record[2],
-                        phone_number=record[3],
-                        biography=record[4],
-                        mock_credit_card=record[5],
-                        interests=record[6],
-                        location_id=record[7],
-                    )
+                    return self.record_to_account_details_out(record)
+
         except Exception as e:
             print(e)
             return {"message": "could not get that account detail"}
@@ -153,3 +166,24 @@ class AccountDetailQueries(BaseModel):
         except Exception as e:
             print(e)
             return False
+
+
+    def record_to_account_details_out(self, record):
+        return AccountDetailsOut(
+            id = record[0],
+            account_id = record[1],
+            avatar = record[2],
+            phone_number = record[3],
+            biography = record[4],
+            mock_credit_card = record[5],
+            interests = record[6],
+            interest_name = record[7],
+            location_id = record[8],
+            location_name = record[9],
+            location_address = record[10],
+            location_city = record[11],
+            location_state = record[12],
+            location_zip_code = record[13],
+            location_latitude = record[14],
+            location_longitude = record[15],
+        )
