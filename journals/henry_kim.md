@@ -43,3 +43,14 @@ Today, I worked on:
 - Created POST, PUT, and GET (by student_id) for reservations
 
 Team collaboration using screen share (Travis) to complete the list of tasks above. We struggled with a few points today that we'll plan to ask an instructor or SEIR about. Where do we filter results, how much detail to include in merge requests, and when/where does error handling take place? Greg wrote the code to access account first_name for the GET all requests but that unfortunately did not transfer to the POST request. Transitioning back from a week off has been a challenge. Pair programming with Travis and spent some time getting to know him.
+
+## July 11, 2023
+
+Today, I worked on:
+
+- Merging classes API updates
+- Merging events API updates
+- Testing reservation API updates
+- Learning about accessing data through foreign keys
+
+Team collaboration using screen share (Greg) to complete the list of tasks above. Our instructor, Dalonte, gave us the necessary guidance on accessing foreign keys in API GET requests.
