@@ -90,6 +90,186 @@ class ClassQueries(BaseModel):
             print(e)
             return {"message": "could not get all classes"}
 
+    def get_featured(self) -> Union[Error, List[ClassOutDetail]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT classes.id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , categories.name
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
+                        FROM classes
+                        INNER JOIN categories on classes.category_id = categories.id
+                        INNER JOIN locations on classes.location_id = locations.id
+                        where classes.featured = true
+                        """
+                    )
+                    return [
+                        self.record_to_class_detail_out(record)
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get all classes"}
+
+    def get_upcoming(self) -> Union[Error, List[ClassOutDetail]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT classes.id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , categories.name
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
+                        FROM classes
+                        INNER JOIN categories on classes.category_id = categories.id
+                        INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN events on classes.id = events.class_id
+                        where events.date_time <= current_date + interval '14 days'
+                        and events.date_time >= current_date
+                        """
+                    )
+                    return [
+                        self.record_to_class_detail_out(record)
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get all classes"}
+
+    def get_nearby(self, account_id) -> Union[Error, List[ClassOutDetail]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        WITH account_location as (
+                        SELECT cast(locations.latitude as decimal)
+                            , cast(locations.longitude as decimal)
+                        FROM account_details
+                        INNER JOIN locations on account_details.location_id = locations.id
+                        WHERE account_id = %s
+                        )
+
+                        SELECT classes.id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , categories.name
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
+                        FROM classes
+                        INNER JOIN categories on classes.category_id = categories.id
+                        INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN account_location
+                            on cast(locations.latitude as decimal) >= account_location.latitude - 0.5
+                            and cast(locations.latitude as decimal) <= account_location.latitude + 0.5
+                            and cast(locations.longitude as decimal) >= account_location.longitude - 0.5
+                            and cast(locations.longitude as decimal) <= account_location.longitude + 0.5
+                        """,
+                        [account_id],
+                    )
+                    return [
+                        self.record_to_class_detail_out(record)
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get all classes"}
+
+    def get_category(self, category_id) -> Union[Error, List[ClassOutDetail]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT classes.id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , categories.name
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
+                        FROM classes
+                        INNER JOIN categories on classes.category_id = categories.id
+                        INNER JOIN locations on classes.location_id = locations.id
+                        where classes.category_id = %s
+                        """,
+                        [category_id],
+                    )
+                    return [
+                        self.record_to_class_detail_out(record)
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get all classes"}
+
     def create(self, class_info: ClassIn) -> Union[ClassOut, Error]:
         try:
             with pool.connection() as conn:

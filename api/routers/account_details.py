@@ -1,17 +1,19 @@
 from fastapi import APIRouter, Depends, Response
-from typing import List, Union, Optional
+from typing import Union, Optional
 from queries.account_details import (
     Error,
     AccountDetailIn,
     AccountDetailOut,
     AccountDetailQueries,
-    AccountDetailsOut
+    AccountDetailsOut,
 )
 
 router = APIRouter()
 
 
-@router.get("/account/{account_id}", response_model=Optional[AccountDetailsOut])
+@router.get(
+    "/account/{account_id}", response_model=Optional[AccountDetailsOut]
+)
 def get_one_account(
     account_id: int,
     response: Response,

@@ -45,10 +45,6 @@ async def get_protected(
     return True
 
 
-class AccountToken(Token):
-    account: AccountOut
-
-
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,

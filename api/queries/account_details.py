@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from queries.pool import pool
-from typing import Union, List, Optional
+from typing import Union, Optional
 
 
 class Error(BaseModel):
@@ -167,23 +167,22 @@ class AccountDetailQueries(BaseModel):
             print(e)
             return False
 
-
     def record_to_account_details_out(self, record):
         return AccountDetailsOut(
-            id = record[0],
-            account_id = record[1],
-            avatar = record[2],
-            phone_number = record[3],
-            biography = record[4],
-            mock_credit_card = record[5],
-            interests = record[6],
-            interest_name = record[7],
-            location_id = record[8],
-            location_name = record[9],
-            location_address = record[10],
-            location_city = record[11],
-            location_state = record[12],
-            location_zip_code = record[13],
-            location_latitude = record[14],
-            location_longitude = record[15],
+            id=record[0],
+            account_id=record[1],
+            avatar=record[2],
+            phone_number=record[3],
+            biography=record[4],
+            mock_credit_card=record[5],
+            interests=record[6],
+            interest_name=record[7],
+            location_id=record[8],
+            location_name=record[9],
+            location_address=record[10],
+            location_city=record[11],
+            location_state=record[12],
+            location_zip_code=record[13],
+            location_latitude=record[14],
+            location_longitude=record[15],
         )
