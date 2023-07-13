@@ -6,6 +6,7 @@ import { AuthProvider } from '@galvanize-inc/jwtdown-for-react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import Nav from './Nav'
 
 function App() {
 	const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
@@ -34,6 +35,7 @@ function App() {
 	return (
 		<AuthProvider baseUrl={baseUrl}>
 			<BrowserRouter>
+      <Nav />
 				<div className="container">
 					<Routes>
 						<Route path="/login" element={<LoginForm />} />

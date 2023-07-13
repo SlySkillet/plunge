@@ -12,7 +12,9 @@ const LoginForm = () => {
 		e.preventDefault();
 		login(username, password);
 		e.target.reset();
+
 	};
+
 
 	return (
 		<div className="card text-bg-light mb-3">
