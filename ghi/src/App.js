@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import Nav from './Nav'
+import ClassesList from './components/Classes/Class_Card';
 
 function App() {
 	const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
@@ -40,6 +41,7 @@ function App() {
 					<Routes>
 						<Route path="/login" element={<LoginForm />} />
 						<Route path="/signup" element={<SignupForm />} />
+						<Route path="/classes" element={<ClassesList />} />
 					</Routes>
 				</div>
 			</BrowserRouter>

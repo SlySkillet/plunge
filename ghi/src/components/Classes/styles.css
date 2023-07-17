@@ -1,0 +1,47 @@
+body {
+  /* background: #c8c6c4; */
+  background: #fff;
+}
+
+.Class_Card {
+  font-family: sans-serif;
+  padding: 10px 30px;
+}
+
+.Class_Card > div {
+  background-color: #5c2e91;
+  background-color: #fff;
+  color: #fff;
+  color: #505050;
+  text-align: left;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+    border-radius: 8px;
+
+}
+
+.slick-prev:before,
+.slick-next:before {
+  background-color: #7a3f82;
+}
+
+.carousel {
+
+}
+
+.card-title {
+    font-weight: bold;
+    margin: 0%;
+}
+
+.price {
+    margin: 1%;
+}
+
+.card-text {
+    margin: 0%
+}
