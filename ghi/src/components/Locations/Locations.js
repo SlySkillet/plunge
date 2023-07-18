@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
-import { GoogleMap, useLoadScript } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
   return (
     <GoogleMap zoom={15} center={center} mapContainerClassName="map-container">
-      {/* <Marker position={center} /> */}
+      <Marker position={center} />
     </GoogleMap>
   );
 }
