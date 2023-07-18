@@ -48,7 +48,8 @@ form.form-inline {
   width: 400px;
 }
 
-button.btn.btn-success {
+button.btn.btn-success,
+button.btn.btn-danger {
   margin-right: 20px;
 }
 
@@ -66,7 +67,8 @@ input.form-control.mr-sm-2 {
 }
 
 button.btn.btn-success.dropdown-toggle,
-button.btn.btn-success {
+button.btn.btn-success,
+button.btn.btn-danger {
   padding-left: 50px;
   padding-right: 50px;
 }
