@@ -95,3 +95,10 @@ p {
   align-items: center;
   justify-items: center;
 }
+
+/* MAP STYLES */
+
+.map-container {
+  width: 100%;
+  height: 100vh;
+}
