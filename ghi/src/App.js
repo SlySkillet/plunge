@@ -8,6 +8,7 @@ import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import Locations from "./components/Locations/Locations";
 
 function App() {
   const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
@@ -41,6 +42,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
+            <Route path="/locations" element={<Locations />} />
           </Routes>
         </div>
         <Footer />
