@@ -92,3 +92,14 @@ Today we worked on:
 - Front-end main page structure and carousel component (Travis)
 
 Today we got the navbar to toggle the login button depending on if the user is logged in. We can get the userdata to display in our UI, but we haven't implemented it. Account data is coming up the way we need in redux dev tools, so we are tracking. We worked on changing the login-page to a modal which took some troubleshooting. I created a draft of a footer today and merged it into main so we can, at least, see what the page looks like with header and footer. It is a template so we can easily add more links and content as we wish later on.
+
+## July 18, 2023
+
+Today we worked on:
+
+- Browse by locations page (Simon)
+- Style login and sign up modals & Nav drop-down (Greg)
+- Lightbox for photo gallery (Henry)
+- Hooking up carousels to /classes APIs (Travis)
+
+Divied up tasks today to do some work independently on certain components. I workd to get google maps for react installed in the app and wired up correctly. I learned how to use a .env and .env.sample file in our app and got our map to render on the page. Next up I will be researching how to use google maps api to render pins on the map and to filter those pins to display the relevant class cards below on the page. We will likely need to make a new api call on the back end to handle all relevant classes (scheduled events in the future, not limited to 14 days like the existing 'upcoming' call).
