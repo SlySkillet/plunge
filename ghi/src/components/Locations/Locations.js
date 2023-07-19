@@ -22,8 +22,22 @@ function Map() {
 
   return (
     <GoogleMap zoom={15} center={center} mapContainerClassName="map-container">
-      <MarkerF position={{ lat: 38.909677, lng: -77.029657 }} />
-      {/* <MarkerF position={{ lat: 38.911105, lng: -77.029666 }} /> */}
+      <div>
+        <MarkerF position={{ lat: 38.909677, lng: -77.029657 }} />
+      </div>
+      <div>
+        {classes.map((classIterable, idx) => {
+          return (
+            <MarkerF
+              key={idx}
+              position={{
+                lat: parseFloat(classIterable.location_latitude),
+                lng: parseFloat(classIterable.location_longitude),
+              }}
+            />
+          );
+        })}
+      </div>
     </GoogleMap>
   );
 }
