@@ -14,6 +14,7 @@ export const authApi = createApi({
           formData = new FormData(info);
         } else {
           formData = new FormData();
+          console.log(formData);
           formData.append("username", info.username);
           formData.append("password", info.password);
         }
@@ -22,6 +23,18 @@ export const authApi = createApi({
 
           method: "post",
           body: formData,
+          credentials: "include",
+        };
+      },
+      invalidatesTags: ["Token"],
+    }),
+    createAccount: builder.mutation({
+      query: (info) => {
+        return {
+          url: "/api/accounts",
+
+          method: "post",
+          body: info,
           credentials: "include",
         };
       },
@@ -49,5 +62,9 @@ export const authApi = createApi({
   }),
 });
 
-export const { useGetTokenQuery, useLoginMutation, useLogoutMutation } =
-  authApi;
+export const {
+  useGetTokenQuery,
+  useLoginMutation,
+  useLogoutMutation,
+  useCreateAccountMutation,
+} = authApi;

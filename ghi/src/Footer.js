@@ -5,7 +5,7 @@ function Footer() {
     <div className="footer navbar navbar-expand-lg navbar-light bg-light">
       <div></div>
       <div className="footer-item">
-        <p>Prouced By:</p>
+        <p>Produced By:</p>
         <ul>
           <li>Simon Conrad</li>
           <li>Travis Semeniv</li>
