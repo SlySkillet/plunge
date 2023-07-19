@@ -21,24 +21,51 @@ function Map() {
   console.log("classes => ", classes);
 
   return (
-    <GoogleMap zoom={15} center={center} mapContainerClassName="map-container">
-      <div>
-        <MarkerF position={{ lat: 38.909677, lng: -77.029657 }} />
-      </div>
-      <div>
-        {classes.map((classIterable, idx) => {
+    <div>
+      <GoogleMap
+        zoom={15}
+        center={center}
+        mapContainerClassName="map-container"
+      >
+        <div>
+          <MarkerF position={center} />
+        </div>
+        <div>
+          {classes.map((classIterable, idx) => {
+            return (
+              <MarkerF
+                key={idx}
+                position={{
+                  lat: parseFloat(classIterable.location_latitude),
+                  lng: parseFloat(classIterable.location_longitude),
+                }}
+              />
+            );
+          })}
+        </div>
+      </GoogleMap>
+      <div className="card-container">
+        {classes.map((classIterable, Idx) => {
           return (
-            <MarkerF
-              key={idx}
-              position={{
-                lat: parseFloat(classIterable.location_latitude),
-                lng: parseFloat(classIterable.location_longitude),
-              }}
-            />
+            <div className="card" key={Idx}>
+              <img
+                src={classIterable.image_1}
+                className="card-img-top"
+                alt="..."
+              />
+              <div className="card-body">
+                <h5 className="card-title">{classIterable.class_name}</h5>
+                <p className="card-text">{classIterable.description}</p>
+                <p className="card-text">{classIterable.location_address}</p>
+                <a href="#" className="btn btn-primary">
+                  Class Details
+                </a>
+              </div>
+            </div>
           );
         })}
       </div>
-    </GoogleMap>
+    </div>
   );
 }
 
@@ -49,7 +76,11 @@ function Locations() {
   if (!isLoaded) {
     return <div>Loading...</div>;
   }
-  return <Map />;
+  return (
+    <div>
+      <Map />
+    </div>
+  );
 }
 
 export default Locations;
