@@ -26,12 +26,9 @@ body {
 
 .slick-prev:before,
 .slick-next:before {
-  background-color: #7a3f82;
+  background-color: #505050;
 }
 
-.carousel {
-
-}
 
 .card-title {
     font-weight: bold;
