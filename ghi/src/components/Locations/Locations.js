@@ -3,6 +3,13 @@ import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
+  const mapOptions = useMemo(
+    () => ({
+      disableDefaultUI: true,
+      clickableIcons: false,
+    }),
+    []
+  );
   const [classes, setClasses] = useState([]);
   useEffect(() => {
     async function loadClasses() {
@@ -22,28 +29,34 @@ function Map() {
 
   return (
     <div>
-      <GoogleMap
-        zoom={15}
-        center={center}
-        mapContainerClassName="map-container"
-      >
-        <div>
-          <MarkerF position={center} />
+      <div className="outer-map-container">
+        <div className="controls">
+          <h1>Your Location</h1>
         </div>
-        <div>
-          {classes.map((classIterable, idx) => {
-            return (
-              <MarkerF
-                key={idx}
-                position={{
-                  lat: parseFloat(classIterable.location_latitude),
-                  lng: parseFloat(classIterable.location_longitude),
-                }}
-              />
-            );
-          })}
-        </div>
-      </GoogleMap>
+        <GoogleMap
+          zoom={15}
+          center={center}
+          mapContainerClassName="map-container"
+          options={mapOptions}
+        >
+          <div>
+            <MarkerF position={center} />
+          </div>
+          <div>
+            {classes.map((classIterable, idx) => {
+              return (
+                <MarkerF
+                  key={idx}
+                  position={{
+                    lat: parseFloat(classIterable.location_latitude),
+                    lng: parseFloat(classIterable.location_longitude),
+                  }}
+                />
+              );
+            })}
+          </div>
+        </GoogleMap>
+      </div>
       <div className="card-container">
         {classes.map((classIterable, Idx) => {
           return (
