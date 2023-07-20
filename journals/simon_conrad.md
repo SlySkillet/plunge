@@ -103,3 +103,14 @@ Today we worked on:
 - Hooking up carousels to /classes APIs (Travis)
 
 Divied up tasks today to do some work independently on certain components. I workd to get google maps for react installed in the app and wired up correctly. I learned how to use a .env and .env.sample file in our app and got our map to render on the page. Next up I will be researching how to use google maps api to render pins on the map and to filter those pins to display the relevant class cards below on the page. We will likely need to make a new api call on the back end to handle all relevant classes (scheduled events in the future, not limited to 14 days like the existing 'upcoming' call).
+
+## July 19, 2023
+
+Today we worked on:
+
+- Create class form & create event form (Greg)
+- /reservation POST & instructor dashboard (Henry)
+- Continue on browse by location and render cards (Simon)
+- Set up hero component (Travis)
+
+I worked on the location page again, working to get markers to render on the map for each class with an event in the next 14 days. I discovered that the instructions I was following were out of date with the updates made to the react library I was using. So, once I figured out that 'Marker' needed to be 'MarkerF' everything worked fine. This brought me out of a deep cavern of doubt and back on track for the maps component. After this I built the corresponding cards with class information and images and set them up to populate underneath the map. Next will be to work on filtering, styling markers, and placing a marker for a 'home address'. A stretch will be to add distinct react icons for each category.
