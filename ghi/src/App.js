@@ -3,18 +3,27 @@ import { useEffect, useState } from 'react';
 // import ErrorNotification from "./ErrorNotification";
 import './App.css';
 import { AuthProvider } from '@galvanize-inc/jwtdown-for-react';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
+import ClassDetails from './components/Classes/ClassDetails';
+import Dashboard from './components/Accounts/Dashboard';
+import Nav from './Nav';
+import Footer from './Footer';
+import './App.css';
+import { AuthProvider } from '@galvanize-inc/jwtdown-for-react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import ClassDetails from './components/Classes/ClassDetails';
 import ClassesForm from './components/Classes/ClassesForm';
 import EventsForm from './components/Events/EventsForm';
-import Reservations from './components/Accounts/Reservations';
 import Dashboard from './components/Accounts/Dashboard';
 import Nav from './Nav';
 import Footer from './Footer';
 
 function App() {
+	const { id } = useParams();
 	const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
 	const [launchInfo, setLaunchInfo] = useState([]);
 	const [error, setError] = useState(null);
@@ -27,19 +36,25 @@ function App() {
 					<Routes>
 						<Route path="/login" element={<LoginForm />} />
 						<Route path="/signup" element={<SignupForm />} />
-						<Route path="/classes/create" element={<ClassesForm />} />
-						<Route path="/classes/:classId/edit" element={<ClassesForm />} />
-						<Route path="/classes/:classId" element={<ClassDetails />} />
+						<Route path="/classes/:id" element={<ClassDetails />} />
 						<Route path="/dashboard" element={<Dashboard />} />
-						<Route
-							path="/classes/:classId/events/create"
-							element={<EventsForm />}
-						/>
-						<Route
-							path="/classes/:classId/events/:eventId/edit"
-							element={<EventsForm />}
-						/>
-						<Route path="/reservations" element={<Reservations />} />
+					</Routes>
+				</div>
+			</BrowserRouter>
+		</AuthProvider>
+	);
+	return (
+		<AuthProvider baseUrl={baseUrl}>
+			<BrowserRouter>
+				<Nav />
+				<div className="container">
+					<Routes>
+						<Route path="/login" element={<LoginForm />} />
+						<Route path="/signup" element={<SignupForm />} />
+						<Route path="/classes/create" element={<ClassesForm />} />
+						<Route path="/classes/:id" element={<ClassDetails />} />
+						<Route path="/classes/:id/events/create" element={<EventsForm />} />
+						<Route path="/dashboard" element={<Dashboard />} />
 					</Routes>
 				</div>
 				<Footer />
