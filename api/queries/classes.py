@@ -14,7 +14,7 @@ class ClassIn(BaseModel):
     category_id: int
     description: str
     price: int
-    featured: bool
+    featured: bool = False
     image_1: str
     image_2: str
     image_3: str
