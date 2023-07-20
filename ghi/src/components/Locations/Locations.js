@@ -31,10 +31,9 @@ function Map() {
   return (
     <div>
       <div className="outer-map-container">
-        <div className="controls">
+        {/* <div className="controls">
           <h1>Your Location</h1>
-          <InputAddress />
-        </div>
+        </div> */}
         <GoogleMap
           zoom={15}
           center={center}
