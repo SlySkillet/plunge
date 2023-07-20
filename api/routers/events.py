@@ -13,10 +13,16 @@ router = APIRouter()
 
 @router.post("/events", response_model=Union[EventOut, Error])
 def create_event(
+    response: Response,
     event: EventIn,
     query: EventQueries = Depends(),
 ) -> Union[EventOut, Error]:
-    return query.create(event)
+    result = query.create(event)
+    try:
+        result.id
+    except AttributeError:
+        response.status_code = 400
+    return result
 
 
 @router.get(

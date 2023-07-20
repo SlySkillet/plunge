@@ -15,7 +15,7 @@ function Footer() {
       </div>
       <div></div>
       <div className="footer-item">
-        <p>Thanks for visiting Plunged!</p>
+        <p>Thanks for visiting Plunge!</p>
       </div>
       <div></div>
     </div>

@@ -50,7 +50,7 @@ CREATE TABLE classes (
     category_id SMALLINT REFERENCES categories("id") ON DELETE CASCADE NOT NULL,
     description TEXT NOT NULL,
     price SMALLINT NOT NULL,
-    featured BOOLEAN NOT NULL,
+    featured BOOLEAN,
     image_1 VARCHAR(100) NOT NULL,
     image_2 VARCHAR(100),
     image_3 VARCHAR(100),

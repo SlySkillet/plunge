@@ -10,6 +10,17 @@ import ClassDetails from './components/Classes/ClassDetails';
 import Dashboard from './components/Accounts/Dashboard';
 import Nav from './Nav';
 import Footer from './Footer';
+import './App.css';
+import { AuthProvider } from '@galvanize-inc/jwtdown-for-react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
+import ClassDetails from './components/Classes/ClassDetails';
+import ClassesForm from './components/Classes/ClassesForm';
+import EventsForm from './components/Events/EventsForm';
+import Dashboard from './components/Accounts/Dashboard';
+import Nav from './Nav';
+import Footer from './Footer';
 
 function App() {
 	const { id } = useParams();
@@ -29,6 +40,24 @@ function App() {
 						<Route path="/dashboard" element={<Dashboard />} />
 					</Routes>
 				</div>
+			</BrowserRouter>
+		</AuthProvider>
+	);
+	return (
+		<AuthProvider baseUrl={baseUrl}>
+			<BrowserRouter>
+				<Nav />
+				<div className="container">
+					<Routes>
+						<Route path="/login" element={<LoginForm />} />
+						<Route path="/signup" element={<SignupForm />} />
+						<Route path="/classes/create" element={<ClassesForm />} />
+						<Route path="/classes/:id" element={<ClassDetails />} />
+						<Route path="/classes/:id/events/create" element={<EventsForm />} />
+						<Route path="/dashboard" element={<Dashboard />} />
+					</Routes>
+				</div>
+				<Footer />
 			</BrowserRouter>
 		</AuthProvider>
 	);
