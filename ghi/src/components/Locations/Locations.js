@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import InputAddress from "./InputAddress";
+import { useGetTokenQuery } from "../../store/authApi";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
@@ -11,7 +11,27 @@ function Map() {
     }),
     []
   );
+  // const [origin, setOrigin] = useState([]);
+  const [user, setUser] = useState([]);
   const [classes, setClasses] = useState([]);
+  const { data: tokenData } = useGetTokenQuery();
+
+  useEffect(() => {
+    async function loadUserLocation() {
+      if (tokenData) {
+        console.log(tokenData.account.id);
+        const url = `http://localhost:8000/account/${tokenData.account.id}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+        }
+      }
+    }
+    loadUserLocation();
+  }, [tokenData]);
+  console.log(user.location_latitude);
+
   useEffect(() => {
     async function loadClasses() {
       const response = await fetch(
@@ -26,7 +46,8 @@ function Map() {
     }
     loadClasses();
   }, []);
-  console.log("classes => ", classes);
+  // console.log("classes => ", classes);
+  console.log(typeof user.location_latitude);
 
   return (
     <div>
@@ -36,7 +57,10 @@ function Map() {
         </div> */}
         <GoogleMap
           zoom={15}
-          center={center}
+          center={{
+            lat: parseFloat(user.location_latitude),
+            lng: parseFloat(user.location_longitude),
+          }}
           mapContainerClassName="map-container"
           options={mapOptions}
         >
