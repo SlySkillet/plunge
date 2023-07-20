@@ -91,7 +91,6 @@ function InstructorDashboard() {
 	};
 
 	const changeStatus = async (e, id, enrolled) => {
-		console.log('changing status...');
 		e.preventDefault();
 		const data = {};
 		data.status = enrolled;
