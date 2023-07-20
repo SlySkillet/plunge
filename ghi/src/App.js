@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import ClassDetails from './components/Classes/ClassDetails';
+import Dashboard from './components/Accounts/Dashboard';
 import Nav from './Nav';
 import Footer from './Footer';
 

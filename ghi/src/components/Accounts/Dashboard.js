@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useGetTokenQuery, useLogoutMutation } from '../../store/authApi';
-import { useGetTokenQuery, useLogoutMutation } from '../../store/authApi';
 import { useParams } from 'react-router-dom';
 
 function InstructorDashboard() {
@@ -25,7 +24,7 @@ function InstructorDashboard() {
 				let data = await response.json();
 				setEvents(data);
 			}
-			url = `http://localhost:8000/reservations/instructor/${tokenData.account.id}`;
+			url = `http://localhost:8000/reservations/instructors/${tokenData.account.id}`;
 			response = await fetch(url);
 			if (response.ok) {
 				console.log('events fetched');
@@ -57,12 +56,12 @@ function InstructorDashboard() {
 					<br />
 					<br />
 					<br />
-					<div>
+					{/* <div>
 						{events &&
 							events.map((event, index) => {
 								return <div>{event.date_time}</div>;
 							})}
-					</div>
+					</div> */}
 					<div>
 						{classes &&
 							classes.map((instructorClass, index) => {
