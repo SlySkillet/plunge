@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import InputAddress from "./InputAddress";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
@@ -32,6 +33,7 @@ function Map() {
       <div className="outer-map-container">
         <div className="controls">
           <h1>Your Location</h1>
+          <InputAddress />
         </div>
         <GoogleMap
           zoom={15}
