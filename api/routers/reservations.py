@@ -61,12 +61,12 @@ def get_student_reservations(
     return query.get_student(student_id)
 
 
-# @router.get(
-#     "/instructor/reservations/{instructor_id}",
-#     response_model=Optional[ReservationOut],
-# )
-# def get_instructor_reservations(
-#     instructor_id: int,
-#     query: ReservationOut = Depends(),
-# ) -> ReservationOut:
-#     return query.get_instructor(instructor_id)
+@router.get(
+    "/reservations/instructors/{instructor_id}",
+    response_model=Union[List[ReservationDetailsOut], Error],
+)
+def get_reservations_by_instructor(
+    instructor_id: int,
+    query: ReservationQuery = Depends(),
+) -> ReservationDetailsOut:
+    return query.get_reservations_by_instructor(instructor_id)

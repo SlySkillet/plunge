@@ -25,6 +25,7 @@ function App() {
 						<Route path="/login" element={<LoginForm />} />
 						<Route path="/signup" element={<SignupForm />} />
 						<Route path="/classes/:id" element={<ClassDetails />} />
+						<Route path="/dashboard" element={<Dashboard />} />
 					</Routes>
 				</div>
 			</BrowserRouter>

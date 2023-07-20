@@ -354,6 +354,56 @@ class ClassQueries(BaseModel):
             print(e)
             return {"message": "could not get that instructor's classes"}
 
+    def get_by_instructor(
+        self, instructor_id
+    ) -> Union[Error, List[ClassOutDetail]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT classes.id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , categories.name
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , classes.location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
+                        FROM classes
+                        INNER JOIN categories on classes.category_id = categories.id
+                        INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        where classes.instructor_id = %s
+                        """,
+                        [instructor_id],
+                    )
+                    return [
+                        self.record_to_class_detail_out(record)
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get that instructor's classes"}
+
     def create(self, class_info: ClassIn) -> Union[ClassOut, Error]:
         try:
             with pool.connection() as conn:

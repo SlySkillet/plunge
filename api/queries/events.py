@@ -99,6 +99,29 @@ class EventQueries(BaseModel):
             print(e)
             return {"message": "could not get those events"}
 
+    def get_all_by_instructor(
+        self, instructor_id
+    ) -> Union[List[EventOut], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT events.id
+                            , date_time
+                            , capacity
+                            , class_id
+                        FROM events
+                        WHERE events.date_time > current_date AND class_id = %s
+                        ORDER BY events.date_time;
+                        """,
+                        [instructor_id],
+                    )
+                    return [self.record_to_event_out(record) for record in db]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get those events"}
+
     def update(self, event_id, event: EventIn) -> Union[EventOut, Error]:
         try:
             with pool.connection() as conn:
