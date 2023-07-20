@@ -19,7 +19,8 @@ CREATE TABLE locations (
 
 CREATE TABLE categories (
     id SERIAL NOT NULL UNIQUE,
-    name VARCHAR(100) NOT NULL
+    name VARCHAR(100) NOT NULL,
+    image_1 VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE accounts (
@@ -74,7 +75,7 @@ CREATE TABLE reservations (
     student_id SMALLINT REFERENCES accounts("id") ON DELETE CASCADE NOT NULL
 );
 
-INSERT INTO categories (name) VALUES ('Music')
+INSERT INTO categories (name, image_1) VALUES ('Music')
 , ('Design & Style')
 , ('Arts & Entertainment')
 , ('Business')

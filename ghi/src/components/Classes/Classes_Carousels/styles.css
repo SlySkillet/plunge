@@ -12,7 +12,7 @@ body {
   background-color: #5c2e91;
   background-color: #fff;
   color: #fff;
-  color: #505050;
+  color: #000000;
   text-align: left;
 }
 
@@ -26,7 +26,8 @@ body {
 
 .slick-prev:before,
 .slick-next:before {
-  background-color: #505050;
+  background-color: #ffffff;
+  color: #505050;
 }
 
 
@@ -37,6 +38,7 @@ body {
 
 .price {
     margin: 1%;
+    padding-bottom: 0%;
 }
 
 .card-text {

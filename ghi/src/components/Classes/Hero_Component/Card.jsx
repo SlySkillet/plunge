@@ -5,20 +5,6 @@ import Button from "./Button";
 
 function Card({ imagen, name }) {
   const [show, setShown] = useState(false);
-  const [categories, setCategories] = useState();
-
-  const fetchData = async() => {
-    const url = 'http://localhost:8000/categories';
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      setCategories(data)
-    }
-  }
-
-  useEffect(() => {
-      fetchData()
-  }, []);
 
   const props3 = useSpring({
     opacity: 1,
