@@ -215,14 +215,12 @@ function ClassDetails() {
 							<div>
 								<h4>About Your Instructor</h4>
 							</div>
-							<div className="col-3">
-								<div>
-									<img
-										className="rounded-circle"
-										height="100px"
-										src={classes.instructor_avatar}
-									></img>
-								</div>
+							<div className="col-3" style={{ width: '120px' }}>
+								<img
+									className="rounded-circle"
+									height="100px"
+									src={classes.instructor_avatar}
+								></img>
 							</div>
 							<div className="col">
 								<div>
