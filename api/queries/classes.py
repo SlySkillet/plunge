@@ -47,6 +47,10 @@ class ClassOutDetail(ClassOut):
     location_zip_code: str
     location_latitude: str = None
     location_longitude: str = None
+    instructor_first_name: str
+    instructor_last_name: str
+    instructor_biography: str
+    instructor_avatar: str
 
 
 class ClassQueries(BaseModel):
@@ -339,7 +343,7 @@ class ClassQueries(BaseModel):
                             , image_2
                             , image_3
                             , image_4
-                            , location_id
+                            , classes.location_id
                             , locations.name
                             , locations.address
                             , locations.city
@@ -347,9 +351,15 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+						INNER JOIN accounts on classes.instructor_id = accounts.id
+						INNER JOIN account_details on classes.instructor_id = account_details.id
                         WHERE classes.id = %s
                         """,
                         [class_id],
@@ -385,4 +395,8 @@ class ClassQueries(BaseModel):
             location_zip_code=record[18],
             location_latitude=record[19],
             location_longitude=record[20],
+            instructor_first_name=record[21],
+            instructor_last_name=record[22],
+            instructor_biography=record[23],
+            instructor_avatar=record[24],
         )

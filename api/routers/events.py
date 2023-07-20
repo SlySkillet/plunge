@@ -19,6 +19,13 @@ def create_event(
     return query.create(event)
 
 
+@router.get(
+    "/events/future/{class_id}", response_model=Union[List[EventOut], Error]
+)
+def get_all_future(class_id: int, query: EventQueries = Depends()):
+    return query.get_all_future(class_id)
+
+
 @router.get("/events/{event_id}", response_model=Optional[EventOut])
 def get_one_event(
     event_id: int,
