@@ -34,6 +34,31 @@ function InstructorDashboard() {
 		}
 	};
 
+	const formatDateTime = (datetime) => {
+		const date = new Date(datetime);
+		const dayNames = [
+			'Sunday',
+			'Monday',
+			'Tuesday',
+			'Wednesday',
+			'Thursday',
+			'Friday',
+			'Saturday',
+		];
+		const dayOfWeek = dayNames[date.getDay()];
+		const year = date.getFullYear();
+		const month = date.getMonth();
+		const day = date.getDay();
+		let hour = date.getHours();
+		const minute = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+		let ampm = 'AM';
+		if (hour > 12) {
+			hour -= 12;
+			ampm = 'PM';
+		}
+		return `${dayOfWeek}, ${month}/${day}/${year} - ${hour}:${minute} ${ampm}`;
+	};
+
 	useEffect(() => {
 		fetchData();
 	}, [tokenData]);
@@ -84,6 +109,109 @@ function InstructorDashboard() {
 												Delete event
 											</button>
 										</div>
+										{/* {events &&
+											events.map((event, index) => {
+												return (
+													<div>
+														<strong>{formatDateTime(event.date_time)}</strong>
+													</div>
+												);
+											})} */}
+										<div class="accordion" id="accordionExample">
+											<div class="accordion-item">
+												<h2 class="accordion-header">
+													<button
+														class="accordion-button"
+														type="button"
+														data-bs-toggle="collapse"
+														data-bs-target="#collapseOne"
+														aria-expanded="true"
+														aria-controls="collapseOne"
+													>
+														{events && formatDateTime(events[0].date_time)}
+													</button>
+												</h2>
+												<div
+													id="collapseOne"
+													class="accordion-collapse collapse collapsed"
+													data-bs-parent="#accordionExample"
+												>
+													<div class="accordion-body">
+														<table className="table table-striped m-3">
+															<thead>
+																<tr>
+																	<td>Student Name</td>
+																	<td>Status</td>
+																	<td>Actions</td>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>John Franklin</td>
+																	<td>Enrolled</td>
+																	<td>
+																		<button className="btn btn-sm btn-outline-danger">
+																			Withdraw
+																		</button>
+																	</td>
+																</tr>
+																<tr>
+																	<td>Melissa Dobber</td>
+																	<td>Withdrawn</td>
+																	<td>
+																		<button className="btn btn-sm btn-outline-success">
+																			&nbsp;&nbsp;&nbsp;Enroll&nbsp;&nbsp;&nbsp;&nbsp;
+																		</button>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											{events &&
+												events.map((event, index) => {
+													return (
+														<div class="accordion-item">
+															<h2 class="accordion-header">
+																<button
+																	class="accordion-button collapsed"
+																	type="button"
+																	data-bs-toggle="collapse"
+																	data-bs-target=`#{index}`
+																	aria-expanded="false"
+																	aria-controls="collapseTwo"
+																>
+																	<strong>
+																		{formatDateTime(event.date_time)}
+																	</strong>
+																</button>
+															</h2>
+															<div
+																id="collapseTwo"
+																class="accordion-collapse collapse"
+																data-bs-parent="#accordionExample"
+															>
+																<div class="accordion-body">
+																	<strong>
+																		This is the second item's accordion body.
+																	</strong>{' '}
+																	It is hidden by default, until the collapse
+																	plugin adds the appropriate classes that we
+																	use to style each element. These classes
+																	control the overall appearance, as well as the
+																	showing and hiding via CSS transitions. You
+																	can modify any of this with custom CSS or
+																	overriding our default variables. It's also
+																	worth noting that just about any HTML can go
+																	within the <code>.accordion-body</code>,
+																	though the transition does limit overflow.
+																</div>
+															</div>
+														</div>
+													);
+												})}
+										</div>
 										<div className="m-4">
 											<div className="mb-4">
 												<div className="m-2">
@@ -123,7 +251,7 @@ function InstructorDashboard() {
 													</tbody>
 												</table>
 											</div>
-											<div className="m-2">
+											{/* <div className="m-2">
 												<strong>Saturday, 7/20/23 - 2:00 pm</strong>&nbsp;&nbsp;
 												<div className="d-inline-flex px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger border-opacity-10 rounded-2">
 													0 of 2 slots remaining
@@ -157,7 +285,7 @@ function InstructorDashboard() {
 														</td>
 													</tr>
 												</tbody>
-											</table>
+											</table> */}
 										</div>
 										<br />
 									</div>

@@ -19,6 +19,7 @@ class EventOut(BaseModel):
     date_time: datetime
     capacity: int
     class_id: int
+    instructor_id: int
 
 
 class EventQueries(BaseModel):
@@ -111,8 +112,10 @@ class EventQueries(BaseModel):
                             , date_time
                             , capacity
                             , class_id
+                            , classes.instructor_id
                         FROM events
-                        WHERE events.date_time > current_date AND class_id = %s
+                        INNER JOIN classes ON classes.id = events.class_id
+                        WHERE classes.instructor_id = %s
                         ORDER BY events.date_time;
                         """,
                         [instructor_id],
@@ -168,4 +171,5 @@ class EventQueries(BaseModel):
             date_time=record[1],
             capacity=record[2],
             class_id=record[3],
+            instructor_id=record[4],
         )
