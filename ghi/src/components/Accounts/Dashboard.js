@@ -90,6 +90,12 @@ function InstructorDashboard() {
 		}
 	};
 
+	const filterEvents = (instructorClass, classEvent) => {
+		if (instructorClass.id === classEvent.class_id) {
+			return instructorClass;
+		}
+	};
+
 	const formatDateTime = (datetime) => {
 		const date = new Date(datetime);
 		const dayNames = [
@@ -103,6 +109,8 @@ function InstructorDashboard() {
 		];
 		const dayOfWeek = dayNames[date.getDay()];
 		const year = date.getFullYear();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
 		const month = date.getMonth() + 1;
 		const day = date.getDate();
 		let hour = date.getHours();
