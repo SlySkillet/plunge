@@ -40,6 +40,7 @@ class ReservationDetailsOut(BaseModel):
     total_price: float
     status: bool
     class_id: int
+    event_id: int
 
 
 class ReservationStatusIn(BaseModel):
@@ -71,6 +72,7 @@ class ReservationQuery:
                             , locations.zip_code
                             , total_price
                             , status
+                            , events.id
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
@@ -110,6 +112,7 @@ class ReservationQuery:
                             , total_price
                             , status
                             , classes.id
+                            , events.id
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
@@ -149,6 +152,7 @@ class ReservationQuery:
                             , total_price
                             , status
                             , classes.id
+                            , events.id
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
@@ -253,4 +257,5 @@ class ReservationQuery:
             total_price=record[11],
             status=record[12],
             class_id=record[13],
+            event_id=record[14],
         )

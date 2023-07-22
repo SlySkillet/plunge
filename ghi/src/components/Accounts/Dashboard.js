@@ -32,6 +32,12 @@ function InstructorDashboard() {
 		}
 	};
 
+	const filterEvents = (instructorClass, classEvent) => {
+		if (instructorClass.id === classEvent.class_id) {
+			return instructorClass;
+		}
+	};
+
 	const formatDateTime = (datetime) => {
 		const date = new Date(datetime);
 		const dayNames = [
@@ -45,8 +51,8 @@ function InstructorDashboard() {
 		];
 		const dayOfWeek = dayNames[date.getDay()];
 		const year = date.getFullYear();
-		const month = date.getMonth();
-		const day = date.getDay();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
 		let hour = date.getHours();
 		const minute = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 		let ampm = 'AM';
@@ -105,69 +111,76 @@ function InstructorDashboard() {
 											<Accordion>
 												{events &&
 													events.map((event, index) => {
-														return (
-															<Accordion.Item key={index} eventKey={index}>
-																<Accordion.Header>
-																	{formatDateTime(event.date_time)}
-																	&nbsp;&nbsp;&nbsp;
-																	<div className="d-inline-flex px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
-																		0 of 2 slots remaining
-																	</div>
-																</Accordion.Header>
-																<Accordion.Body>
-																	<table className="table table-striped m-3">
-																		<thead>
-																			<tr>
-																				<td>Student Name</td>
-																				<td>Status</td>
-																				<td>Actions</td>
-																			</tr>
-																		</thead>
-																		<tbody>
-																			{reservations &&
-																				reservations.map(
-																					(reservation, index) => {
-																						return (
-																							<tr key={index}>
-																								<td>
-																									{
-																										reservation.student_first_name
-																									}{' '}
-																									{
-																										reservation.student_first_name
-																									}
-																								</td>
-																								<td>
-																									{reservation.status ? (
-																										<div className="text-success">
-																											Enrolled
-																										</div>
-																									) : (
-																										<div className="text-danger">
-																											Withdrawn
-																										</div>
-																									)}
-																								</td>
-																								<td>
-																									{!reservation.status ? (
-																										<button className="btn btn-sm btn-outline-success">
-																											Enroll
-																										</button>
-																									) : (
-																										<button className="btn btn-sm btn-outline-danger">
-																											Withdraw
-																										</button>
-																									)}
-																								</td>
-																							</tr>
-																						);
-																					}
-																				)}
-																		</tbody>
-																	</table>
-																</Accordion.Body>
-															</Accordion.Item>
-														);
+														if (event.class_id === instructorClass.id) {
+															return (
+																<Accordion.Item key={index} eventKey={index}>
+																	<Accordion.Header>
+																		{formatDateTime(event.date_time)}
+																		&nbsp;&nbsp;&nbsp;
+																		<div className="d-inline-flex px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
+																			0 of 2 slots remaining
+																		</div>
+																	</Accordion.Header>
+																	<Accordion.Body>
+																		<table className="table table-striped m-3">
+																			<thead>
+																				<tr>
+																					<td>Student Name</td>
+																					<td>Status</td>
+																					<td>Actions</td>
+																				</tr>
+																			</thead>
+																			<tbody>
+																				{reservations &&
+																					reservations.map(
+																						(reservation, index) => {
+																							if (
+																								reservation.event_id ===
+																								event.id
+																							) {
+																								return (
+																									<tr key={index}>
+																										<td>
+																											{
+																												reservation.student_first_name
+																											}{' '}
+																											{
+																												reservation.student_last_name
+																											}
+																										</td>
+																										<td>
+																											{reservation.status ? (
+																												<div className="text-success">
+																													Enrolled
+																												</div>
+																											) : (
+																												<div className="text-danger">
+																													Withdrawn
+																												</div>
+																											)}
+																										</td>
+																										<td>
+																											{!reservation.status ? (
+																												<button className="btn btn-sm btn-outline-success">
+																													Enroll
+																												</button>
+																											) : (
+																												<button className="btn btn-sm btn-outline-danger">
+																													Withdraw
+																												</button>
+																											)}
+																										</td>
+																									</tr>
+																								);
+																							}
+																						}
+																					)}
+																			</tbody>
+																		</table>
+																	</Accordion.Body>
+																</Accordion.Item>
+															);
+														}
 													})}
 											</Accordion>
 										</div>
