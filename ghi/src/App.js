@@ -9,6 +9,7 @@ import SignupForm from './SignupForm';
 import ClassDetails from './components/Classes/ClassDetails';
 import ClassesForm from './components/Classes/ClassesForm';
 import EventsForm from './components/Events/EventsForm';
+import Dashboard from './components/Accounts/Dashboard';
 import Nav from './Nav';
 import Footer from './Footer';
 
@@ -28,6 +29,7 @@ function App() {
 						<Route path="/classes/create" element={<ClassesForm />} />
 						<Route path="/classes/:id" element={<ClassDetails />} />
 						<Route path="/classes/:id/events/create" element={<EventsForm />} />
+						<Route path="/dashboard" element={<Dashboard />} />
 					</Routes>
 				</div>
 				<Footer />

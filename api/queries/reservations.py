@@ -30,8 +30,8 @@ class ReservationDetailsOut(BaseModel):
     date_time: datetime
     capacity: int
     class_name: str
-    instructor_first_name: str
-    instructor_last_name: str
+    student_first_name: str
+    student_last_name: str
     location_name: str
     address: str
     city: str
@@ -243,8 +243,8 @@ class ReservationQuery:
             date_time=record[1],
             capacity=record[2],
             class_name=record[3],
-            instructor_first_name=record[4],
-            instructor_last_name=record[5],
+            student_first_name=record[4],
+            student_last_name=record[5],
             location_name=record[6],
             address=record[7],
             city=record[8],
