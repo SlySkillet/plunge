@@ -11,7 +11,6 @@ function Map() {
     }),
     []
   );
-  // const [origin, setOrigin] = useState([]);
   const [user, setUser] = useState([]);
   const [classes, setClasses] = useState([]);
   const { data: tokenData } = useGetTokenQuery();
@@ -30,7 +29,7 @@ function Map() {
     }
     loadUserLocation();
   }, [tokenData]);
-  console.log(user.location_latitude);
+  console.log("user", user);
 
   useEffect(() => {
     async function loadClasses() {
@@ -44,28 +43,38 @@ function Map() {
         console.error(response);
       }
     }
+
     loadClasses();
   }, []);
   // console.log("classes => ", classes);
-  console.log(typeof user.location_latitude);
 
   return (
     <div>
       <div className="outer-map-container">
-        {/* <div className="controls">
-          <h1>Your Location</h1>
-        </div> */}
         <GoogleMap
           zoom={15}
-          center={{
-            lat: parseFloat(user.location_latitude),
-            lng: parseFloat(user.location_longitude),
-          }}
+          center={
+            tokenData
+              ? {
+                  lat: parseFloat(user.location_latitude),
+                  lng: parseFloat(user.location_longitude),
+                }
+              : center
+          }
           mapContainerClassName="map-container"
           options={mapOptions}
         >
           <div>
-            <MarkerF position={center} />
+            <MarkerF
+              position={
+                tokenData
+                  ? {
+                      lat: parseFloat(user.location_latitude),
+                      lng: parseFloat(user.location_longitude),
+                    }
+                  : center
+              }
+            />
           </div>
           <div>
             {classes.map((classIterable, idx) => {
