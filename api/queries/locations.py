@@ -13,8 +13,8 @@ class LocationIn(BaseModel):
     city: str
     state: str
     zip_code: int
-    latitude: str
-    longitude: str
+    latitude: str | None
+    longitude: str | None
 
 
 class LocationOut(BaseModel):
@@ -24,8 +24,8 @@ class LocationOut(BaseModel):
     city: str
     state: str
     zip_code: int
-    latitude: str
-    longitude: str
+    latitude: str | None
+    longitude: str | None
 
 
 class LocationQueries(BaseModel):
