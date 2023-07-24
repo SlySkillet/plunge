@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   useGetTokenQuery,
@@ -31,6 +31,30 @@ function Nav() {
     password: "",
     confirmPassword: "",
   });
+  const [avatar, setAvatar] = useState("");
+
+  const fetchAvatar = async () => {
+    if (tokenData) {
+      let url = `http://localhost:8000/account/${tokenData.account.id}`;
+      let response = await fetch(url);
+      if (response.ok) {
+        let data = await response.json();
+        setAvatar(data.avatar);
+      }
+    }
+  };
+  useEffect(() => {
+    fetchAvatar();
+  }, [tokenData]);
+
+  const userButton = () => {
+    return (
+      <div className="align-middle">
+        <img className="rounded-circle" height="35px" src={avatar} />
+        &nbsp;&nbsp; {tokenData.account.first_name}
+      </div>
+    );
+  };
 
   const handleCreateAccountFormChange = async (e) => {
     const name = e.target.name;
@@ -110,11 +134,11 @@ function Nav() {
 
   return (
     <>
-      <nav className="navbar bg-light navbar-light navbar-expand-lg">
+      <nav className="navbar p-3 bg-light navbar-light navbar-expand-lg">
         <div className="container-fluid">
-          <NavLink className="navbar-brand" to="/">
+          <Link className="navbar-brand" to="/">
             Plunge
-          </NavLink>
+          </Link>
         </div>
         <button
           className="navbar-toggler"
@@ -130,22 +154,22 @@ function Nav() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <div className="dropdown">
             <button
-              className="btn btn-success dropdown-toggle"
+              className="btn btn-outline-success dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Browse By
+              Browse&nbsp;
             </button>
             <ul className="dropdown-menu">
               <li className="nav-item">
-                <NavLink>by Location</NavLink>
+                <Link className="dropdown-item">By Location</Link>
               </li>
               <li className="nav-item">
-                <NavLink>by Category</NavLink>
+                <Link className="dropdown-item">By Category</Link>
               </li>
               <li className="nav-item">
-                <NavLink>by Upcoming</NavLink>
+                <Link className="dropdown-item">By Upcoming</Link>
               </li>
             </ul>
           </div>
@@ -168,27 +192,28 @@ function Nav() {
               Login
             </button>
           </div>
+
           <div className={tokenData ? "dropdown" : "dropdown d-none"}>
             <button
-              className="btn btn-success dropdown-toggle"
+              className="btn btn-outline-success dropdown-toggle d-inline-flex px-4 py-1 border align-items-center"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              {tokenData ? tokenData.account.username : "username"}
+              {tokenData ? userButton() : "username"}&nbsp;&nbsp;
             </button>
             <ul className="dropdown-menu">
               <li className="nav-item">
-                <NavLink>My Events</NavLink>
+                <Link className="dropdown-item">My Events</Link>
               </li>
               <li className="nav-item">
-                <NavLink>Settings</NavLink>
+                <Link className="dropdown-item">Settings</Link>
               </li>
               <li className="nav-item">
-                <NavLink>Instructor Dashboard</NavLink>
+                <Link className="dropdown-item">Instructor Dashboard</Link>
               </li>
               <li className="nav-item">
-                <a href="#" onClick={logout}>
+                <a href="#" onClick={logout} className="dropdown-item">
                   Logout
                 </a>
               </li>

@@ -49,8 +49,9 @@ form.form-inline {
 }
 
 button.btn.btn-success,
-button.btn.btn-danger {
-  margin-right: 20px;
+button.btn.btn-danger,
+button.btn.btn-outline-success.dropdown-toggle.d-inline-flex.px-4.py-1.border.align-items-center {
+  margin-right: 70px;
 }
 
 a.active {
@@ -85,7 +86,7 @@ ul {
   list-style: none;
 }
 
-p {
+.footer-item p {
   font-weight: bolder;
   margin-left: 80px;
 }

@@ -5,6 +5,8 @@ from queries.reservations import (
     ReservationIn,
     ReservationOut,
     ReservationDetailsOut,
+    ReservationStatusIn,
+    ReservationStatusOut,
     ReservationQuery,
 )
 
@@ -23,13 +25,13 @@ def create_reservation(
 
 @router.put(
     "/reservations/{reservation_id}",
-    response_model=Union[ReservationOut, Error],
+    response_model=Union[ReservationStatusOut, Error],
 )
 def update_reservation(
     reservation_id: int,
-    reservation: ReservationIn,
+    reservation: ReservationStatusIn,
     query: ReservationQuery = Depends(),
-) -> Union[ReservationOut, Error]:
+) -> Union[ReservationStatusOut, Error]:
     return query.update(reservation_id, reservation)
 
 

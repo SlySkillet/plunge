@@ -14,7 +14,7 @@ class ClassIn(BaseModel):
     category_id: int
     description: str
     price: int
-    featured: bool
+    featured: bool = False
     image_1: str
     image_2: str
     image_3: str
@@ -47,6 +47,10 @@ class ClassOutDetail(ClassOut):
     location_zip_code: str
     location_latitude: str = None
     location_longitude: str = None
+    instructor_first_name: str
+    instructor_last_name: str
+    instructor_biography: str
+    instructor_avatar: str
 
 
 class ClassQueries(BaseModel):
@@ -69,7 +73,7 @@ class ClassQueries(BaseModel):
                             , image_2
                             , image_3
                             , image_4
-                            , location_id
+                            , classes.location_id
                             , locations.name
                             , locations.address
                             , locations.city
@@ -77,9 +81,15 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.id
                         """
                     )
                     return [
@@ -109,7 +119,7 @@ class ClassQueries(BaseModel):
                             , image_2
                             , image_3
                             , image_4
-                            , location_id
+                            , classes.location_id
                             , locations.name
                             , locations.address
                             , locations.city
@@ -117,9 +127,15 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.id
                         where classes.featured = true
                         """
                     )
@@ -150,7 +166,7 @@ class ClassQueries(BaseModel):
                             , image_2
                             , image_3
                             , image_4
-                            , location_id
+                            , classes.location_id
                             , locations.name
                             , locations.address
                             , locations.city
@@ -158,10 +174,16 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN events on classes.id = events.class_id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.id
                         where events.date_time <= current_date + interval '14 days'
                         and events.date_time >= current_date
                         """
@@ -201,7 +223,7 @@ class ClassQueries(BaseModel):
                             , image_2
                             , image_3
                             , image_4
-                            , location_id
+                            , classes.location_id
                             , locations.name
                             , locations.address
                             , locations.city
@@ -209,9 +231,15 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.id
                         INNER JOIN account_location
                             on cast(locations.latitude as decimal) >= account_location.latitude - 0.5
                             and cast(locations.latitude as decimal) <= account_location.latitude + 0.5
@@ -247,7 +275,7 @@ class ClassQueries(BaseModel):
                             , image_2
                             , image_3
                             , image_4
-                            , location_id
+                            , classes.location_id
                             , locations.name
                             , locations.address
                             , locations.city
@@ -255,9 +283,15 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.id
                         where classes.category_id = %s
                         """,
                         [category_id],
@@ -269,6 +303,56 @@ class ClassQueries(BaseModel):
         except Exception as e:
             print(e)
             return {"message": "could not get all classes"}
+
+    def get_by_instructor(
+        self, instructor_id
+    ) -> Union[Error, List[ClassOutDetail]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT classes.id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , categories.name
+                            , description
+                            , price
+                            , featured
+                            , image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , classes.location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
+                        FROM classes
+                        INNER JOIN categories on classes.category_id = categories.id
+                        INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        where classes.instructor_id = %s
+                        """,
+                        [instructor_id],
+                    )
+                    return [
+                        self.record_to_class_detail_out(record)
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get that instructor's classes"}
 
     def create(self, class_info: ClassIn) -> Union[ClassOut, Error]:
         try:
@@ -339,7 +423,7 @@ class ClassQueries(BaseModel):
                             , image_2
                             , image_3
                             , image_4
-                            , location_id
+                            , classes.location_id
                             , locations.name
                             , locations.address
                             , locations.city
@@ -347,9 +431,15 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
+							, accounts.first_name
+							, accounts.last_name
+							, account_details.biography
+                            , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+						INNER JOIN accounts on classes.instructor_id = accounts.id
+						INNER JOIN account_details on classes.instructor_id = account_details.id
                         WHERE classes.id = %s
                         """,
                         [class_id],
@@ -385,4 +475,8 @@ class ClassQueries(BaseModel):
             location_zip_code=record[18],
             location_latitude=record[19],
             location_longitude=record[20],
+            instructor_first_name=record[21],
+            instructor_last_name=record[22],
+            instructor_biography=record[23],
+            instructor_avatar=record[24],
         )

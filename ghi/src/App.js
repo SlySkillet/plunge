@@ -9,6 +9,9 @@ import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
+import ClassDetails from "./components/Classes/ClassDetails";
+import ClassesForm from "./components/Classes/ClassesForm";
+import EventsForm from "./components/Events/EventsForm";
 import Nav from "./Nav";
 import Footer from "./Footer";
 
@@ -17,38 +20,21 @@ function App() {
   const [launchInfo, setLaunchInfo] = useState([]);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function getData() {
-      let url = `${process.env.REACT_APP_API_HOST}/api/launch-details`;
-      console.log("fastapi url: ", url);
-      let response = await fetch(url);
-      console.log("------- hello? -------");
-      let data = await response.json();
-
-      if (response.ok) {
-        console.log("got launch data!");
-        setLaunchInfo(data.launch_details);
-      } else {
-        console.log("drat! something happened");
-        setError(data.message);
-      }
-    }
-    getData();
-  }, []);
-
-	return (
-		<AuthProvider baseUrl={baseUrl}>
-			<BrowserRouter>
-      <Nav />
-				<div className="container">
-					<Routes>
-						<Route path="/login" element={<LoginForm />} />
-						<Route path="/signup" element={<SignupForm />} />
-						<Route path="/classes" element={<ClassesList />} />
-						<Route path="/MainPage" element={<MainPage />} />
-					</Routes>
-				</div>
-			</BrowserRouter>
+  return (
+    <AuthProvider baseUrl={baseUrl}>
+      <BrowserRouter>
+        <Nav />
+        <div className="container">
+          <Routes>
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/signup" element={<SignupForm />} />
+            <Route path="/classes/create" element={<ClassesForm />} />
+            <Route path="/classes/:id" element={<ClassDetails />} />
+            <Route path="/classes/:id/events/create" element={<EventsForm />} />
+          </Routes>
+        </div>
+        <Footer />
+      </BrowserRouter>
     </AuthProvider>
   );
 }

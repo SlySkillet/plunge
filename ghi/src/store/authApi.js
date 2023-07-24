@@ -14,7 +14,6 @@ export const authApi = createApi({
           formData = new FormData(info);
         } else {
           formData = new FormData();
-          console.log(formData);
           formData.append("username", info.username);
           formData.append("password", info.password);
         }
