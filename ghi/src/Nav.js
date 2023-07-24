@@ -204,7 +204,9 @@ function Nav() {
 						</button>
 						<ul className="dropdown-menu">
 							<li className="nav-item">
-								<Link className="dropdown-item">My Events</Link>
+								<Link className="dropdown-item" to="/reservations">
+									Reservations
+								</Link>
 							</li>
 							<li className="nav-item">
 								<Link className="dropdown-item">Settings</Link>

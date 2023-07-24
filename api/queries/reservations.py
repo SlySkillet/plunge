@@ -118,7 +118,8 @@ class ReservationQuery:
                         INNER JOIN classes ON reservations.class_id = classes.id
                         INNER JOIN accounts ON reservations.student_id = accounts.id
                         INNER JOIN locations ON classes.location_id = locations.id
-                        WHERE student_id = %s;
+                        WHERE student_id = %s
+                        order by events.date_time asc;
                         """,
                         [student_id],
                     )
