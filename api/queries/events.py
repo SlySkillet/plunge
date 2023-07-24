@@ -19,6 +19,13 @@ class EventOut(BaseModel):
     date_time: datetime
     capacity: int
     class_id: int
+
+
+class EventDetailOut(BaseModel):
+    id: int
+    date_time: datetime
+    capacity: int
+    class_id: int
     instructor_id: int
 
 
@@ -50,18 +57,20 @@ class EventQueries(BaseModel):
         old_data = event.dict()
         return EventOut(id=id, **old_data)
 
-    def get_one(self, event_id: int) -> Optional[EventOut]:
+    def get_one(self, event_id: int) -> Optional[EventDetailOut]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     result = db.execute(
                         """
-                        SELECT id
-                        , date_time
-                        , capacity
-                        , class_id
+                        SELECT events.id
+                            , date_time
+                            , capacity
+                            , class_id
+                            , classes.instructor_id
                         FROM events
-                        WHERE id = %s
+                        INNER JOIN classes ON classes.id = events.class_id
+                        WHERE events.id = %s
                         ORDER BY id;
                         """,
                         [event_id],
@@ -69,17 +78,18 @@ class EventQueries(BaseModel):
                     record = result.fetchone()
                     if record is None:
                         return None
-                    return EventOut(
+                    return EventDetailOut(
                         id=record[0],
                         date_time=record[1],
                         capacity=record[2],
                         class_id=record[3],
+                        instructor_id=record[4],
                     )
         except Exception as e:
             print(e)
             return {"message": "could not get that event"}
 
-    def get_all_future(self, class_id) -> Union[List[EventOut], Error]:
+    def get_all_future(self, class_id) -> Union[List[EventDetailOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -89,7 +99,9 @@ class EventQueries(BaseModel):
                             , date_time
                             , capacity
                             , class_id
+                            , classes.instructor_id
                         FROM events
+                        INNER JOIN classes ON classes.id = events.class_id
                         WHERE events.date_time > current_date AND class_id = %s
                         ORDER BY events.date_time;
                         """,
@@ -102,7 +114,7 @@ class EventQueries(BaseModel):
 
     def get_all_by_instructor(
         self, instructor_id
-    ) -> Union[List[EventOut], Error]:
+    ) -> Union[List[EventDetailOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -166,7 +178,7 @@ class EventQueries(BaseModel):
             return False
 
     def record_to_event_out(self, record):
-        return EventOut(
+        return EventDetailOut(
             id=record[0],
             date_time=record[1],
             capacity=record[2],

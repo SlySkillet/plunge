@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useGetTokenQuery, useLogoutMutation } from '../../store/authApi';
-import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Accordion } from 'react-bootstrap';
 
 function InstructorDashboard() {
@@ -90,9 +90,11 @@ function InstructorDashboard() {
 							classes.map((instructorClass, index) => {
 								return (
 									<div key={index}>
-										<h3 className="d-inline-flex">
-											{instructorClass.class_name}
-										</h3>
+										<a href={`/classes/${instructorClass.id}`}>
+											<h3 className="d-inline-flex">
+												{instructorClass.class_name}
+											</h3>
+										</a>
 										&nbsp;&nbsp;&nbsp;&nbsp;
 										<div className="d-inline-flex">
 											<button className="btn btn-sm btn-outline-success">

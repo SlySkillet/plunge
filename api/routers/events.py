@@ -4,6 +4,7 @@ from queries.events import (
     Error,
     EventIn,
     EventOut,
+    EventDetailOut,
     EventQueries,
 )
 
@@ -26,7 +27,8 @@ def create_event(
 
 
 @router.get(
-    "/events/future/{class_id}", response_model=Union[List[EventOut], Error]
+    "/events/future/{class_id}",
+    response_model=Union[List[EventDetailOut], Error],
 )
 def get_all_future(class_id: int, query: EventQueries = Depends()):
     return query.get_all_future(class_id)
@@ -34,18 +36,18 @@ def get_all_future(class_id: int, query: EventQueries = Depends()):
 
 @router.get(
     "/events/instructor/{instructor_id}",
-    response_model=Union[List[EventOut], Error],
+    response_model=Union[List[EventDetailOut], Error],
 )
 def get_all_by_instructor(instructor_id: int, query: EventQueries = Depends()):
     return query.get_all_by_instructor(instructor_id)
 
 
-@router.get("/events/{event_id}", response_model=Optional[EventOut])
+@router.get("/events/{event_id}", response_model=Optional[EventDetailOut])
 def get_one_event(
     event_id: int,
     response: Response,
     query: EventQueries = Depends(),
-) -> EventOut:
+) -> EventDetailOut:
     event = query.get_one(event_id)
     if event is None:
         response.status_code = 404
