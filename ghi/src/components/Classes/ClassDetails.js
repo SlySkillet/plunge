@@ -73,8 +73,8 @@ function ClassDetails() {
 		];
 		const dayOfWeek = dayNames[date.getDay()];
 		const year = date.getFullYear();
-		const month = date.getMonth();
-		const day = date.getDay();
+		const month = date.getMonth() + 1;
+		const day = date.getDate();
 		let hour = date.getHours();
 		const minute = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 		let ampm = 'AM';
