@@ -19,6 +19,18 @@ import ClassDetails from './components/Classes/ClassDetails';
 import ClassesForm from './components/Classes/ClassesForm';
 import EventsForm from './components/Events/EventsForm';
 import Dashboard from './components/Accounts/Dashboard';
+import Reservations from './components/Accounts/Reservations';
+import Nav from './Nav';
+import Footer from './Footer';
+import './App.css';
+import { AuthProvider } from '@galvanize-inc/jwtdown-for-react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import LoginForm from './LoginForm';
+import SignupForm from './SignupForm';
+import ClassDetails from './components/Classes/ClassDetails';
+import ClassesForm from './components/Classes/ClassesForm';
+import EventsForm from './components/Events/EventsForm';
+import Reservations from './components/Accounts/Reservations';
 import Nav from './Nav';
 import Footer from './Footer';
 
@@ -54,6 +66,7 @@ function App() {
 						<Route path="/classes/create" element={<ClassesForm />} />
 						<Route path="/classes/:id" element={<ClassDetails />} />
 						<Route path="/classes/:id/events/create" element={<EventsForm />} />
+						<Route path="/reservations" element={<Reservations />} />
 						<Route path="/dashboard" element={<Dashboard />} />
 					</Routes>
 				</div>
