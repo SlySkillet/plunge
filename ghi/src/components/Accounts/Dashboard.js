@@ -90,11 +90,30 @@ function InstructorDashboard() {
 		}
 	};
 
-	const filterEvents = (instructorClass, classEvent) => {
-		if (instructorClass.id === classEvent.class_id) {
-			return instructorClass;
+	const changeStatus = async (e, id, enrolled) => {
+		console.log('changing status...');
+		e.preventDefault();
+		const data = {};
+		data.status = enrolled;
+		let url = `http://localhost:8000/reservations/${id}`;
+		const fetchConfig = {
+			method: 'put',
+			body: JSON.stringify(data),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		const response = await fetch(url, fetchConfig);
+		if (response.ok) {
+			fetchData();
 		}
 	};
+
+	// const filterEvents = (instructorClass, classEvent) => {
+	// 	if (instructorClass.id === classEvent.class_id) {
+	// 		return instructorClass;
+	// 	}
+	// };
 
 	const formatDateTime = (datetime) => {
 		const date = new Date(datetime);
