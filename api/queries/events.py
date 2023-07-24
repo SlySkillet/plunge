@@ -27,6 +27,7 @@ class EventDetailOut(BaseModel):
     capacity: int
     class_id: int
     instructor_id: int
+    seats_taken: int
 
 
 class EventQueries(BaseModel):
@@ -63,17 +64,27 @@ class EventQueries(BaseModel):
                 with conn.cursor() as db:
                     result = db.execute(
                         """
+                        WITH seats_taken AS (
+                        SELECT
+                            event_id,
+                            COUNT(student_id) AS seats_taken
+                        FROM reservations
+                        WHERE event_id = %s AND status = true
+                        GROUP BY event_id
+                        )
                         SELECT events.id
                             , date_time
                             , capacity
                             , class_id
                             , classes.instructor_id
+                            , seats_taken.seats_taken
                         FROM events
                         INNER JOIN classes ON classes.id = events.class_id
+                        LEFT JOIN seats_taken ON events.id = seats_taken.event_id
                         WHERE events.id = %s
                         ORDER BY id;
                         """,
-                        [event_id],
+                        [event_id, event_id],
                     )
                     record = result.fetchone()
                     if record is None:
@@ -84,6 +95,7 @@ class EventQueries(BaseModel):
                         capacity=record[2],
                         class_id=record[3],
                         instructor_id=record[4],
+                        seats_taken=record[5],
                     )
         except Exception as e:
             print(e)
@@ -184,4 +196,5 @@ class EventQueries(BaseModel):
             capacity=record[2],
             class_id=record[3],
             instructor_id=record[4],
+            seats_taken=[5],
         )
