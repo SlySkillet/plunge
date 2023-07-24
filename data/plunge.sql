@@ -20,7 +20,7 @@ CREATE TABLE locations (
 CREATE TABLE categories (
     id SERIAL NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL,
-    image_1 VARCHAR(100) NOT NULL
+    image_1 VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE accounts (
@@ -75,17 +75,17 @@ CREATE TABLE reservations (
     student_id SMALLINT REFERENCES accounts("id") ON DELETE CASCADE NOT NULL
 );
 
-INSERT INTO categories (name, image_1) VALUES ('Music')
-, ('Design & Style')
-, ('Arts & Entertainment')
-, ('Business')
-, ('Sports & Gaming')
-, ('Writing')
-, ('Science & Tech')
-, ('Home & Lifestyle')
-, ('Community & Government')
-, ('Health & Wellness')
-, ('Food');
+INSERT INTO categories (name, image_1) VALUES ('Music', 'https://cdn0.iconfinder.com/data/icons/simple-icons-4/512/music.png')
+, ('Design & Style', 'https://cdn-icons-png.flaticon.com/512/3460/3460869.png')
+, ('Arts & Entertainment', 'https://cdn.icon-icons.com/icons2/2622/PNG/512/map_entertainment_icon_158317.png')
+, ('Business', 'https://i.fbcd.co/products/resized/resized-750-500/6b619775a4ac628440762cb818859616abb4861d918427d0c55af3908dad0e71.jpg')
+, ('Sports & Gaming', 'https://c8.alamy.com/comp/F5HERW/indoor-sport-game-athletic-set-icon-symbol-sign-pictogram-F5HERW.jpg')
+, ('Writing', 'https://cdn-icons-png.flaticon.com/512/1170/1170221.png')
+, ('Science & Tech', 'https://cdn4.iconfinder.com/data/icons/logos-brands-5/24/react-512.png')
+, ('Home & Lifestyle', 'https://static.vecteezy.com/system/resources/previews/006/689/886/original/living-room-icon-illustration-free-vector.jpg')
+, ('Community & Government', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPH6aHhQOE9-SZBgJCBitmJFZTGDSRPaLRgg&usqp=CAU')
+, ('Health & Wellness', 'https://static.thenounproject.com/png/3317650-200.png')
+, ('Food', 'https://openclipart.org/image/2000px/289282');
 
 INSERT INTO accounts (username, first_name, last_name, email, password) VALUES ('gherren', 'Greg', 'Herren', 'gherren@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
 , ('sconrad', 'Simon', 'Conrad', 'sconrad@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')

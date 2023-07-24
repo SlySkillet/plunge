@@ -11,7 +11,7 @@ function MainPage() {
   console.log(categories_carousel)
   return (
     <div>
-      <div> {categories_carousel}</div>
+      {/* <div> {categories_carousel}</div> */}
       <div> {classes_carousel} </div>
     </div>
   );
