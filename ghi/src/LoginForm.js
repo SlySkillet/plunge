@@ -35,6 +35,7 @@ const LoginForm = () => {
             <input
               name="username"
               type="text"
+              required
               className="form-control"
               onChange={(e) => setUsername(e.target.value)}
             />
@@ -44,6 +45,7 @@ const LoginForm = () => {
             <input
               name="password"
               type="password"
+              required
               className="form-control"
               onChange={(e) => setPassword(e.target.value)}
             />

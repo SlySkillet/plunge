@@ -39,6 +39,16 @@ class ReservationDetailsOut(BaseModel):
     zip_code: int
     total_price: float
     status: bool
+    class_id: int
+
+
+class ReservationStatusIn(BaseModel):
+    status: bool
+
+
+class ReservationStatusOut(BaseModel):
+    id: int
+    status: bool
 
 
 class ReservationQuery:
@@ -99,12 +109,14 @@ class ReservationQuery:
                             , locations.zip_code
                             , total_price
                             , status
+                            , classes.id
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
                         INNER JOIN accounts ON reservations.student_id = accounts.id
                         INNER JOIN locations ON classes.location_id = locations.id
-                        WHERE student_id = %s;
+                        WHERE student_id = %s
+                        order by events.date_time asc;
                         """,
                         [student_id],
                     )
@@ -117,31 +129,23 @@ class ReservationQuery:
             return {"message": "Could not get that reservation"}
 
     def update(
-        self, reservation_id: int, reservation: ReservationIn
-    ) -> Union[ReservationOut, Error]:
+        self, reservation_id: int, reservation: ReservationStatusIn
+    ) -> Union[ReservationStatusOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
                     db.execute(
                         """
                         UPDATE reservations
-                        SET event_id = %s
-                            , class_id = %s
-                            , student_id = %s
-                            , total_price = %s
-                            , status = %s
+                        SET status = %s
                         WHERE id = %s
                         """,
                         [
-                            reservation.event_id,
-                            reservation.class_id,
-                            reservation.student_id,
-                            reservation.total_price,
                             reservation.status,
                             reservation_id,
                         ],
                     )
-                    return self.reservation_in_to_out(
+                    return self.reservation_status_in_to_out(
                         reservation_id, reservation
                     )
         except Exception as e:
@@ -175,6 +179,12 @@ class ReservationQuery:
         except Exception:
             return {"message": "Create did not work"}
 
+    def reservation_status_in_to_out(
+        self, id: int, reservation: ReservationStatusIn
+    ):
+        old_data = reservation.dict()
+        return ReservationStatusOut(id=id, **old_data)
+
     def reservation_in_to_out(self, id: int, reservation: ReservationIn):
         old_data = reservation.dict()
         return ReservationOut(id=id, **old_data)
@@ -204,6 +214,7 @@ class ReservationQuery:
             zip_code=record[10],
             total_price=record[11],
             status=record[12],
+            class_id=record[13],
         )
 
     # def get_instructor(self, instructor_id: int) -> Optional[ReservationOut]:

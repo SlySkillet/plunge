@@ -24,10 +24,10 @@ CREATE TABLE categories (
 
 CREATE TABLE accounts (
     id SERIAL NOT NULL UNIQUE,
-    username VARCHAR(100) NOT NULL,
+    username VARCHAR(100) NOT NULL UNIQUE,
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL
 );
 
@@ -50,7 +50,7 @@ CREATE TABLE classes (
     category_id SMALLINT REFERENCES categories("id") ON DELETE CASCADE NOT NULL,
     description TEXT NOT NULL,
     price SMALLINT NOT NULL,
-    featured BOOLEAN NOT NULL,
+    featured BOOLEAN,
     image_1 VARCHAR(100) NOT NULL,
     image_2 VARCHAR(100),
     image_3 VARCHAR(100),

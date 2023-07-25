@@ -8,7 +8,6 @@ from queries.classes import (
     ClassQueries,
     ClassOutDetail,
 )
-from queries.accounts import AccountOut
 
 router = APIRouter()
 
@@ -40,8 +39,27 @@ def get_all(
 
 
 @router.post("/classes", response_model=Union[ClassOut, Error])
-def create_class(class_info: ClassIn, query: ClassQueries = Depends()):
-    return query.create(class_info)
+def create_class(
+    response: Response, class_info: ClassIn, query: ClassQueries = Depends()
+) -> Union[ClassOut, Error]:
+    result = query.create(class_info)
+    try:
+        result.id
+    except AttributeError:
+        response.status_code = 400
+    return result
+
+
+@router.put(
+    "/classes/{class_id}",
+    response_model=Union[ClassOut, Error],
+)
+def update_class(
+    class_id: int,
+    class_details: ClassIn,
+    query: ClassQueries = Depends(),
+) -> Union[ClassOut, Error]:
+    return query.update(class_id, class_details)
 
 
 @router.get("/classes/{class_id}", response_model=Optional[ClassOutDetail])

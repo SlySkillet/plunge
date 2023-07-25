@@ -1,12 +1,11 @@
 from pydantic import BaseModel
 from queries.pool import pool
-from typing import (
-    Union,
-    List
-)
+from typing import Union, List
+
 
 class Error(BaseModel):
     message: str
+
 
 class LocationIn(BaseModel):
     name: str
@@ -14,8 +13,9 @@ class LocationIn(BaseModel):
     city: str
     state: str
     zip_code: int
-    latitude: str
-    longitude: str
+    latitude: str | None
+    longitude: str | None
+
 
 class LocationOut(BaseModel):
     id: int
@@ -24,8 +24,9 @@ class LocationOut(BaseModel):
     city: str
     state: str
     zip_code: int
-    latitude: str
-    longitude: str
+    latitude: str | None
+    longitude: str | None
+
 
 class LocationQueries(BaseModel):
     def get_all(self) -> Union[Error, List[LocationOut]]:
@@ -55,7 +56,7 @@ class LocationQueries(BaseModel):
                             state=record[4],
                             zip_code=record[5],
                             latitude=record[6],
-                            longitude=record[7]
+                            longitude=record[7],
                         )
                         for record in db
                     ]
@@ -90,14 +91,14 @@ class LocationQueries(BaseModel):
                             location.state,
                             location.zip_code,
                             location.latitude,
-                            location.longitude
-                        ]
+                            location.longitude,
+                        ],
                     )
                     id = result.fetchone()[0]
                     return self.location_in_to_out(id, location)
         except Exception:
             return {"message": "create didn't work"}
 
-    def location_in_to_out(self, id:int, location: LocationIn):
+    def location_in_to_out(self, id: int, location: LocationIn):
         old_data = location.dict()
         return LocationOut(id=id, **old_data)
