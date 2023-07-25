@@ -41,37 +41,38 @@ function Map() {
         const data = await response.json();
         console.log("data: ", data);
         // FILTER CLASSES BY COORDINATES
-        const classesInArea = [];
-        for (let classData in data) {
-          if (tokenData) {
-            if (
-              Math.abs(
-                parseFloat(data[classData].location_latitude) -
-                  parseFloat(user.location_latitude)
-              ) < 0.01355 &&
-              Math.abs(
-                parseFloat(data[classData].location_longitude) -
-                  parseFloat(user.location_longitude)
-              ) < 0.035663
-            ) {
-              classesInArea.push(data[classData]);
-            }
-          } else {
-            if (
-              Math.abs(
-                parseFloat(data[classData].location_latitude) -
-                  parseFloat(center.lat)
-              ) < 0.01355 &&
-              Math.abs(
-                parseFloat(data[classData].location_longitude) -
-                  parseFloat(center.lng)
-              ) < 0.035663
-            ) {
-              classesInArea.push(data[classData]);
-            }
-          }
-        }
-        setClasses(classesInArea);
+        // const classesInArea = [];
+        // for (let classData in data) {
+        //   if (tokenData) {
+        //     if (
+        //       Math.abs(
+        //         parseFloat(data[classData].location_latitude) -
+        //           parseFloat(user.location_latitude)
+        //       ) < 0.01355 &&
+        //       Math.abs(
+        //         parseFloat(data[classData].location_longitude) -
+        //           parseFloat(user.location_longitude)
+        //       ) < 0.035663
+        //     ) {
+        //       classesInArea.push(data[classData]);
+        //     }
+        //   } else {
+        //     if (
+        //       Math.abs(
+        //         parseFloat(data[classData].location_latitude) -
+        //           parseFloat(center.lat)
+        //       ) < 0.01355 &&
+        //       Math.abs(
+        //         parseFloat(data[classData].location_longitude) -
+        //           parseFloat(center.lng)
+        //       ) < 0.035663
+        //     ) {
+        //       classesInArea.push(data[classData]);
+        //     }
+        //   }
+        // }
+        // setClasses(classesInArea);
+        setClasses(data);
       } else {
         console.error(response);
       }
