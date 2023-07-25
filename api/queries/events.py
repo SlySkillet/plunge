@@ -27,7 +27,7 @@ class EventDetailOut(BaseModel):
     capacity: int
     class_id: int
     instructor_id: int
-    seats_taken: int
+    seats_taken: int | None
 
 
 class EventQueries(BaseModel):
@@ -107,13 +107,24 @@ class EventQueries(BaseModel):
                 with conn.cursor() as db:
                     db.execute(
                         """
+                        WITH seats_taken AS (
+                        SELECT
+                            event_id,
+                            COUNT(student_id) AS seats_taken
+                        FROM reservations
+                        INNER JOIN events ON event_id = events.id
+                        WHERE event_id = events.id AND status = true
+                        GROUP BY event_id
+                        )
                         SELECT events.id
                             , date_time
                             , capacity
                             , class_id
                             , classes.instructor_id
+                            , seats_taken.seats_taken
                         FROM events
                         INNER JOIN classes ON classes.id = events.class_id
+                        LEFT JOIN seats_taken ON events.id = seats_taken.event_id
                         WHERE events.date_time > current_date AND class_id = %s
                         ORDER BY events.date_time;
                         """,
@@ -132,13 +143,24 @@ class EventQueries(BaseModel):
                 with conn.cursor() as db:
                     db.execute(
                         """
+                        WITH seats_taken AS (
+                        SELECT
+                            event_id,
+                            COUNT(student_id) AS seats_taken
+                        FROM reservations
+                        INNER JOIN events ON event_id = events.id
+                        WHERE event_id = events.id AND status = true
+                        GROUP BY event_id
+                        )
                         SELECT events.id
                             , date_time
                             , capacity
                             , class_id
                             , classes.instructor_id
+                            , seats_taken.seats_taken
                         FROM events
                         INNER JOIN classes ON classes.id = events.class_id
+                        LEFT JOIN seats_taken ON events.id = seats_taken.event_id
                         WHERE classes.instructor_id = %s
                         ORDER BY events.date_time;
                         """,
@@ -196,5 +218,5 @@ class EventQueries(BaseModel):
             capacity=record[2],
             class_id=record[3],
             instructor_id=record[4],
-            seats_taken=[5],
+            seats_taken=record[5],
         )
