@@ -343,6 +343,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN accounts on classes.instructor_id = accounts.id
                         INNER JOIN account_details on classes.instructor_id = account_details.id
                         where classes.instructor_id = %s
+                        ORDER BY classe_name DESC;
                         """,
                         [instructor_id],
                     )

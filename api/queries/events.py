@@ -162,7 +162,7 @@ class EventQueries(BaseModel):
                         INNER JOIN classes ON classes.id = events.class_id
                         LEFT JOIN seats_taken ON events.id = seats_taken.event_id
                         WHERE classes.instructor_id = %s
-                        ORDER BY events.date_time;
+                        ORDER BY events.date_time DESC;
                         """,
                         [instructor_id],
                     )
