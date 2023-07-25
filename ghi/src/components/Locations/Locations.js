@@ -1,6 +1,12 @@
 import React, { useMemo, useState, useEffect } from "react";
-import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useLoadScript,
+  MarkerF,
+  LoadScript,
+} from "@react-google-maps/api";
 import { useGetTokenQuery } from "../../store/authApi";
+// import { FaPaintBrush } from "react-icons/fa";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
@@ -15,6 +21,7 @@ function Map() {
   const [classes, setClasses] = useState([]);
   const { data: tokenData } = useGetTokenQuery();
 
+  // DETERMINE MAP CENTER
   useEffect(() => {
     async function loadUserLocation() {
       if (tokenData) {
@@ -29,8 +36,10 @@ function Map() {
     }
     loadUserLocation();
   }, [tokenData]);
-  console.log("user", user);
+  // console.log("user", user);
+  // console.log("script", LoadScript);
 
+  // LOAD CLASSES IN AREA
   useEffect(() => {
     async function loadClasses() {
       const response = await fetch(
@@ -38,7 +47,39 @@ function Map() {
       );
       if (response.ok) {
         const data = await response.json();
-        setClasses(data);
+        console.log("data: ", data);
+
+        const classesInArea = [];
+        for (let classData in data) {
+          if (tokenData) {
+            if (
+              Math.abs(
+                parseFloat(data[classData].location_latitude) -
+                  parseFloat(user.location_latitude)
+              ) < 0.01355 &&
+              Math.abs(
+                parseFloat(data[classData].location_longitude) -
+                  parseFloat(user.location_longitude)
+              ) < 0.035663
+            ) {
+              classesInArea.push(data[classData]);
+            }
+          } else {
+            if (
+              Math.abs(
+                parseFloat(data[classData].location_latitude) -
+                  parseFloat(center.lat)
+              ) < 0.01355 &&
+              Math.abs(
+                parseFloat(data[classData].location_longitude) -
+                  parseFloat(center.lng)
+              ) < 0.035663
+            ) {
+              classesInArea.push(data[classData]);
+            }
+          }
+        }
+        setClasses(classesInArea);
       } else {
         console.error(response);
       }
@@ -46,7 +87,17 @@ function Map() {
 
     loadClasses();
   }, []);
+
+  console.log("classes:", classes);
   // console.log("classes => ", classes);
+
+  useEffect(() => {
+    async function loadMapBounds() {
+      const bounds = await GoogleMap.getBounds();
+      console.log("mapBounds: ", bounds);
+    }
+    loadMapBounds();
+  }, [GoogleMap]);
 
   return (
     <div>
@@ -78,9 +129,48 @@ function Map() {
           </div>
           <div>
             {classes.map((classIterable, idx) => {
+              // CLASS ICONS
+              // const icon = {
+              //   1: {
+              //     url: "https://cdn-icons-png.flaticon.com/32/66/66246.png",
+              //   },
+              //   2: {
+              //     // Design and Style
+              //   },
+              //   3: {
+              //     // Arts and Entertainment
+              //   },
+              //   4: {
+              //     // Business
+              //   },
+              //   5: {
+              //     // Sports and Gaming
+              //   },
+              //   6: {
+              //     // Writing
+              //   },
+              //   7: {
+              //     // Science and Tech
+              //   },
+              //   8: {
+              //     // Home and lifestyle
+              //   },
+              //   9: {
+              //     // Community and Government
+              //   },
+              //   10: {
+              //     // Health and Wellness
+              //   },
+              //   11: {
+              //     // Food
+              //   },
+              // };
               return (
                 <MarkerF
                   key={idx}
+                  // icon={classIterable.category_id}
+                  // icon={"https://cdn-icons-png.flaticon.com/32/66/66246.png"}
+                  // icon={"https://cdn-icons-png.flaticon.com/32/67/67745.png"}
                   position={{
                     lat: parseFloat(classIterable.location_latitude),
                     lng: parseFloat(classIterable.location_longitude),
