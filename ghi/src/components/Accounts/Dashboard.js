@@ -114,6 +114,28 @@ function InstructorDashboard() {
 	// 	}
 	// };
 
+	const availability = (seatsTaken, capacity) => {
+		if (seatsTaken == null) {
+			return (
+				<div className="d-inline-flex px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
+					0 / {capacity} slots filled
+				</div>
+			);
+		} else if (seatsTaken / capacity >= 1) {
+			return (
+				<div className="d-inline-flex px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger border-opacity-10 rounded-2">
+					FULL - {seatsTaken} / {capacity} slots filled
+				</div>
+			);
+		} else {
+			return (
+				<div className="d-inline-flex px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
+					{seatsTaken} / {capacity} slots filled
+				</div>
+			);
+		}
+	};
+
 	const formatDateTime = (datetime) => {
 		const date = new Date(datetime);
 		const dayNames = [
