@@ -10,6 +10,7 @@ import ClassDetails from "./components/Classes/ClassDetails";
 import ClassesForm from "./components/Classes/ClassesForm";
 import EventsForm from "./components/Events/EventsForm";
 import Reservations from "./components/Accounts/Reservations";
+import Profile from "./components/Accounts/Profile";
 import Nav from "./Nav";
 import Footer from "./Footer";
 
@@ -38,6 +39,7 @@ function App() {
               element={<EventsForm />}
             />
             <Route path="/reservations" element={<Reservations />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </div>
         <Footer />
