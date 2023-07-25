@@ -143,6 +143,7 @@ function Map() {
       </div>
       <div className="card-container">
         {classes.map((classIterable, Idx) => {
+          const classDetailUrl = `classes/${classIterable.id}`;
           return (
             <div className="card mx-2" key={Idx}>
               <div className="card-body">
@@ -154,7 +155,7 @@ function Map() {
                 <h5 className="card-title">{classIterable.class_name}</h5>
                 <p className="card-text">{classIterable.description}</p>
                 <p className="card-text">{classIterable.location_address}</p>
-                <a href="#" className="btn btn-primary">
+                <a href={classDetailUrl} className="btn btn-primary">
                   Class Details
                 </a>
               </div>
