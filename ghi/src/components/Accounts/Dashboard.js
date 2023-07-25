@@ -50,12 +50,6 @@ function InstructorDashboard() {
 		}
 	};
 
-	// const filterEvents = (instructorClass, classEvent) => {
-	// 	if (instructorClass.id === classEvent.class_id) {
-	// 		return instructorClass;
-	// 	}
-	// };
-
 	const availability = (seatsTaken, capacity) => {
 		if (seatsTaken == null) {
 			return (
@@ -66,7 +60,7 @@ function InstructorDashboard() {
 		} else if (seatsTaken / capacity >= 1) {
 			return (
 				<div className="d-inline-flex px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger border-opacity-10 rounded-2">
-					FULL - {seatsTaken} / {capacity} slots filled
+					FULL - {seatsTaken} / {capacity} slots filled - Full
 				</div>
 			);
 		} else {
@@ -167,79 +161,86 @@ function InstructorDashboard() {
 																		</div>
 																	</Accordion.Header>
 																	<Accordion.Body>
-																		<table className="table table-striped m-3">
-																			<thead>
-																				<tr>
-																					<td>Student Name</td>
-																					<td>Status</td>
-																					<td>Actions</td>
-																				</tr>
-																			</thead>
-																			<tbody>
-																				{reservations &&
-																					reservations.map(
-																						(reservation, index) => {
-																							if (
-																								reservation.event_id ===
-																								event.id
-																							) {
-																								return (
-																									<tr key={index}>
-																										<td>
-																											{
-																												reservation.student_first_name
-																											}{' '}
-																											{
-																												reservation.student_last_name
-																											}
-																										</td>
-																										<td>
-																											{reservation.status ? (
-																												<div className="text-success">
-																													Enrolled
-																												</div>
-																											) : (
-																												<div className="text-danger">
-																													Withdrawn
-																												</div>
-																											)}
-																										</td>
-																										<td>
-																											{!reservation.status ? (
-																												<button
-																													className="btn btn-sm btn-outline-success"
-																													onClick={(e) =>
-																														changeStatus(
-																															e,
-																															reservation.id,
-																															true
-																														)
-																													}
-																												>
-																													Enroll
-																												</button>
-																											) : (
-																												<button
-																													className="btn btn-sm btn-outline-danger"
-																													onClick={(e) =>
-																														changeStatus(
-																															e,
-																															reservation.id,
-																															false
-																														)
-																													}
-																												>
-																													Withdraw
-																												</button>
-																											)}
-																										</td>
-																									</tr>
-																								);
+																		{event.seats_taken > 0 ? (
+																			<table className="table table-striped m-3">
+																				<thead>
+																					<tr>
+																						<td>Student Name</td>
+																						<td>Status</td>
+																						<td>Actions</td>
+																					</tr>
+																				</thead>
+																				<tbody>
+																					{reservations &&
+																						reservations.map(
+																							(reservation, index) => {
+																								if (
+																									reservation.event_id ===
+																									event.id
+																								) {
+																									return (
+																										<tr key={index}>
+																											<td>
+																												{
+																													reservation.student_first_name
+																												}{' '}
+																												{
+																													reservation.student_last_name
+																												}
+																											</td>
+																											<td>
+																												{reservation.status ? (
+																													<div className="text-success">
+																														Enrolled
+																													</div>
+																												) : (
+																													<div className="text-danger">
+																														Withdrawn
+																													</div>
+																												)}
+																											</td>
+																											<td>
+																												{!reservation.status ? (
+																													<button
+																														className="btn btn-sm btn-outline-success"
+																														onClick={(e) =>
+																															changeStatus(
+																																e,
+																																reservation.id,
+																																true
+																															)
+																														}
+																													>
+																														Enroll
+																													</button>
+																												) : (
+																													<button
+																														className="btn btn-sm btn-outline-danger"
+																														onClick={(e) =>
+																															changeStatus(
+																																e,
+																																reservation.id,
+																																false
+																															)
+																														}
+																													>
+																														Withdraw
+																													</button>
+																												)}
+																											</td>
+																										</tr>
+																									);
+																								}
 																							}
-																						}
-																					)}
-																			</tbody>
-																		</table>
+																						)}
+																				</tbody>
+																			</table>
+																		) : (
+																			<div>
+																				No students have registered for this
+																				event
+																			</div>
+																		)}
 																	</Accordion.Body>
 																</Accordion.Item>
 															);
