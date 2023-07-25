@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useGetTokenQuery, useLogoutMutation } from '../../store/authApi';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Accordion } from 'react-bootstrap';
 
 function InstructorDashboard() {
+	const navigate = useNavigate();
 	const { data: tokenData } = useGetTokenQuery();
 	const [classes, setClasses] = useState('');
 	const [events, setEvents] = useState('');
@@ -60,7 +61,7 @@ function InstructorDashboard() {
 		} else if (seatsTaken / capacity >= 1) {
 			return (
 				<div className="d-inline-flex px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger border-opacity-10 rounded-2">
-					FULL - {seatsTaken} / {capacity} slots filled - Full
+					FULL - {seatsTaken} / {capacity} slots filled
 				</div>
 			);
 		} else {
@@ -113,7 +114,14 @@ function InstructorDashboard() {
 						<h1>Instructor Dashboard</h1>
 					</div>
 					<div className="text-center">
-						<button className="btn btn-sm btn-success">Create Class</button>
+						<button
+							className="btn btn-sm btn-success"
+							onClick={(e) => {
+								navigate('/classes/create');
+							}}
+						>
+							Create Class
+						</button>
 					</div>
 					<br />
 					<br />
@@ -131,7 +139,14 @@ function InstructorDashboard() {
 										</a>
 										&nbsp;&nbsp;&nbsp;&nbsp;
 										<div className="d-inline-flex">
-											<button className="btn btn-sm btn-outline-success">
+											<button
+												className="btn btn-sm btn-outline-success"
+												onClick={(e) => {
+													navigate(
+														`/classes/${instructorClass.id}/events/create`
+													);
+												}}
+											>
 												Add an event
 											</button>
 											&nbsp;
