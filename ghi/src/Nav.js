@@ -209,10 +209,14 @@ function Nav() {
 								</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="dropdown-item">Settings</Link>
+								<Link className="dropdown-item" to="/profile">
+									My Profile
+								</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="dropdown-item">Instructor Dashboard</Link>
+								<Link className="dropdown-item" to="/dashboard">
+									Instructor Dashboard
+								</Link>
 							</li>
 							<li className="nav-item">
 								<a href="#" onClick={logout} className="dropdown-item">

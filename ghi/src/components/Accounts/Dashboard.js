@@ -90,61 +90,6 @@ function InstructorDashboard() {
 		}
 	};
 
-	const changeStatus = async (e, id, enrolled) => {
-		e.preventDefault();
-		const data = {};
-		data.status = enrolled;
-		let url = `http://localhost:8000/reservations/${id}`;
-		const fetchConfig = {
-			method: 'put',
-			body: JSON.stringify(data),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		};
-		const response = await fetch(url, fetchConfig);
-		if (response.ok) {
-			fetchData();
-		}
-	};
-
-	const availability = (seatsTaken, capacity) => {
-		if (seatsTaken == null) {
-			return (
-				<div className="d-inline-flex px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
-					0 / {capacity} slots filled
-				</div>
-			);
-		} else if (seatsTaken / capacity >= 1) {
-			return (
-				<div className="d-inline-flex px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger border-opacity-10 rounded-2">
-					FULL - {seatsTaken} / {capacity} slots filled
-				</div>
-			);
-		} else {
-			return (
-				<div className="d-inline-flex px-2 py-1 fw-semibold text-success bg-success bg-opacity-10 border border-success border-opacity-10 rounded-2">
-					{seatsTaken} / {capacity} slots filled
-				</div>
-			);
-		}
-	};
-
-	const deleteEvent = async (e, id) => {
-		e.preventDefault();
-		let url = `http://localhost:8000/events/${id}`;
-		const fetchConfig = {
-			method: 'delete',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		};
-		const response = await fetch(url, fetchConfig);
-		if (response.ok) {
-			fetchData();
-		}
-	};
-
 	const formatDateTime = (datetime) => {
 		const date = new Date(datetime);
 		const dayNames = [
@@ -158,8 +103,6 @@ function InstructorDashboard() {
 		];
 		const dayOfWeek = dayNames[date.getDay()];
 		const year = date.getFullYear();
-		const month = date.getMonth() + 1;
-		const day = date.getDate();
 		const month = date.getMonth() + 1;
 		const day = date.getDate();
 		let hour = date.getHours();
