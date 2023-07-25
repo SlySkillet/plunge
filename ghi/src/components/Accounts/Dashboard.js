@@ -73,6 +73,21 @@ function InstructorDashboard() {
 		}
 	};
 
+	const deleteEvent = async (e, id) => {
+		e.preventDefault();
+		let url = `http://localhost:8000/events/${id}`;
+		const fetchConfig = {
+			method: 'delete',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		const response = await fetch(url, fetchConfig);
+		if (response.ok) {
+			fetchData();
+		}
+	};
+
 	const formatDateTime = (datetime) => {
 		const date = new Date(datetime);
 		const dayNames = [
@@ -179,7 +194,12 @@ function InstructorDashboard() {
 																				Edit
 																			</button>
 																			&nbsp;
-																			<button className="btn btn-sm btn-outline-danger">
+																			<button
+																				className="btn btn-sm btn-outline-danger"
+																				onClick={(e) => {
+																					deleteEvent(e, event.id);
+																				}}
+																			>
 																				Delete
 																			</button>
 																		</div>
