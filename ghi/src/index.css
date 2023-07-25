@@ -125,10 +125,11 @@ p {
   display: flex;
   flex-wrap: wrap;
   justify-items: center;
+  padding: 40px;
 }
 
 .card {
-  width: 18em;
+  width: 275px;
   margin: 10px;
 }
 

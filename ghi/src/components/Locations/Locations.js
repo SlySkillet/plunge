@@ -1,12 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
-import {
-  GoogleMap,
-  useLoadScript,
-  MarkerF,
-  LoadScript,
-} from "@react-google-maps/api";
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useGetTokenQuery } from "../../store/authApi";
-// import { FaPaintBrush } from "react-icons/fa";
+import { FaPaintBrush } from "react-icons/fa";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
@@ -48,7 +43,7 @@ function Map() {
       if (response.ok) {
         const data = await response.json();
         console.log("data: ", data);
-
+        // determine nearby classes by difference in coordinates
         const classesInArea = [];
         for (let classData in data) {
           if (tokenData) {
@@ -91,14 +86,6 @@ function Map() {
   console.log("classes:", classes);
   // console.log("classes => ", classes);
 
-  useEffect(() => {
-    async function loadMapBounds() {
-      const bounds = await GoogleMap.getBounds();
-      console.log("mapBounds: ", bounds);
-    }
-    loadMapBounds();
-  }, [GoogleMap]);
-
   return (
     <div>
       <div className="outer-map-container">
@@ -129,52 +116,29 @@ function Map() {
           </div>
           <div>
             {classes.map((classIterable, idx) => {
-              // CLASS ICONS
-              // const icon = {
-              //   1: {
-              //     url: "https://cdn-icons-png.flaticon.com/32/66/66246.png",
-              //   },
-              //   2: {
-              //     // Design and Style
-              //   },
-              //   3: {
-              //     // Arts and Entertainment
-              //   },
-              //   4: {
-              //     // Business
-              //   },
-              //   5: {
-              //     // Sports and Gaming
-              //   },
-              //   6: {
-              //     // Writing
-              //   },
-              //   7: {
-              //     // Science and Tech
-              //   },
-              //   8: {
-              //     // Home and lifestyle
-              //   },
-              //   9: {
-              //     // Community and Government
-              //   },
-              //   10: {
-              //     // Health and Wellness
-              //   },
-              //   11: {
-              //     // Food
-              //   },
-              // };
+              const icons = [
+                "https://cdn-icons-png.flaticon.com/32/9602/9602783.png",
+                "https://cdn-icons-png.flaticon.com/32/3980/3980755.png",
+                "https://cdn.icon-icons.com/icons2/2622/PNG/32/map_entertainment_icon_158317.png",
+                "https://cdn-icons-png.flaticon.com/32/3585/3585639.png",
+                "https://cdn-icons-png.flaticon.com/32/94/94148.png",
+                "https://cdn-icons-png.flaticon.com/32/1440/1440231.png",
+                "https://cdn-icons-png.flaticon.com/32/3393/3393920.png",
+                "https://cdn-icons-png.flaticon.com/32/9610/9610642.png",
+                "https://cdn-icons-png.flaticon.com/32/7874/7874908.png",
+                "https://cdn-icons-png.flaticon.com/32/67/67468.png",
+                "https://cdn-icons-png.flaticon.com/32/3143/3143865.png",
+              ];
               return (
                 <MarkerF
                   key={idx}
-                  // icon={classIterable.category_id}
                   // icon={"https://cdn-icons-png.flaticon.com/32/66/66246.png"}
-                  // icon={"https://cdn-icons-png.flaticon.com/32/67/67745.png"}
                   position={{
                     lat: parseFloat(classIterable.location_latitude),
                     lng: parseFloat(classIterable.location_longitude),
                   }}
+                  icon={icons[classIterable.category_id - 1]}
+                  size="32px"
                 />
               );
             })}
@@ -184,13 +148,13 @@ function Map() {
       <div className="card-container">
         {classes.map((classIterable, Idx) => {
           return (
-            <div className="card" key={Idx}>
-              <img
-                src={classIterable.image_1}
-                className="card-img-top"
-                alt="..."
-              />
+            <div className="card mx-2" key={Idx}>
               <div className="card-body">
+                <img
+                  src={classIterable.image_1}
+                  className="card-img-top"
+                  alt="..."
+                />
                 <h5 className="card-title">{classIterable.class_name}</h5>
                 <p className="card-text">{classIterable.description}</p>
                 <p className="card-text">{classIterable.location_address}</p>
