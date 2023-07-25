@@ -145,16 +145,22 @@ function Map() {
         {classes.map((classIterable, Idx) => {
           const classDetailUrl = `classes/${classIterable.id}`;
           return (
-            <div className="card mx-2" key={Idx}>
-              <div className="card-body">
+            <div className="card location-card mx-2" key={Idx}>
+              <div className="card-body location-card">
                 <img
                   src={classIterable.image_1}
                   className="card-img-top"
                   alt="..."
                 />
-                <h5 className="card-title">{classIterable.class_name}</h5>
-                <p className="card-text">{classIterable.description}</p>
-                <p className="card-text">{classIterable.location_address}</p>
+                <h5 className="card-title location-card">
+                  {classIterable.class_name}
+                </h5>
+                <p className="card-text location-card">
+                  {classIterable.description}
+                </p>
+                <p className="card-text location-card">
+                  {classIterable.location_address}
+                </p>
                 <a href={classDetailUrl} className="btn btn-primary">
                   Class Details
                 </a>

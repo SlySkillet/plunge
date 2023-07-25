@@ -120,18 +120,18 @@ ul {
   padding: 40px;
 }
 
-.card {
+.card.location-card.mx-2 {
   width: 275px;
   margin: 10px;
 }
 
-.card-body {
+.card-body.location-card {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-p.card-text {
+p.card-text.location-card {
   margin: 0;
   font-weight: 400;
   display: flex;
