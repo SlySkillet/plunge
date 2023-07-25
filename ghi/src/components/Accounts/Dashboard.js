@@ -149,14 +149,6 @@ function InstructorDashboard() {
 											>
 												Add an event
 											</button>
-											&nbsp;
-											<button className="btn btn-sm btn-outline-success">
-												Edit event
-											</button>
-											&nbsp;
-											<button className="btn btn-sm btn-outline-success">
-												Delete event
-											</button>
 										</div>
 										<div>
 											<Accordion>
@@ -165,14 +157,31 @@ function InstructorDashboard() {
 														if (event.class_id === instructorClass.id) {
 															return (
 																<Accordion.Item key={index} eventKey={index}>
-																	<Accordion.Header>
-																		{formatDateTime(event.date_time)}
-																		&nbsp;&nbsp;&nbsp;
-																		<div>
+																	<Accordion.Header className="row">
+																		<div className="col-7">
+																			{formatDateTime(event.date_time)}
+																			&nbsp;&nbsp;&nbsp;
 																			{availability(
 																				event.seats_taken,
 																				event.capacity
 																			)}
+																		</div>
+																		<div className="col"></div>
+																		<div className="col-2">
+																			<button
+																				className="btn btn-sm btn-outline-primary"
+																				onClick={(e) => {
+																					navigate(
+																						`/classes/${instructorClass.id}/events/${event.id}/edit`
+																					);
+																				}}
+																			>
+																				Edit
+																			</button>
+																			&nbsp;
+																			<button className="btn btn-sm btn-outline-danger">
+																				Delete
+																			</button>
 																		</div>
 																	</Accordion.Header>
 																	<Accordion.Body>
