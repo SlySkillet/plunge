@@ -118,7 +118,7 @@ function InstructorDashboard() {
 		} else if (seatsTaken / capacity >= 1) {
 			return (
 				<div className="d-inline-flex px-2 py-1 fw-semibold text-danger bg-danger bg-opacity-10 border border-danger border-opacity-10 rounded-2">
-					FULL - {seatsTaken} / {capacity} slots filled - Full
+					FULL - {seatsTaken} / {capacity} slots filled
 				</div>
 			);
 		} else {
