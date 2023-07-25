@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { useGetTokenQuery } from "../../store/authApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ClassesForm = () => {
   const navigate = useNavigate();
+  const { classId } = useParams();
 
-  const [createClassError, setCreateClassError] = useState();
-  const [createClassStatus, setCreateClassStatus] = useState({
+  const [createOrUpdateClassError, setCreateOrUpdateClassError] = useState();
+  const [createOrUpdateClassStatus, setCreateOrUpdateClassStatus] = useState({
     status: "uninitiated",
   });
   const [classDetails, setClassDetails] = useState({
@@ -59,6 +60,29 @@ const ClassesForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const fetchFormData = async () => {
+    if (classId) {
+      const url = `${baseUrl}/classes/${classId}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setClassDetails(data);
+        setFormData({
+          class_name: data.class_name,
+          requirements: data.requirements,
+          category_id: data.category_id,
+          description: data.description,
+          price: data.price,
+          image_1: data.image_1,
+          image_2: data.image_2,
+          image_3: data.image_3,
+          image_4: data.image_4,
+          location_id: data.location_id,
+        });
+      }
+    }
+  };
+
   const [categories, setCategories] = useState([]);
 
   const fetchCategories = async () => {
@@ -82,45 +106,77 @@ const ClassesForm = () => {
   };
 
   useEffect(() => {
+    fetchFormData();
     fetchCategories();
     fetchLocations();
   }, []);
 
+  const formatFormData = () => {
+    return {
+      class_name: formData.class_name,
+      instructor_id: classId
+        ? classDetails.instructor_id
+        : tokenData.account.id,
+      requirements: formData.requirements,
+      category_id: formData.category_id,
+      description: formData.description,
+      price: formData.price,
+      featured: classId ? classDetails.featured : false,
+      image_1: formData.image_1,
+      image_2: formData.image_2,
+      image_3: formData.image_3,
+      image_4: formData.image_4,
+      location_id: formData.location_id,
+    };
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (tokenData) {
-      const formattedFormData = {
-        class_name: formData.class_name,
-        instructor_id: tokenData.account.id,
-        requirements: formData.requirements,
-        category_id: formData.category_id,
-        description: formData.description,
-        price: formData.price,
-        image_1: formData.image_1,
-        image_2: formData.image_2,
-        image_3: formData.image_3,
-        image_4: formData.image_4,
-        location_id: formData.location_id,
-      };
-      const url = `${baseUrl}/classes`;
-      const fetchConfig = {
-        method: "post",
-        body: JSON.stringify(formattedFormData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const response = await fetch(url, fetchConfig);
-      if (response.ok) {
-        setCreateClassError();
-        const data = await response.json();
-        setClassDetails(data);
-        setCreateClassStatus({ status: "success" });
+      if (classId) {
+        const formattedFormData = formatFormData();
+        const url = `${baseUrl}/classes/${classId}`;
+        const fetchConfig = {
+          method: "put",
+          body: JSON.stringify(formattedFormData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await fetch(url, fetchConfig);
+        if (response.ok) {
+          setCreateOrUpdateClassError();
+          setCreateOrUpdateClassStatus({ status: "success" });
+          navigate("/dashboard");
+        } else {
+          setCreateOrUpdateClassError("Edit class failed. Please try again.");
+        }
       } else {
-        setCreateClassError("Create class failed. Please try again.");
+        const formattedFormData = formatFormData();
+        const url = `${baseUrl}/classes`;
+        const fetchConfig = {
+          method: "post",
+          body: JSON.stringify(formattedFormData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await fetch(url, fetchConfig);
+        if (response.ok) {
+          setCreateOrUpdateClassError();
+          const data = await response.json();
+          setClassDetails(data);
+          setCreateOrUpdateClassStatus({ status: "success" });
+        } else {
+          setCreateOrUpdateClassError("Create class failed. Please try again.");
+        }
       }
     } else {
-      setCreateClassError("Please login to create a class.");
+      if (classId) {
+        setCreateOrUpdateClassError("Please login to edit a class.");
+      } else {
+        setCreateOrUpdateClassError("Please login to create a class.");
+      }
     }
   };
 
@@ -148,7 +204,11 @@ const ClassesForm = () => {
         <div className="row mb-3">
           <div className="text-left">
             <div>
-              <h1>Create a class</h1>
+              {classId ? (
+                <h1>Edit {formData.class_name}</h1>
+              ) : (
+                <h1>Create a class</h1>
+              )}
             </div>
           </div>
         </div>
@@ -191,7 +251,7 @@ const ClassesForm = () => {
                   name="category_id"
                   className="form-select"
                 >
-                  <option selected>Select a category</option>
+                  <option>Select a category</option>
                   {categories.map((category) => {
                     return (
                       <option key={category.id} value={category.id}>
@@ -216,8 +276,8 @@ const ClassesForm = () => {
                 <label htmlFor="description">Description</label>
               </div>
               <div className="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">$</span>
+                <div className="input-group-prepend">
+                  <span className="input-group-text">$</span>
                 </div>
                 <input
                   placeholder="Price"
@@ -293,7 +353,7 @@ const ClassesForm = () => {
                   name="location_id"
                   className="form-select"
                 >
-                  <option selected>Select a location</option>
+                  <option>Select a location</option>
                   {locations.map((location) => {
                     return (
                       <option key={location.id} value={location.id}>
@@ -307,19 +367,19 @@ const ClassesForm = () => {
               <div
                 id="errorMessage"
                 className={
-                  createClassError
+                  createOrUpdateClassError
                     ? "alert alert-danger text-center"
                     : "alert alert-danger text-center d-none"
                 }
                 role="alert"
               >
-                {createClassError}
+                {createOrUpdateClassError}
               </div>
             </div>
             <div
               id="successMessage"
               className={
-                createClassStatus.status == "success"
+                createOrUpdateClassStatus.status == "success"
                   ? "alert alert-success text-center"
                   : "alert alert-success text-center d-none"
               }
@@ -332,18 +392,18 @@ const ClassesForm = () => {
             appropriate for this use-case. */}
             <div
               className={
-                createClassStatus.status === "uninitiated"
+                createOrUpdateClassStatus.status === "uninitiated"
                   ? "modal-footer mb-3"
                   : "modal-footer mb-3 d-none"
               }
             >
               <button type="submit" className="btn btn-success">
-                Create
+                {classId ? "Update" : "Create"}
               </button>
             </div>
             <div
               className={
-                createClassStatus.status === "success"
+                createOrUpdateClassStatus.status === "success"
                   ? "modal-footer mb-3"
                   : "modal-footer mb-3 d-none"
               }

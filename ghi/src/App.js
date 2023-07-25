@@ -38,25 +38,6 @@ function App() {
 			</BrowserRouter>
 		</AuthProvider>
 	);
-	return (
-		<AuthProvider baseUrl={baseUrl}>
-			<BrowserRouter>
-				<Nav />
-				<div className="container">
-					<Routes>
-						<Route path="/login" element={<LoginForm />} />
-						<Route path="/signup" element={<SignupForm />} />
-						<Route path="/classes/create" element={<ClassesForm />} />
-						<Route path="/classes/:id" element={<ClassDetails />} />
-						<Route path="/classes/:id/events/create" element={<EventsForm />} />
-						<Route path="/reservations" element={<Reservations />} />
-						<Route path="/dashboard" element={<Dashboard />} />
-					</Routes>
-				</div>
-				<Footer />
-			</BrowserRouter>
-		</AuthProvider>
-	);
 }
 
 export default App;

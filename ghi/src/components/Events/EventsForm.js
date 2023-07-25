@@ -5,9 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 const EventsForm = () => {
   const navigate = useNavigate();
 
-  const { id: classId } = useParams();
+  const { classId, eventId } = useParams();
 
-  const [createEventError, setCreateEventError] = useState();
+  const [createOrUpdateEventError, setCreateOrUpdateEventError] = useState();
 
   const {
     data: tokenData,
@@ -60,14 +60,29 @@ const EventsForm = () => {
     }
   };
 
-  useEffect(() => {
-    fetchClassDetails();
-  }, []);
-
   const [formData, setFormData] = useState({
     date_time: "",
     capacity: "",
   });
+
+  const fetchFormData = async () => {
+    if (eventId) {
+      const url = `${baseUrl}/events/${eventId}`;
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
+        setFormData({
+          date_time: data.date_time,
+          capacity: data.capacity,
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchClassDetails();
+    fetchFormData();
+  }, []);
 
   const handleFormChange = async (e) => {
     const name = e.target.name;
@@ -75,34 +90,64 @@ const EventsForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const formatFormData = () => {
+    return {
+      date_time: formData.date_time,
+      capacity: formData.capacity,
+      class_id: classId,
+    };
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (tokenData) {
-      const formattedFormData = {
-        date_time: formData.date_time,
-        capacity: formData.capacity,
-        class_id: classId,
-      };
-      const url = `${baseUrl}/events`;
-      const fetchConfig = {
-        method: "post",
-        body: JSON.stringify(formattedFormData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      const response = await fetch(url, fetchConfig);
-      if (response.ok) {
-        setFormData({
-          date_time: "",
-          capacity: "",
-        });
-        navigate("/dashboard");
+      if (eventId) {
+        const formattedFormData = formatFormData();
+        const url = `${baseUrl}/events/${eventId}`;
+        const fetchConfig = {
+          method: "put",
+          body: JSON.stringify(formattedFormData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await fetch(url, fetchConfig);
+        if (response.ok) {
+          setFormData({
+            date_time: "",
+            capacity: "",
+          });
+          navigate("/dashboard");
+        } else {
+          setCreateOrUpdateEventError("Update event failed. Please try again.");
+        }
       } else {
-        setCreateEventError("Create event failed. Please try again.");
+        const formattedFormData = formatFormData();
+        const url = `${baseUrl}/events`;
+        const fetchConfig = {
+          method: "post",
+          body: JSON.stringify(formattedFormData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await fetch(url, fetchConfig);
+        if (response.ok) {
+          setFormData({
+            date_time: "",
+            capacity: "",
+          });
+          navigate("/dashboard");
+        } else {
+          setCreateOrUpdateEventError("Create event failed. Please try again.");
+        }
       }
     } else {
-      setCreateEventError("Please login to create an event.");
+      if (eventId) {
+        setCreateOrUpdateEventError("Please login to edit an event.");
+      } else {
+        setCreateOrUpdateEventError("Please login to create an event.");
+      }
     }
   };
 
@@ -113,7 +158,7 @@ const EventsForm = () => {
         <div className="mb-3">
           <div className="text-left">
             <div>
-              <h1>Create an event</h1>
+              {eventId ? <h1>Edit event</h1> : <h1>Create an event</h1>}
             </div>
           </div>
         </div>
@@ -188,17 +233,17 @@ const EventsForm = () => {
             <div
               id="errorMessage"
               className={
-                createEventError
+                createOrUpdateEventError
                   ? "alert alert-danger text-center"
                   : "alert alert-danger text-center d-none"
               }
               role="alert"
             >
-              {createEventError}
+              {createOrUpdateEventError}
             </div>
             <div className="modal-footer mb-3">
               <button type="submit" className="btn btn-success">
-                Create
+                {eventId ? "Update" : "Create"}
               </button>
             </div>
           </form>

@@ -5,7 +5,7 @@ import { Modal } from 'bootstrap';
 
 function ClassDetails() {
 	const { data: tokenData } = useGetTokenQuery();
-	const { id } = useParams();
+	const { classId } = useParams();
 
 	const [classes, setClasses] = useState('');
 	const [events, setEvents] = useState('');
@@ -13,13 +13,13 @@ function ClassDetails() {
 	const [registered, setRegistered] = useState('');
 
 	const fetchData = async () => {
-		let url = `http://localhost:8000/classes/${id}`;
+		let url = `http://localhost:8000/classes/${classId}`;
 		let response = await fetch(url);
 		if (response.ok) {
 			let data = await response.json();
 			setClasses(data);
 		}
-		url = `http://localhost:8000/events/future/${id}`;
+		url = `http://localhost:8000/events/future/${classId}`;
 		response = await fetch(url);
 		if (response.ok) {
 			let data = await response.json();

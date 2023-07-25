@@ -450,6 +450,50 @@ class ClassQueries(BaseModel):
             print(e)
             return {"message": "create didn't work"}
 
+    def update(
+        self, class_id: int, class_details: ClassIn
+    ) -> Union[ClassOut, Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        UPDATE classes
+                        SET class_name = %s
+                        , instructor_id = %s
+                        , requirements = %s
+                        , category_id = %s
+                        , description = %s
+                        , price = %s
+                        , featured = %s
+                        , image_1 = %s
+                        , image_2 = %s
+                        , image_3 = %s
+                        , image_4 = %s
+                        , location_id = %s
+                        WHERE id = %s
+                        """,
+                        [
+                            class_details.class_name,
+                            class_details.instructor_id,
+                            class_details.requirements,
+                            class_details.category_id,
+                            class_details.description,
+                            class_details.price,
+                            class_details.featured,
+                            class_details.image_1,
+                            class_details.image_2,
+                            class_details.image_3,
+                            class_details.image_4,
+                            class_details.location_id,
+                            class_id,
+                        ],
+                    )
+                    return self.class_in_to_out(class_id, class_details)
+        except Exception as e:
+            print(e)
+            return {"message": "Could not update that class"}
+
     def class_in_to_out(self, id: int, class_info: ClassIn):
         old_data = class_info.dict()
         return ClassOut(id=id, **old_data)
