@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useGetTokenQuery } from "../../store/authApi";
-import { FaPaintBrush } from "react-icons/fa";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
@@ -31,8 +30,6 @@ function Map() {
     }
     loadUserLocation();
   }, [tokenData]);
-  // console.log("user", user);
-  // console.log("script", LoadScript);
 
   // LOAD CLASSES IN AREA
   useEffect(() => {
@@ -43,7 +40,7 @@ function Map() {
       if (response.ok) {
         const data = await response.json();
         console.log("data: ", data);
-        // determine nearby classes by difference in coordinates
+        // FILTER CLASSES BY COORDINATES
         const classesInArea = [];
         for (let classData in data) {
           if (tokenData) {
@@ -84,7 +81,6 @@ function Map() {
   }, []);
 
   console.log("classes:", classes);
-  // console.log("classes => ", classes);
 
   return (
     <div>
@@ -116,6 +112,7 @@ function Map() {
           </div>
           <div>
             {classes.map((classIterable, idx) => {
+              // ICON DIRECTORY
               const icons = [
                 "https://cdn-icons-png.flaticon.com/32/9602/9602783.png",
                 "https://cdn-icons-png.flaticon.com/32/3980/3980755.png",
@@ -132,7 +129,6 @@ function Map() {
               return (
                 <MarkerF
                   key={idx}
-                  // icon={"https://cdn-icons-png.flaticon.com/32/66/66246.png"}
                   position={{
                     lat: parseFloat(classIterable.location_latitude),
                     lng: parseFloat(classIterable.location_longitude),
