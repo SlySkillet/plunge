@@ -50,6 +50,18 @@ def create_class(
     return result
 
 
+@router.put(
+    "/classes/{class_id}",
+    response_model=Union[ClassOut, Error],
+)
+def update_class(
+    class_id: int,
+    class_details: ClassIn,
+    query: ClassQueries = Depends(),
+) -> Union[ClassOut, Error]:
+    return query.update(class_id, class_details)
+
+
 @router.get("/classes/{class_id}", response_model=Optional[ClassOutDetail])
 def get_one_class(
     class_id: int,

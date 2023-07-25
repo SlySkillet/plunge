@@ -27,8 +27,16 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
             <Route path="/classes/create" element={<ClassesForm />} />
-            <Route path="/classes/:id" element={<ClassDetails />} />
-            <Route path="/classes/:id/events/create" element={<EventsForm />} />
+            <Route path="/classes/:classId/edit" element={<ClassesForm />} />
+            <Route path="/classes/:classId" element={<ClassDetails />} />
+            <Route
+              path="/classes/:classId/events/create"
+              element={<EventsForm />}
+            />
+            <Route
+              path="/classes/:classId/events/:eventId/edit"
+              element={<EventsForm />}
+            />
             <Route path="/reservations" element={<Reservations />} />
           </Routes>
         </div>
