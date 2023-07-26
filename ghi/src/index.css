@@ -96,3 +96,82 @@ ul {
   align-items: center;
   justify-items: center;
 }
+
+/* CARD STYLES */
+
+.all-upcoming-card-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 40px;
+}
+
+.card.location-card.mx-2 {
+  width: 260px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 530px;
+}
+
+.card-body.location-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px;
+}
+
+p.card-text.location-card {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+}
+
+ul.list-group.list-group-flush.location-card {
+  font-size: 12px;
+}
+
+h5.card-title.location-card {
+  margin-top: 5px;
+}
+/* CAROUSEL UPCOMING STYLES */
+
+.upcoming-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.upcoming-title {
+  font-weight: 900;
+  align-self: center;
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+
+a.more-classes-btn {
+  align-self: flex-end;
+}
+
+.upcoming-carousel {
+  margin-top: 10px;
+  margin-bottom: 100px;
+  background-color: rgb(248, 249, 250);
+  padding-bottom: 50px;
+}
+
+.card-stack {
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
+a.carousel-control-next,
+a.carousel-control-prev {
+  width: 80px;
+}

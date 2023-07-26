@@ -169,7 +169,9 @@ function Nav() {
 								<Link className="dropdown-item">By Category</Link>
 							</li>
 							<li className="nav-item">
-								<Link className="dropdown-item">By Upcoming</Link>
+								<Link to="/upcoming" className="dropdown-item">
+                  By Upcoming
+                </Link>
 							</li>
 						</ul>
 					</div>

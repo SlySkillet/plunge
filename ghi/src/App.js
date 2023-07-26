@@ -15,6 +15,8 @@ import Profile from "./components/Accounts/Profile";
 import Dashboard from "./components/Accounts/Dashboard";
 import Nav from "./Nav";
 import Footer from "./Footer";
+import UpcomingClasses from "./components/Classes/Classes";
+import AllUpcomingClasses from "./components/Classes/AllUpcomingClasses";
 
 function App() {
   const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
@@ -44,6 +46,8 @@ function App() {
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/profile/edit" element={<ProfileForm />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/upcoming" element={<UpcomingClasses />} />
+            <Route path="/all-upcoming" element={<AllUpcomingClasses />} />
           </Routes>
         </div>
         <Footer />
