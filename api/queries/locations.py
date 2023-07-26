@@ -15,6 +15,7 @@ class LocationIn(BaseModel):
     zip_code: int
     latitude: str | None
     longitude: str | None
+    user_id: int
 
 
 class LocationOut(BaseModel):
@@ -26,6 +27,7 @@ class LocationOut(BaseModel):
     zip_code: int
     latitude: str | None
     longitude: str | None
+    user_id: int
 
 
 class LocationQueries(BaseModel):
@@ -43,6 +45,7 @@ class LocationQueries(BaseModel):
                             , zip_code
                             , latitude
                             , longitude
+                            , user_id
                         FROM locations
                         ORDER BY id;
                         """
@@ -57,12 +60,54 @@ class LocationQueries(BaseModel):
                             zip_code=record[5],
                             latitude=record[6],
                             longitude=record[7],
+                            user_id=record[8],
                         )
                         for record in db
                     ]
         except Exception as e:
             print(e)
             return {"message": "could not get all locations"}
+
+    def get_locations_by_account(
+        self, account_id: int
+    ) -> Union[Error, List[LocationOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT id
+                            , name
+                            , address
+                            , city
+                            , state
+                            , zip_code
+                            , latitude
+                            , longitude
+                            , user_id
+                        FROM locations
+                        WHERE user_id = %s
+                        ORDER BY id;
+                        """,
+                        [account_id],
+                    )
+                    return [
+                        LocationOut(
+                            id=record[0],
+                            name=record[1],
+                            address=record[2],
+                            city=record[3],
+                            state=record[4],
+                            zip_code=record[5],
+                            latitude=record[6],
+                            longitude=record[7],
+                            user_id=record[8],
+                        )
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get that reservation"}
 
     def create(self, location: LocationIn) -> Union[LocationOut, Error]:
         try:
@@ -79,9 +124,10 @@ class LocationQueries(BaseModel):
                             , zip_code
                             , latitude
                             , longitude
+                            , user_id
                         )
                         VALUES
-                            (%s, %s, %s, %s, %s, %s, %s)
+                            (%s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING id;
                         """,
                         [
@@ -92,6 +138,7 @@ class LocationQueries(BaseModel):
                             location.zip_code,
                             location.latitude,
                             location.longitude,
+                            location.user_id,
                         ],
                     )
                     id = result.fetchone()[0]

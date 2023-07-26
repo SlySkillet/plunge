@@ -30,8 +30,8 @@ class ReservationDetailsOut(BaseModel):
     date_time: datetime
     capacity: int
     class_name: str
-    instructor_first_name: str
-    instructor_last_name: str
+    student_first_name: str
+    student_last_name: str
     location_name: str
     address: str
     city: str
@@ -40,6 +40,7 @@ class ReservationDetailsOut(BaseModel):
     total_price: float
     status: bool
     class_id: int
+    event_id: int
 
 
 class ReservationStatusIn(BaseModel):
@@ -71,6 +72,7 @@ class ReservationQuery:
                             , locations.zip_code
                             , total_price
                             , status
+                            , events.id
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
@@ -110,6 +112,7 @@ class ReservationQuery:
                             , total_price
                             , status
                             , classes.id
+                            , events.id
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
@@ -119,6 +122,46 @@ class ReservationQuery:
                         order by events.date_time asc;
                         """,
                         [student_id],
+                    )
+                    return [
+                        self.record_to_reservation_details_out(record)
+                        for record in result
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "Could not get that reservation"}
+
+    def get_reservations_by_instructor(
+        self, instructor_id: int
+    ) -> Union[Error, List[ReservationDetailsOut]]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    result = db.execute(
+                        """
+                        SELECT reservations.id
+                            , events.date_time
+                            , events.capacity
+                            , classes.class_name
+                            , accounts.first_name
+                            , accounts.last_name
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , total_price
+                            , status
+                            , classes.id
+                            , events.id
+                        FROM reservations
+                        INNER JOIN events ON reservations.event_id = events.id
+                        INNER JOIN classes ON reservations.class_id = classes.id
+                        INNER JOIN accounts ON reservations.student_id = accounts.id
+                        INNER JOIN locations ON classes.location_id = locations.id
+                        WHERE classes.instructor_id = %s;
+                        """,
+                        [instructor_id],
                     )
                     return [
                         self.record_to_reservation_details_out(record)
@@ -205,8 +248,8 @@ class ReservationQuery:
             date_time=record[1],
             capacity=record[2],
             class_name=record[3],
-            instructor_first_name=record[4],
-            instructor_last_name=record[5],
+            student_first_name=record[4],
+            student_last_name=record[5],
             location_name=record[6],
             address=record[7],
             city=record[8],
@@ -215,40 +258,5 @@ class ReservationQuery:
             total_price=record[11],
             status=record[12],
             class_id=record[13],
+            event_id=record[14],
         )
-
-    # def get_instructor(self, instructor_id: int) -> Optional[ReservationOut]:
-    #     try:
-    #         with pool.connection() as conn:
-    #             with conn.cursor() as db:
-    #                 result = db.execute(
-    #                     """
-    #                     SELECT id
-    #                         , events.date_time
-    #                         , events.capacity
-    #                         , classes.name
-    #                         , classes.accounts.first_name
-    #                         , classes.accounts.last_name
-    #                         , classes.locations.address
-    #                         , classes.locations.city
-    #                         , classes.locations.state
-    #                         , classes.locations.zip_code
-    #                         , accounts.first_name
-    #                         , accounts.last_name
-    #                         , total_price
-    #                         , status
-    #                     FROM reservations
-    #                     INNER JOIN events ON reservations.event_id = events.id
-    #                     INNER JOIN classes ON reservations.class_id = classes.id
-    #                     INNER JOIN accounts ON reservations.student_id = accounts.id
-    #                     WHERE classes.instructor_id = %s
-    #                     """,
-    #                     [instructor_id],
-    #                 )
-    #                 return [
-    #                     self.record_to_reservation_out(record)
-    #                     for record in result
-    #                 ]
-    #     except Exception as e:
-    #         print(e)
-    #         return {"message": "Could not get your reservations"}

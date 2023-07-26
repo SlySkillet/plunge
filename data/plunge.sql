@@ -6,17 +6,6 @@ DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS classes;
 DROP TABLE IF EXISTS reservations;
 
-CREATE TABLE locations (
-    id SERIAL NOT NULL UNIQUE,
-    name VARCHAR(100) NOT NULL,
-    address VARCHAR(100) NOT NULL,
-    city VARCHAR(50) NOT NULL,
-    state VARCHAR(50) NOT NULL,
-    zip_code INT NOT NULL,
-    latitude VARCHAR(100),
-    longitude VARCHAR(100)
-);
-
 CREATE TABLE categories (
     id SERIAL NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL
@@ -29,6 +18,18 @@ CREATE TABLE accounts (
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE locations (
+    id SERIAL NOT NULL UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(100) NOT NULL,
+    city VARCHAR(50) NOT NULL,
+    state VARCHAR(50) NOT NULL,
+    zip_code INT NOT NULL,
+    latitude VARCHAR(100),
+    longitude VARCHAR(100),
+    user_id SMALLINT REFERENCES accounts("id") ON DELETE CASCADE NOT NULL
 );
 
 CREATE TABLE account_details (
@@ -51,10 +52,10 @@ CREATE TABLE classes (
     description TEXT NOT NULL,
     price SMALLINT NOT NULL,
     featured BOOLEAN,
-    image_1 VARCHAR(100) NOT NULL,
-    image_2 VARCHAR(100),
-    image_3 VARCHAR(100),
-    image_4 VARCHAR(100),
+    image_1 VARCHAR(255) NOT NULL,
+    image_2 VARCHAR(255),
+    image_3 VARCHAR(255),
+    image_4 VARCHAR(255),
     location_id SMALLINT REFERENCES locations("id") ON DELETE CASCADE NOT NULL
 );
 
@@ -97,9 +98,9 @@ INSERT INTO accounts (username, first_name, last_name, email, password) VALUES (
 , ('charrell', 'Corey', 'Harrell', 'charrell@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG')
 , ('kyork', 'Kelsie', 'York', 'kyork@email.com', '$2b$12$2sNz/yfCtdbfJ8p5C4Dl2.3BoZQRZiRRPvXgtBrBkzzL1HJyloAyG');
 
-INSERT INTO locations (name, address, city, state, zip_code) VALUES ('Culpepper Community Center', '91 Clinton St', 'Culpepper', 'VA', '22701')
-, ('Jackson & Sons Auto', '7467 Market St', 'Cocoa', 'FL', '32927')
-, ('Mary Ellis Park', '7668 Grand Ave', 'Dacula', 'GA', '30019');
+INSERT INTO locations (name, address, city, state, zip_code, user_id) VALUES ('Culpepper Community Center', '91 Clinton St', 'Culpepper', 'VA', '22701', 1)
+, ('Jackson & Sons Auto', '7467 Market St', 'Cocoa', 'FL', '32927', 1)
+, ('Mary Ellis Park', '7668 Grand Ave', 'Dacula', 'GA', '30019', 1);
 
 INSERT INTO account_details (account_id, avatar, phone_number, biography, mock_credit_card, interests, location_id) VALUES (1, 'https://pbs.twimg.com/profile_images/1237550450/mstom_400x400.jpg', 5551234567, 'I like turtles', '1234567887654321', 1, 1)
 , (2, 'https://place-puppy.com/500x500', 5551111111, 'i like dogs', '2234567887654321', 2, 2)

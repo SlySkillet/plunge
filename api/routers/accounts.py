@@ -16,6 +16,7 @@ from queries.accounts import (
     AccountQueries,
     DuplicateAccountError,
 )
+from queries.account_details import AccountDetailQueries, AccountDetailIn
 
 
 class AccountForm(BaseModel):
@@ -63,7 +64,9 @@ async def create_account(
     info: AccountIn,
     request: Request,
     response: Response,
+    # account_details: AccountDetailIn,
     accounts: AccountQueries = Depends(),
+    account_details_query: AccountDetailQueries = Depends(),
 ):
     hashed_password = authenticator.hash_password(info.password)
     try:
@@ -81,4 +84,14 @@ async def create_account(
         email=info.email,
     )
     token = await authenticator.login(response, request, form, accounts)
+    account_details = AccountDetailIn(
+        account_id=account.id,
+        avatar="https://www.seekpng.com/png/full/143-1435868_headshot-silhouette-person-placeholder.png",
+        phone_number=None,
+        biography=None,
+        mock_credit_card=None,
+        interests=None,
+        location_id=None,
+    )
+    account_details_query.create(account_details)
     return AccountToken(account=account, **token.dict())

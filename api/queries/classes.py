@@ -49,7 +49,7 @@ class ClassOutDetail(ClassOut):
     location_longitude: str = None
     instructor_first_name: str
     instructor_last_name: str
-    instructor_biography: str
+    instructor_biography: str | None
     instructor_avatar: str
 
 
@@ -353,6 +353,7 @@ class ClassQueries(BaseModel):
         except Exception as e:
             print(e)
             return {"message": "could not get that instructor's classes"}
+
 
     def create(self, class_info: ClassIn) -> Union[ClassOut, Error]:
         try:

@@ -18,6 +18,7 @@ def get_all(
     query: ClassQueries = Depends(),
     feed: str | None = None,
     category: int | None = None,
+    instructor: int | None = None,
     account_data: Optional[dict] = Depends(
         authenticator.try_get_current_account_data
     ),
@@ -34,6 +35,8 @@ def get_all(
             return query.get_nearby(account_data.get("id"))
     elif category is not None:
         return query.get_category(category)
+    elif instructor is not None:
+        return query.get_by_instructor(instructor)
     else:
         return query.get_all()
 

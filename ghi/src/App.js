@@ -10,10 +10,14 @@ import ClassDetails from "./components/Classes/ClassDetails";
 import ClassesForm from "./components/Classes/ClassesForm";
 import EventsForm from "./components/Events/EventsForm";
 import Reservations from "./components/Accounts/Reservations";
+import ProfileForm from "./components/Accounts/ProfileForm";
 import Profile from "./components/Accounts/Profile";
+import Dashboard from "./components/Accounts/Dashboard";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import Locations from "./components/Locations/Locations";
+import UpcomingClasses from "./components/Classes/Classes";
+import AllUpcomingClasses from "./components/Classes/AllUpcomingClasses";
 
 function App() {
   const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
@@ -32,6 +36,7 @@ function App() {
             <Route path="/classes/create" element={<ClassesForm />} />
             <Route path="/classes/:classId/edit" element={<ClassesForm />} />
             <Route path="/classes/:classId" element={<ClassDetails />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route
               path="/classes/:classId/events/create"
               element={<EventsForm />}
@@ -41,7 +46,10 @@ function App() {
               element={<EventsForm />}
             />
             <Route path="/reservations" element={<Reservations />} />
+            <Route path="/profile/edit" element={<ProfileForm />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/upcoming" element={<UpcomingClasses />} />
+            <Route path="/all-upcoming" element={<AllUpcomingClasses />} />
           </Routes>
         </div>
         <Footer />
