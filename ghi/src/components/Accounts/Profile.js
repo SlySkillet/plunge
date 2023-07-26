@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useGetTokenQuery, useLogoutMutation } from "../../store/authApi";
 import { useNavigate } from "react-router-dom";
+import ProfileForm from "./ProfileForm";
 
 function Profile() {
   const {
@@ -215,10 +216,9 @@ function Profile() {
                         <div className="col">
                           <p className="card-text m-1">
                             <a href={googleMapsLink()} target="_blank">
-                              {profileDetails.location_address},{" "}
+                              {profileDetails.location_name}:{" "}
                               {profileDetails.location_city},{" "}
-                              {profileDetails.location_state},{" "}
-                              {profileDetails.location_zip_code}
+                              {profileDetails.location_state}
                             </a>
                           </p>
                         </div>

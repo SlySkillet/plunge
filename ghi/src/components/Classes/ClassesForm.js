@@ -251,7 +251,9 @@ const ClassesForm = () => {
                   name="category_id"
                   className="form-select"
                 >
-                  <option>Select a category</option>
+                  <option hidden value="">
+                    Select a category
+                  </option>
                   {categories.map((category) => {
                     return (
                       <option key={category.id} value={category.id}>
@@ -353,7 +355,9 @@ const ClassesForm = () => {
                   name="location_id"
                   className="form-select"
                 >
-                  <option>Select a location</option>
+                  <option hidden value="">
+                    Select a location
+                  </option>
                   {locations.map((location) => {
                     return (
                       <option key={location.id} value={location.id}>
