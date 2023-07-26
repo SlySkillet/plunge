@@ -9,34 +9,34 @@ class Error(BaseModel):
 
 class AccountDetailIn(BaseModel):
     account_id: int
-    avatar: str
-    phone_number: int
-    biography: str
-    mock_credit_card: str
-    interests: int
-    location_id: int
+    avatar: str | None
+    phone_number: int | None
+    biography: str | None
+    mock_credit_card: str | None
+    interests: int | None
+    location_id: int | None
 
 
 class AccountDetailOut(BaseModel):
     id: int
     account_id: int
-    avatar: str
-    phone_number: int
-    biography: str
-    mock_credit_card: str
-    interests: int
-    location_id: int
+    avatar: str | None
+    phone_number: int | None
+    biography: str | None
+    mock_credit_card: str | None
+    interests: int | None
+    location_id: int | None
 
 
 class AccountDetailsOut(AccountDetailOut):
-    interest_name: str
-    location_name: str
-    location_address: str
-    location_city: str
-    location_state: str
-    location_zip_code: str
-    location_latitude: str = None
-    location_longitude: str = None
+    interest_name: str | None
+    location_name: str | None
+    location_address: str | None
+    location_city: str | None
+    location_state: str | None
+    location_zip_code: str | None
+    location_latitude: str | None
+    location_longitude: str | None
 
 
 class AccountDetailQueries(BaseModel):
@@ -63,8 +63,8 @@ class AccountDetailQueries(BaseModel):
                             , locations.latitude
                             , locations.longitude
                         FROM account_details
-                        INNER JOIN categories on account_details.interests = categories.id
-                        INNER JOIN locations on account_details.location_id = locations.id
+                        LEFT JOIN categories on account_details.interests = categories.id
+                        LEFT JOIN locations on account_details.location_id = locations.id
                         WHERE account_id = %s
                         """,
                         [account_id],

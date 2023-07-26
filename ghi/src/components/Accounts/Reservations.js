@@ -79,8 +79,6 @@ function Reservations() {
   };
 
   const handleWithdraw = async (e, id) => {
-    console.log("handle withdraw ran");
-    console.log(id);
     e.preventDefault();
     const data = {};
     data.status = false;

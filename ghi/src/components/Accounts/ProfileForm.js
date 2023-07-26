@@ -14,6 +14,7 @@ const ProfileForm = () => {
   const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
 
   const [updateProfileError, setUpdateProfileError] = useState();
+  const [profileSetupStatus, setProfileSetupStatus] = useState({ status: "" });
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -37,11 +38,9 @@ const ProfileForm = () => {
       setFormData({ ...formData, [name]: formattedPhoneNumber });
     } else if (name === "mock_credit_card") {
       const cleanCreditCardNumber = value.replace(/-/g, "");
-      console.log(cleanCreditCardNumber);
       let formattedCreditCardNumber = formatCreditCardNumber(
         cleanCreditCardNumber
       );
-      console.log(formattedCreditCardNumber);
       setFormData({ ...formData, [name]: formattedCreditCardNumber });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -59,12 +58,21 @@ const ProfileForm = () => {
           last_name: tokenData.account.last_name,
           email: tokenData.account.email,
           username: tokenData.account.username,
-          avatar: data.avatar,
-          phone: formatPhoneNumber(data.phone_number),
-          biography: data.biography,
-          interests: data.interests,
-          location_id: data.location_id,
-          mock_credit_card: formatCreditCardNumber(data.mock_credit_card),
+          avatar:
+            data.avatar ===
+            "https://www.seekpng.com/png/full/143-1435868_headshot-silhouette-person-placeholder.png"
+              ? ""
+              : data.avatar,
+          phone: data.phone_number ? formatPhoneNumber(data.phone_number) : "",
+          biography: data.biography ? data.biography : "",
+          interests: data.interests ? data.interests : "",
+          location_id: data.location_id ? data.location_id : "",
+          mock_credit_card: data.mock_credit_card
+            ? formatCreditCardNumber(data.mock_credit_card)
+            : "",
+        });
+        setProfileSetupStatus({
+          status: data.phone_number ? "finished" : "in progress",
         });
       }
     } else {
@@ -174,7 +182,9 @@ const ProfileForm = () => {
   const formatFormData = () => {
     return {
       account_id: tokenData.account.id,
-      avatar: formData.avatar,
+      avatar: formData.avatar
+        ? formData.avatar
+        : "https://www.seekpng.com/png/full/143-1435868_headshot-silhouette-person-placeholder.png",
       phone_number: Number(formData.phone.replace(/-| |[(]|[)]/g, "")),
       biography: formData.biography,
       mock_credit_card: formData.mock_credit_card.replace(/-/g, ""),
@@ -187,7 +197,6 @@ const ProfileForm = () => {
     event.preventDefault();
     if (tokenData) {
       const formattedFormData = formatFormData();
-      console.log(formattedFormData);
       const url = `${baseUrl}/account_details/${tokenData.account.id}`;
       const fetchConfig = {
         method: "put",
@@ -223,7 +232,11 @@ const ProfileForm = () => {
             <div className="row mb-3">
               <div className="text-left">
                 <div>
-                  <h1>Edit my profile</h1>
+                  <h1>
+                    {profileSetupStatus.status === "finished"
+                      ? "Edit my profile"
+                      : "Set up my profile"}
+                  </h1>
                 </div>
               </div>
             </div>
@@ -293,7 +306,6 @@ const ProfileForm = () => {
                       id="avatar"
                       type="url"
                       maxLength="100"
-                      required
                       className="form-control"
                       value={formData.avatar}
                       onChange={handleFormChange}

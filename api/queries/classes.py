@@ -49,7 +49,7 @@ class ClassOutDetail(ClassOut):
     location_longitude: str = None
     instructor_first_name: str
     instructor_last_name: str
-    instructor_biography: str
+    instructor_biography: str | None
     instructor_avatar: str
 
 
@@ -89,7 +89,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
-                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         """
                     )
                     return [
@@ -135,7 +135,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
-                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where classes.featured = true
                         """
                     )
@@ -183,7 +183,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN events on classes.id = events.class_id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
-                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where events.date_time <= current_date + interval '14 days'
                         and events.date_time >= current_date
                         """
@@ -239,7 +239,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
-                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         INNER JOIN account_location
                             on cast(locations.latitude as decimal) >= account_location.latitude - 0.5
                             and cast(locations.latitude as decimal) <= account_location.latitude + 0.5
@@ -291,7 +291,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
-                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where classes.category_id = %s
                         """,
                         [category_id],
@@ -341,7 +341,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
-                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where classes.instructor_id = %s
                         ORDER BY classe_name DESC;
                         """,
@@ -392,7 +392,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
-                        INNER JOIN account_details on classes.instructor_id = account_details.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where classes.instructor_id = %s
                         """,
                         [instructor_id],
@@ -534,7 +534,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
 						INNER JOIN accounts on classes.instructor_id = accounts.id
-						INNER JOIN account_details on classes.instructor_id = account_details.id
+						INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         WHERE classes.id = %s
                         """,
                         [class_id],

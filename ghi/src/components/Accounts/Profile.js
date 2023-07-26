@@ -159,7 +159,9 @@ function Profile() {
                         </div>
                         <div className="col">
                           <p type="tel" className="card-text m-1">
-                            {formatPhoneNumber(profileDetails.phone_number)}
+                            {profileDetails.phone_number
+                              ? formatPhoneNumber(profileDetails.phone_number)
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -176,7 +178,9 @@ function Profile() {
                         </div>
                         <div className="col">
                           <p className="card-text m-1">
-                            {profileDetails.interest_name}
+                            {profileDetails.interest_name
+                              ? profileDetails.interest_name
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -186,7 +190,9 @@ function Profile() {
                         </div>
                         <div className="col">
                           <p className="card-text m-1">
-                            {profileDetails.biography}
+                            {profileDetails.biography
+                              ? profileDetails.biography
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -203,9 +209,11 @@ function Profile() {
                         </div>
                         <div className="col">
                           <p className="card-text m-1">
-                            {formatCreditCardNumber(
-                              profileDetails.mock_credit_card
-                            )}
+                            {profileDetails.mock_credit_card
+                              ? formatCreditCardNumber(
+                                  profileDetails.mock_credit_card
+                                )
+                              : "-"}
                           </p>
                         </div>
                       </div>
@@ -215,11 +223,16 @@ function Profile() {
                         </div>
                         <div className="col">
                           <p className="card-text m-1">
-                            <a href={googleMapsLink()} target="_blank">
-                              {profileDetails.location_name}:{" "}
-                              {profileDetails.location_city},{" "}
-                              {profileDetails.location_state}
-                            </a>
+                            {profileDetails.location_address ? (
+                              <a href={googleMapsLink()} target="_blank">
+                                {profileDetails.location_address},{" "}
+                                {profileDetails.location_city},{" "}
+                                {profileDetails.location_state},{" "}
+                                {profileDetails.location_zip_code}
+                              </a>
+                            ) : (
+                              "-"
+                            )}
                           </p>
                         </div>
                       </div>
