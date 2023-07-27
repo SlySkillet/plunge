@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 // import Construct from "./Construct.js";
 // import ErrorNotification from "./ErrorNotification";
 import "./App.css";
+// import ClassesList from './components/Classes/Classes_Carousels/Class_Card';
 import MainPage from "./components/Classes/MainPage/Main_Page";
+import "./App.css";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginForm from "./LoginForm";
@@ -20,6 +22,7 @@ import UpcomingClasses from "./components/Classes/Classes";
 import AllUpcomingClasses from "./components/Classes/AllUpcomingClasses";
 import BrowseCategories from "./components/Categories/Categories";
 import Category from "./components/Categories/Category";
+import Locations from "./components/Locations/Locations";
 
 function App() {
   const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
@@ -32,7 +35,6 @@ function App() {
         <Nav />
         <div className="container">
           <Routes>
-            <Route path="/" element={<MainPage />} />
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
@@ -55,6 +57,7 @@ function App() {
             <Route path="/all-upcoming" element={<AllUpcomingClasses />} />
             <Route path="/browse-categories" element={<BrowseCategories />} />
             <Route path="categories/:Id" element={<Category />} />
+            <Route path="/locations" element={<Locations />} />
           </Routes>
         </div>
         <Footer />
