@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Optional, Union
+from authenticator import authenticator
 from queries.reservations import (
     Error,
     ReservationIn,
@@ -17,10 +18,10 @@ router = APIRouter()
 @router.post("/reservations", response_model=Union[ReservationOut, Error])
 def create_reservation(
     reservation: ReservationIn,
-    response: Response,
     query: ReservationQuery = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ):
-    return query.create(reservation)
+    return query.create(account_data.get("id"), reservation)
 
 
 @router.put(
@@ -30,9 +31,21 @@ def create_reservation(
 def update_reservation(
     reservation_id: int,
     reservation: ReservationStatusIn,
+    response: Response,
     query: ReservationQuery = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[ReservationStatusOut, Error]:
-    return query.update(reservation_id, reservation)
+    original_reservation = query.get_one(reservation_id)
+    if (
+        account_data.get("id") == original_reservation.student_id
+        or account_data.get("id") == original_reservation.instructor_id
+    ):
+        return query.update(reservation_id, reservation)
+    else:
+        response.status_code = 401
+        return {
+            "message": "Only the instructor or the student are permitted to update a reservation."
+        }
 
 
 @router.get(
@@ -43,7 +56,7 @@ def get_one_reservation(
     reservation_id: int,
     response: Response,
     query: ReservationQuery = Depends(),
-) -> ReservationDetailsOut:
+) -> Optional[ReservationDetailsOut]:
     reservation = query.get_one(reservation_id)
     if reservation is None:
         response.status_code = 404

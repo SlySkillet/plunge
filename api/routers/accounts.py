@@ -16,7 +16,7 @@ from queries.accounts import (
     AccountQueries,
     DuplicateAccountError,
 )
-from queries.account_details import AccountDetailQueries, AccountDetailIn
+from queries.account_details import AccountDetailQueries, AccountDetailPostIn
 
 
 class AccountForm(BaseModel):
@@ -84,7 +84,7 @@ async def create_account(
         email=info.email,
     )
     token = await authenticator.login(response, request, form, accounts)
-    account_details = AccountDetailIn(
+    account_details = AccountDetailPostIn(
         account_id=account.id,
         avatar="https://www.seekpng.com/png/full/143-1435868_headshot-silhouette-person-placeholder.png",
         phone_number=None,

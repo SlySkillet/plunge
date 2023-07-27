@@ -59,10 +59,19 @@ def create_class(
 )
 def update_class(
     class_id: int,
-    class_details: ClassIn,
+    new_class_details: ClassIn,
+    response: Response,
     query: ClassQueries = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[ClassOut, Error]:
-    return query.update(class_id, class_details)
+    original_class_details = query.get_one(class_id)
+    if account_data.get("id") == original_class_details.instructor_id:
+        return query.update(class_id, new_class_details)
+    else:
+        response.status_code = 401
+        return {
+            "message": "Only the instructor is permitted to edit this class."
+        }
 
 
 @router.get("/classes/{class_id}", response_model=Optional[ClassOutDetail])

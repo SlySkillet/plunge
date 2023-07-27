@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGetTokenQuery, useLogoutMutation } from "../../store/authApi";
 import { useNavigate } from "react-router-dom";
-import ProfileForm from "./ProfileForm";
 
 function Profile() {
   const {
@@ -35,8 +34,15 @@ function Profile() {
 
   const fetchData = async () => {
     if (tokenData) {
-      const url = `${baseUrl}/account/${tokenData.account.id}`;
-      const response = await fetch(url);
+      const url = `${baseUrl}/account`;
+      const fetchConfig = {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenData.access_token}`,
+        },
+      };
+      const response = await fetch(url, fetchConfig);
       if (response.ok) {
         const data = await response.json();
         setProfileDetails(data);

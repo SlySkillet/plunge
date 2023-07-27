@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Response
 from typing import List, Union, Optional
+from authenticator import authenticator
 from queries.events import (
     Error,
     EventIn,
@@ -60,10 +61,19 @@ def get_one_event(
 )
 def update_event(
     event_id: int,
-    event: EventIn,
+    new_event_details: EventIn,
+    response: Response,
     query: EventQueries = Depends(),
+    account_data: dict = Depends(authenticator.get_current_account_data),
 ) -> Union[EventOut, Error]:
-    return query.update(event_id, event)
+    original_event_details = query.get_one(event_id)
+    if account_data.get("id") == original_event_details.instructor_id:
+        return query.update(event_id, new_event_details)
+    else:
+        response.status_code = 401
+        return {
+            "message": "Only the instructor is permitted to edit this event."
+        }
 
 
 @router.delete("/events/{event_id}", response_model=bool)

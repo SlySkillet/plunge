@@ -23,6 +23,8 @@ function Nav() {
     { isSuccess: createAccountIsSuccess, status: createAccountStatus },
   ] = useCreateAccountMutation();
 
+  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
+
   const [registrationData, setRegistrationData] = useState({
     username: "",
     firstName: "",
@@ -35,8 +37,16 @@ function Nav() {
 
   const fetchAvatar = async () => {
     if (tokenData) {
-      let url = `http://localhost:8000/account/${tokenData.account.id}`;
-      let response = await fetch(url);
+      const url = `${baseUrl}/account`;
+      const fetchConfig = {
+        method: "get",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenData.access_token}`,
+        },
+      };
+      const response = await fetch(url, fetchConfig);
+
       if (response.ok) {
         let data = await response.json();
         setAvatar(data.avatar);
