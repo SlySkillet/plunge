@@ -1,36 +1,9 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useGetTokenQuery } from "../../store/authApi";
-import { useGeolocated } from "react-geolocated";
+// import { useGeolocated } from "react-geolocated";
 
 function Map() {
-  // const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-  //   useGeolocated({
-  //     positionOptions: {
-  //       enableHighAccuracy: false,
-  //     },
-  //     userDecisionTimeout: 5000,
-  //   });
-
-  // const mapCenter = () => {
-  //   if (!isGeolocationEnabled) {
-  //     return { lat: coords.latitude, lng: coords.longitude };
-  //   } else if (tokenData) {
-  //     return {
-  //       lat: parseFloat(user.location_latitude),
-  //       lng: parseFloat(user.location_longitude),
-  //     };
-  //   } else {
-  //     console.log(coords);
-  //     return { lat: 38.909677, lng: -77.029657 };
-  //   }
-  // };
-  // useEffect(() => {
-  //   mapCenter();
-  //   console.log("coords: ", coords.latitude);
-  //   console.log("tokenData: ", tokenData);
-  // }, [tokenData, coords]);
-
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
   const mapOptions = useMemo(
     () => ({
@@ -47,16 +20,28 @@ function Map() {
   useEffect(() => {
     async function loadUserLocation() {
       if (tokenData) {
-        console.log(tokenData.account.id);
-        const url = `http://localhost:8000/account/${tokenData.account.id}`;
-        const response = await fetch(url);
+        console.log("td: ", tokenData.account.id);
+        const url = `http://localhost:8000/account`;
+        const fetchConfig = {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenData.access_token}`,
+          },
+        };
+        const response = await fetch(url, fetchConfig);
+        // const url = `http://localhost:8000/account/${tokenData.account.id}`;
         if (response.ok) {
           const data = await response.json();
+          console.log("data: ", data);
           setUser(data);
+        } else {
+          console.error(response);
         }
       }
     }
     loadUserLocation();
+    console.log("user ==>", user);
   }, [tokenData]);
 
   // LOAD CLASSES IN AREA
@@ -67,39 +52,6 @@ function Map() {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log("data: ", data);
-        // FILTER CLASSES BY COORDINATES
-        // const classesInArea = [];
-        // for (let classData in data) {
-        //   if (tokenData) {
-        //     if (
-        //       Math.abs(
-        //         parseFloat(data[classData].location_latitude) -
-        //           parseFloat(user.location_latitude)
-        //       ) < 0.01355 &&
-        //       Math.abs(
-        //         parseFloat(data[classData].location_longitude) -
-        //           parseFloat(user.location_longitude)
-        //       ) < 0.035663
-        //     ) {
-        //       classesInArea.push(data[classData]);
-        //     }
-        //   } else {
-        //     if (
-        //       Math.abs(
-        //         parseFloat(data[classData].location_latitude) -
-        //           parseFloat(center.lat)
-        //       ) < 0.01355 &&
-        //       Math.abs(
-        //         parseFloat(data[classData].location_longitude) -
-        //           parseFloat(center.lng)
-        //       ) < 0.035663
-        //     ) {
-        //       classesInArea.push(data[classData]);
-        //     }
-        //   }
-        // }
-        // setClasses(classesInArea);
         setClasses(data);
       } else {
         console.error(response);
@@ -109,15 +61,11 @@ function Map() {
     loadClasses();
   }, []);
 
-  console.log("classes:", classes);
-
   return (
     <div>
-      {/* {isGeolocationEnabled ? coords : []} */}
       <div className="outer-map-container">
         <GoogleMap
           zoom={15}
-          // center={mapCenter()}
           center={
             tokenData
               ? {
@@ -229,3 +177,63 @@ function Locations() {
 }
 
 export default Locations;
+
+// FILTER CLASSES BY COORDINATES
+// const classesInArea = [];
+// for (let classData in data) {
+//   if (tokenData) {
+//     if (
+//       Math.abs(
+//         parseFloat(data[classData].location_latitude) -
+//           parseFloat(user.location_latitude)
+//       ) < 0.01355 &&
+//       Math.abs(
+//         parseFloat(data[classData].location_longitude) -
+//           parseFloat(user.location_longitude)
+//       ) < 0.035663
+//     ) {
+//       classesInArea.push(data[classData]);
+//     }
+//   } else {
+//     if (
+//       Math.abs(
+//         parseFloat(data[classData].location_latitude) -
+//           parseFloat(center.lat)
+//       ) < 0.01355 &&
+//       Math.abs(
+//         parseFloat(data[classData].location_longitude) -
+//           parseFloat(center.lng)
+//       ) < 0.035663
+//     ) {
+//       classesInArea.push(data[classData]);
+//     }
+//   }
+// }
+// setClasses(classesInArea);
+
+// const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+//   useGeolocated({
+//     positionOptions: {
+//       enableHighAccuracy: false,
+//     },
+//     userDecisionTimeout: 5000,
+//   });
+
+// const mapCenter = () => {
+//   if (!isGeolocationEnabled) {
+//     return { lat: coords.latitude, lng: coords.longitude };
+//   } else if (tokenData) {
+//     return {
+//       lat: parseFloat(user.location_latitude),
+//       lng: parseFloat(user.location_longitude),
+//     };
+//   } else {
+//     console.log(coords);
+//     return { lat: 38.909677, lng: -77.029657 };
+//   }
+// };
+// useEffect(() => {
+//   mapCenter();
+//   console.log("coords: ", coords.latitude);
+//   console.log("tokenData: ", tokenData);
+// }, [tokenData, coords]);
