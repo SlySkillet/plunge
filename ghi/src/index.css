@@ -167,6 +167,10 @@ p.card-text.location-card {
   padding: 0px;
 }
 
+img.card-img-top {
+  height: 260px;
+}
+
 p.card-text.location-card {
   margin-left: 10px;
   margin-right: 10px;
