@@ -18,7 +18,6 @@ import Profile from "./components/Accounts/Profile";
 import Dashboard from "./components/Accounts/Dashboard";
 import Nav from "./Nav";
 import Footer from "./Footer";
-import Locations from "./components/Locations/Locations";
 import UpcomingClasses from "./components/Classes/Classes";
 import AllUpcomingClasses from "./components/Classes/AllUpcomingClasses";
 import BrowseCategories from "./components/Categories/Categories";
@@ -38,7 +37,6 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
-            <Route path="/locations" element={<Locations />} />
             <Route path="/classes/create" element={<ClassesForm />} />
             <Route path="/classes/:classId/edit" element={<ClassesForm />} />
             <Route path="/classes/:classId" element={<ClassDetails />} />

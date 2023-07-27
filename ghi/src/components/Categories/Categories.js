@@ -10,7 +10,6 @@ import HomeCategory from "./CategoryCarousels.js/Home";
 import CommunityCategory from "./CategoryCarousels.js/Community";
 import HealthCategory from "./CategoryCarousels.js/Health";
 import FoodCategory from "./CategoryCarousels.js/Food";
-// function MusicCategory() {}
 
 function BrowseCategories() {
   return (
