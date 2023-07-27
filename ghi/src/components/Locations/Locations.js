@@ -187,14 +187,24 @@ function Map() {
                   {classIterable.class_name}
                 </h5>
                 <p className="card-text location-card">
-                  {classIterable.description}
+                  {classIterable.description.length > 143
+                    ? classIterable.description.substr(0, 140) + "..."
+                    : classIterable.description}
                 </p>
-                <p className="card-text location-card">
-                  {classIterable.location_address}
-                </p>
-                <a href={classDetailUrl} className="btn btn-primary">
-                  Class Details
-                </a>
+                <ul className="list-group list-group-flush location-card">
+                  <li className="list-group-item">
+                    <p className="card-text location-card">
+                      {classIterable.location_address.length > 16
+                        ? classIterable.location_address.substr(0, 13) + "..."
+                        : classIterable.location_address}
+                    </p>
+                  </li>
+                  <li className="list-group-item">
+                    <a href={classDetailUrl} className="btn btn-primary">
+                      Class Details
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           );
