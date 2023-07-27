@@ -7,8 +7,17 @@ class Error(BaseModel):
     message: str
 
 
-class AccountDetailIn(BaseModel):
+class AccountDetailPostIn(BaseModel):
     account_id: int
+    avatar: str | None
+    phone_number: int | None
+    biography: str | None
+    mock_credit_card: str | None
+    interests: int | None
+    location_id: int | None
+
+
+class AccountDetailPutIn(BaseModel):
     avatar: str | None
     phone_number: int | None
     biography: str | None
@@ -78,7 +87,7 @@ class AccountDetailQueries(BaseModel):
             print(e)
             return {"message": "could not get that account detail"}
 
-    def create(self, account_details: AccountDetailIn) -> AccountDetailOut:
+    def create(self, account_details: AccountDetailPostIn) -> AccountDetailOut:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -108,22 +117,32 @@ class AccountDetailQueries(BaseModel):
                     )
                     id = result.fetchone()[0]
                     # Return new data
-                    return self.account_details_in_to_out(id, account_details)
+                    return self.account_details_post_in_to_out(
+                        id, account_details
+                    )
         except Exception as e:
             print(e)
             return {"message": "Could not create account details"}
 
-    def account_details_in_to_out(self, id, account_details: AccountDetailIn):
+    def account_details_post_in_to_out(
+        self, id, account_details: AccountDetailPostIn
+    ):
         old_data = account_details.dict()
         return AccountDetailOut(id=id, **old_data)
 
+    def account_details_put_in_to_out(
+        self, id, account_id, account_details: AccountDetailPutIn
+    ):
+        old_data = account_details.dict()
+        return AccountDetailOut(id=id, account_id=account_id, **old_data)
+
     def update(
-        self, account_id, account_details: AccountDetailIn
+        self, account_id, account_details: AccountDetailPutIn
     ) -> Union[AccountDetailOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    db.execute(
+                    result = db.execute(
                         """
                         UPDATE account_details
                         SET avatar = %s
@@ -133,6 +152,7 @@ class AccountDetailQueries(BaseModel):
                             , interests = %s
                             , location_id = %s
                         WHERE account_id = %s
+                        RETURNING id;
                         """,
                         [
                             account_details.avatar,
@@ -144,8 +164,10 @@ class AccountDetailQueries(BaseModel):
                             account_id,
                         ],
                     )
-                    return self.account_details_in_to_out(
-                        account_id, account_details
+                    id = result.fetchone()[0]
+                    print(id)
+                    return self.account_details_put_in_to_out(
+                        id, account_id, account_details
                     )
         except Exception as e:
             print(e)

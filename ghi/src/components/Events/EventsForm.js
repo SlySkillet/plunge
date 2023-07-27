@@ -72,7 +72,10 @@ const EventsForm = () => {
       if (response.ok) {
         const data = await response.json();
         setFormData({
-          date_time: data.date_time,
+          date_time:
+            data.date_time.length > 16
+              ? data.date_time.slice(0, 16)
+              : data.date_time,
           capacity: data.capacity,
         });
       }
@@ -109,6 +112,7 @@ const EventsForm = () => {
           body: JSON.stringify(formattedFormData),
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenData.access_token}`,
           },
         };
         const response = await fetch(url, fetchConfig);

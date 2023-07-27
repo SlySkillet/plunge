@@ -69,7 +69,7 @@ class ClassQueries(BaseModel):
                             , description
                             , price
                             , featured
-                            , image_1
+                            , classes.image_1
                             , image_2
                             , image_3
                             , image_4
@@ -115,7 +115,7 @@ class ClassQueries(BaseModel):
                             , description
                             , price
                             , featured
-                            , image_1
+                            , classes.image_1
                             , image_2
                             , image_3
                             , image_4
@@ -162,7 +162,7 @@ class ClassQueries(BaseModel):
                             , description
                             , price
                             , featured
-                            , image_1
+                            , classes.image_1
                             , image_2
                             , image_3
                             , image_4
@@ -219,7 +219,7 @@ class ClassQueries(BaseModel):
                             , description
                             , price
                             , featured
-                            , image_1
+                            , classes.image_1
                             , image_2
                             , image_3
                             , image_4
@@ -271,7 +271,7 @@ class ClassQueries(BaseModel):
                             , description
                             , price
                             , featured
-                            , image_1
+                            , classes.image_1
                             , image_2
                             , image_3
                             , image_4
@@ -321,7 +321,7 @@ class ClassQueries(BaseModel):
                             , description
                             , price
                             , featured
-                            , image_1
+                            , classes.image_1
                             , image_2
                             , image_3
                             , image_4
@@ -353,7 +353,6 @@ class ClassQueries(BaseModel):
         except Exception as e:
             print(e)
             return {"message": "could not get that instructor's classes"}
-
 
     def create(self, class_info: ClassIn) -> Union[ClassOut, Error]:
         try:
@@ -464,7 +463,7 @@ class ClassQueries(BaseModel):
                             , description
                             , price
                             , featured
-                            , image_1
+                            , classes.image_1
                             , image_2
                             , image_3
                             , image_4

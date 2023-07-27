@@ -88,6 +88,7 @@ function Reservations() {
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${tokenData.access_token}`,
       },
     };
     const response = await fetch(url, fetchConfig);
@@ -103,167 +104,131 @@ function Reservations() {
           <div className="text-center">
             <h1>My Reservations</h1>
           </div>
-          {tokenData ? (
+          {tokenIsLoading ? (
+            <div className="mt-5 text-center">
+              <div className="spinner-border text-secondary" role="status">
+                <span className="sr-only"></span>
+              </div>
+            </div>
+          ) : tokenData ? (
             <div className="text-center">
               <div className="m-4">
                 <div className="mb-4">
                   <h3 className="d-flex m-3">Upcoming</h3>
-                  <div
-                    className={
-                      upcomingReservations
-                        ? "d-none"
-                        : "d-flex justify-content-center"
-                    }
-                  >
-                    <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    >
-                      <span className="sr-only"></span>
-                    </div>
-                  </div>
-                  <div
-                    className={
-                      upcomingReservations
-                        ? "d-flex justify-content-center"
-                        : "d-none"
-                    }
-                  >
-                    <table className="table table-striped m-3">
-                      <thead>
-                        <tr>
-                          <th>Class Name</th>
-                          <th>Time</th>
-                          <th>Location</th>
-                          <th>Instructor</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {upcomingReservations &&
-                          upcomingReservations.map(
-                            (upcomingReservation, index) => {
-                              return (
-                                <tr key={index}>
-                                  <td>
-                                    <a
-                                      href={`/classes/${upcomingReservation.class_id}`}
-                                    >
-                                      {upcomingReservation.class_name}
-                                    </a>
-                                  </td>
-                                  <td>
-                                    {formatDateTime(
-                                      upcomingReservation.date_time
-                                    )}
-                                  </td>
-                                  <td>
-                                    <a
-                                      href={googleMapsLink(
-                                        upcomingReservation.address,
-                                        upcomingReservation.city,
-                                        upcomingReservation.state,
-                                        upcomingReservation.zip_code
+                  <div className="d-flex justify-content-center">
+                    {upcomingReservations.length > 0 ? (
+                      <table className="table table-striped m-3">
+                        <thead>
+                          <tr>
+                            <th>Class Name</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {upcomingReservations &&
+                            upcomingReservations.map(
+                              (upcomingReservation, index) => {
+                                return (
+                                  <tr key={index}>
+                                    <td>
+                                      <a
+                                        href={`/classes/${upcomingReservation.class_id}`}
+                                      >
+                                        {upcomingReservation.class_name}
+                                      </a>
+                                    </td>
+                                    <td>
+                                      {formatDateTime(
+                                        upcomingReservation.date_time
                                       )}
-                                      target="_blank"
-                                    >
-                                      {upcomingReservation.location_name}
-                                    </a>
-                                  </td>
-                                  <td>
-                                    {upcomingReservation.instructor_first_name}{" "}
-                                    {upcomingReservation.instructor_last_name}
-                                  </td>
-                                  <td>
-                                    <button
-                                      className="btn btn-sm btn-outline-danger"
-                                      onClick={(e) =>
-                                        handleWithdraw(
-                                          e,
-                                          upcomingReservation.id
-                                        )
-                                      }
-                                    >
-                                      Withdraw
-                                    </button>
-                                  </td>
-                                </tr>
-                              );
-                            }
-                          )}
-                      </tbody>
-                    </table>
+                                    </td>
+                                    <td>
+                                      <a
+                                        href={googleMapsLink(
+                                          upcomingReservation.address,
+                                          upcomingReservation.city,
+                                          upcomingReservation.state,
+                                          upcomingReservation.zip_code
+                                        )}
+                                        target="_blank"
+                                      >
+                                        {upcomingReservation.location_name}
+                                      </a>
+                                    </td>
+                                    <td>
+                                      <button
+                                        className="btn btn-sm btn-outline-danger"
+                                        onClick={(e) =>
+                                          handleWithdraw(
+                                            e,
+                                            upcomingReservation.id
+                                          )
+                                        }
+                                      >
+                                        Withdraw
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              }
+                            )}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <h5>You don't have any upcoming reservations</h5>
+                    )}
                   </div>
                 </div>
                 <div className="mb-4">
                   <h3 className="d-flex m-3">Past</h3>
-                  <div
-                    className={
-                      upcomingReservations
-                        ? "d-none"
-                        : "d-flex justify-content-center"
-                    }
-                  >
-                    <div
-                      className="spinner-border text-secondary"
-                      role="status"
-                    >
-                      <span className="sr-only"></span>
-                    </div>
-                  </div>
-                  <div
-                    className={
-                      upcomingReservations
-                        ? "d-flex justify-content-center"
-                        : "d-none"
-                    }
-                  >
-                    <table className="table table-striped m-3">
-                      <thead>
-                        <tr>
-                          <th>Class Name</th>
-                          <th>Time</th>
-                          <th>Location</th>
-                          <th>Instructor</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {pastReservations &&
-                          pastReservations.map((pastReservation, index) => {
-                            return (
-                              <tr key={index}>
-                                <td>
-                                  <a
-                                    href={`/classes/${pastReservation.class_id}`}
-                                  >
-                                    {pastReservation.class_name}
-                                  </a>
-                                </td>
-                                <td>
-                                  {formatDateTime(pastReservation.date_time)}
-                                </td>
-                                <td>
-                                  <a
-                                    href={googleMapsLink(
-                                      pastReservation.address,
-                                      pastReservation.city,
-                                      pastReservation.state,
-                                      pastReservation.zip_code
-                                    )}
-                                    target="_blank"
-                                  >
-                                    {pastReservation.location_name}
-                                  </a>
-                                </td>
-                                <td>
-                                  {pastReservation.instructor_first_name}{" "}
-                                  {pastReservation.instructor_last_name}
-                                </td>
-                              </tr>
-                            );
-                          })}
-                      </tbody>
-                    </table>
+                  <div className="d-flex justify-content-center">
+                    {pastReservations.length > 0 ? (
+                      <table className="table table-striped m-3">
+                        <thead>
+                          <tr>
+                            <th>Class Name</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {pastReservations &&
+                            pastReservations.map((pastReservation, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>
+                                    <a
+                                      href={`/classes/${pastReservation.class_id}`}
+                                    >
+                                      {pastReservation.class_name}
+                                    </a>
+                                  </td>
+                                  <td>
+                                    {formatDateTime(pastReservation.date_time)}
+                                  </td>
+                                  <td>
+                                    <a
+                                      href={googleMapsLink(
+                                        pastReservation.address,
+                                        pastReservation.city,
+                                        pastReservation.state,
+                                        pastReservation.zip_code
+                                      )}
+                                      target="_blank"
+                                    >
+                                      {pastReservation.location_name}
+                                    </a>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <h5>You don't have any past reservations</h5>
+                    )}
                   </div>
                 </div>
               </div>

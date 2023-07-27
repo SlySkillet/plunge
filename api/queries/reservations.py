@@ -11,7 +11,7 @@ class Error(BaseModel):
 class ReservationIn(BaseModel):
     event_id: int
     class_id: int
-    student_id: int
+    # student_id: int
     total_price: float
     status: bool
 
@@ -30,6 +30,8 @@ class ReservationDetailsOut(BaseModel):
     date_time: datetime
     capacity: int
     class_name: str
+    instructor_id: int
+    student_id: int
     student_first_name: str
     student_last_name: str
     location_name: str
@@ -63,6 +65,8 @@ class ReservationQuery:
                             , events.date_time
                             , events.capacity
                             , classes.class_name
+                            , classes.instructor_id
+                            , reservations.student_id
                             , accounts.first_name
                             , accounts.last_name
                             , locations.name
@@ -72,6 +76,7 @@ class ReservationQuery:
                             , locations.zip_code
                             , total_price
                             , status
+                            , classes.id
                             , events.id
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
@@ -102,6 +107,8 @@ class ReservationQuery:
                             , events.date_time
                             , events.capacity
                             , classes.class_name
+                            , classes.instructor_id
+                            , reservations.student_id
                             , accounts.first_name
                             , accounts.last_name
                             , locations.name
@@ -143,6 +150,8 @@ class ReservationQuery:
                             , events.date_time
                             , events.capacity
                             , classes.class_name
+                            , classes.instructor_id
+                            , reservations.student_id
                             , accounts.first_name
                             , accounts.last_name
                             , locations.name
@@ -196,7 +205,7 @@ class ReservationQuery:
             return {"message": "Could not update that reservation"}
 
     def create(
-        self, reservation: ReservationIn
+        self, account_id, reservation: ReservationIn
     ) -> Union[ReservationOut, Error]:
         try:
             with pool.connection() as conn:
@@ -207,18 +216,22 @@ class ReservationQuery:
                             (event_id, class_id, student_id, total_price, status)
                         VALUES
                             (%s, %s, %s, %s, %s)
-                        RETURNING id;
+                        RETURNING id, student_id;
                         """,
                         [
                             reservation.event_id,
                             reservation.class_id,
-                            reservation.student_id,
+                            account_id,
                             reservation.total_price,
                             reservation.status,
                         ],
                     )
-                    id = result.fetchone()[0]
-                    return self.reservation_in_to_out(id, reservation)
+                    response = result.fetchone()
+                    id = response[0]
+                    student_id = response[1]
+                    return self.reservation_in_to_out(
+                        id, student_id, reservation
+                    )
         except Exception:
             return {"message": "Create did not work"}
 
@@ -228,9 +241,11 @@ class ReservationQuery:
         old_data = reservation.dict()
         return ReservationStatusOut(id=id, **old_data)
 
-    def reservation_in_to_out(self, id: int, reservation: ReservationIn):
+    def reservation_in_to_out(
+        self, id, student_id, reservation: ReservationIn
+    ):
         old_data = reservation.dict()
-        return ReservationOut(id=id, **old_data)
+        return ReservationOut(id=id, student_id=student_id, **old_data)
 
     def record_to_reservation_out(self, record):
         return ReservationOut(
@@ -248,15 +263,17 @@ class ReservationQuery:
             date_time=record[1],
             capacity=record[2],
             class_name=record[3],
-            student_first_name=record[4],
-            student_last_name=record[5],
-            location_name=record[6],
-            address=record[7],
-            city=record[8],
-            state=record[9],
-            zip_code=record[10],
-            total_price=record[11],
-            status=record[12],
-            class_id=record[13],
-            event_id=record[14],
+            instructor_id=record[4],
+            student_id=record[5],
+            student_first_name=record[6],
+            student_last_name=record[7],
+            location_name=record[8],
+            address=record[9],
+            city=record[10],
+            state=record[11],
+            zip_code=record[12],
+            total_price=record[13],
+            status=record[14],
+            class_id=record[15],
+            event_id=record[16],
         )
