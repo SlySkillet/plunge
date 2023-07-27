@@ -1,8 +1,36 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useGetTokenQuery } from "../../store/authApi";
+import { useGeolocated } from "react-geolocated";
 
 function Map() {
+  // const { coords, isGeolocationAvailable, isGeolocationEnabled } =
+  //   useGeolocated({
+  //     positionOptions: {
+  //       enableHighAccuracy: false,
+  //     },
+  //     userDecisionTimeout: 5000,
+  //   });
+
+  // const mapCenter = () => {
+  //   if (!isGeolocationEnabled) {
+  //     return { lat: coords.latitude, lng: coords.longitude };
+  //   } else if (tokenData) {
+  //     return {
+  //       lat: parseFloat(user.location_latitude),
+  //       lng: parseFloat(user.location_longitude),
+  //     };
+  //   } else {
+  //     console.log(coords);
+  //     return { lat: 38.909677, lng: -77.029657 };
+  //   }
+  // };
+  // useEffect(() => {
+  //   mapCenter();
+  //   console.log("coords: ", coords.latitude);
+  //   console.log("tokenData: ", tokenData);
+  // }, [tokenData, coords]);
+
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
   const mapOptions = useMemo(
     () => ({
@@ -85,9 +113,11 @@ function Map() {
 
   return (
     <div>
+      {/* {isGeolocationEnabled ? coords : []} */}
       <div className="outer-map-container">
         <GoogleMap
           zoom={15}
+          // center={mapCenter()}
           center={
             tokenData
               ? {
