@@ -7,23 +7,27 @@ router = APIRouter()
 
 
 @router.get(
-    "/locations/{account_id}",
+    "/api/locations/{account_id}",
     response_model=Union[List[LocationOut], Error],
 )
 def get_locations_by_account(
     account_id: int,
     query: LocationQueries = Depends(),
-) -> LocationOut:
+) -> Union[List[LocationOut], Error]:
     return query.get_locations_by_account(account_id)
 
 
-@router.get("/locations", response_model=Union[List[LocationOut], Error])
-def get_all(query: LocationQueries = Depends()):
+@router.get("/api/locations", response_model=Union[List[LocationOut], Error])
+def get_all(
+    query: LocationQueries = Depends(),
+) -> Union[List[LocationOut], Error]:
     return query.get_all()
 
 
-@router.post("/locations", response_model=Union[LocationOut, Error])
-def create_location(location: LocationIn, query: LocationQueries = Depends()):
+@router.post("/api/locations", response_model=Union[LocationOut, Error])
+def create_location(
+    location: LocationIn, query: LocationQueries = Depends()
+) -> Union[LocationOut, Error]:
     openweather = get_location_data(location.zip_code)
     location.latitude = openweather["latitude"]
     location.longitude = openweather["longitude"]

@@ -1,7 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useGetTokenQuery } from "../../store/authApi";
-// import { useGeolocated } from "react-geolocated";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
@@ -16,12 +15,13 @@ function Map() {
   const [classes, setClasses] = useState([]);
   const { data: tokenData } = useGetTokenQuery();
 
+  const baseUrl = process.env.REACT_APP_API_HOST;
+
   // DETERMINE MAP CENTER
   useEffect(() => {
     async function loadUserLocation() {
       if (tokenData) {
-        console.log("td: ", tokenData.account.id);
-        const url = `http://localhost:8000/account`;
+        const url = `${baseUrl}/api/account_details`;
         const fetchConfig = {
           method: "get",
           headers: {
@@ -30,7 +30,6 @@ function Map() {
           },
         };
         const response = await fetch(url, fetchConfig);
-        // const url = `http://localhost:8000/account/${tokenData.account.id}`;
         if (response.ok) {
           const data = await response.json();
           setUser(data);
@@ -40,18 +39,14 @@ function Map() {
       }
     }
     loadUserLocation();
-    console.log("user ==>", user);
   }, [tokenData]);
 
   // LOAD CLASSES IN AREA
   useEffect(() => {
     async function loadClasses() {
-      const response = await fetch(
-        "http://localhost:8000/classes?feed=upcoming"
-      );
+      const response = await fetch(`${baseUrl}/api/classes?feed=upcoming`);
       if (response.ok) {
         const data = await response.json();
-        console.log("data: ", data);
         setClasses(data);
       } else {
         console.error(response);
@@ -113,7 +108,6 @@ function Map() {
                     lng: parseFloat(classIterable.location_longitude),
                   }}
                   icon={icons[classIterable.category_id - 1]}
-                  // size="32px"
                 />
               );
             })}
@@ -177,63 +171,3 @@ function Locations() {
 }
 
 export default Locations;
-
-// FILTER CLASSES BY COORDINATES
-// const classesInArea = [];
-// for (let classData in data) {
-//   if (tokenData) {
-//     if (
-//       Math.abs(
-//         parseFloat(data[classData].location_latitude) -
-//           parseFloat(user.location_latitude)
-//       ) < 0.01355 &&
-//       Math.abs(
-//         parseFloat(data[classData].location_longitude) -
-//           parseFloat(user.location_longitude)
-//       ) < 0.035663
-//     ) {
-//       classesInArea.push(data[classData]);
-//     }
-//   } else {
-//     if (
-//       Math.abs(
-//         parseFloat(data[classData].location_latitude) -
-//           parseFloat(center.lat)
-//       ) < 0.01355 &&
-//       Math.abs(
-//         parseFloat(data[classData].location_longitude) -
-//           parseFloat(center.lng)
-//       ) < 0.035663
-//     ) {
-//       classesInArea.push(data[classData]);
-//     }
-//   }
-// }
-// setClasses(classesInArea);
-
-// const { coords, isGeolocationAvailable, isGeolocationEnabled } =
-//   useGeolocated({
-//     positionOptions: {
-//       enableHighAccuracy: false,
-//     },
-//     userDecisionTimeout: 5000,
-//   });
-
-// const mapCenter = () => {
-//   if (!isGeolocationEnabled) {
-//     return { lat: coords.latitude, lng: coords.longitude };
-//   } else if (tokenData) {
-//     return {
-//       lat: parseFloat(user.location_latitude),
-//       lng: parseFloat(user.location_longitude),
-//     };
-//   } else {
-//     console.log(coords);
-//     return { lat: 38.909677, lng: -77.029657 };
-//   }
-// };
-// useEffect(() => {
-//   mapCenter();
-//   console.log("coords: ", coords.latitude);
-//   console.log("tokenData: ", tokenData);
-// }, [tokenData, coords]);

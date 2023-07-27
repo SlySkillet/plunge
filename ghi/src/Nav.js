@@ -1,4 +1,4 @@
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   useGetTokenQuery,
@@ -9,21 +9,16 @@ import {
 import { Modal } from "bootstrap";
 
 function Nav() {
-  const {
-    data: tokenData,
-    error: tokenError,
-    isLoading: tokenIsLoading,
-  } = useGetTokenQuery();
+  const { data: tokenData } = useGetTokenQuery();
   const [login, { isSuccess: loginIsSuccess, status: loginStatus }] =
     useLoginMutation();
-  const [logout, { isSuccess: logoutIsSuccess, status: logoutStatus }] =
-    useLogoutMutation();
+  const [logout] = useLogoutMutation();
   const [
     createAccount,
     { isSuccess: createAccountIsSuccess, status: createAccountStatus },
   ] = useCreateAccountMutation();
 
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
+  const baseUrl = process.env.REACT_APP_API_HOST;
 
   const [registrationData, setRegistrationData] = useState({
     username: "",
@@ -37,7 +32,7 @@ function Nav() {
 
   const fetchAvatar = async () => {
     if (tokenData) {
-      const url = `${baseUrl}/account`;
+      const url = `${baseUrl}/api/account_details`;
       const fetchConfig = {
         method: "get",
         headers: {

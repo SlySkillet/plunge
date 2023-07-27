@@ -5,8 +5,10 @@ function Category() {
   let { Id } = useParams();
   const [classes, setClasses] = useState([]);
 
+  const baseUrl = process.env.REACT_APP_API_HOST;
+
   const fetchData = async () => {
-    let url = `http://localhost:8000/classes?category=${Id}`;
+    let url = `${baseUrl}/api/classes?category=${Id}`;
     let response = await fetch(url);
     if (response.ok) {
       let data = await response.json();
@@ -33,7 +35,7 @@ function Category() {
   useEffect(() => {
     fetchData();
   }, []);
-  console.log("classes =>", classes);
+
   return (
     <div className="all-upcoming-card-container">
       <h1 className="upcoming-title">{categoriesTable[Id]}</h1>

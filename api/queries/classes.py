@@ -54,7 +54,7 @@ class ClassOutDetail(ClassOut):
 
 
 class ClassQueries(BaseModel):
-    def get_all(self) -> Union[Error, List[ClassOutDetail]]:
+    def get_all(self) -> Union[List[ClassOutDetail], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -88,8 +88,11 @@ class ClassQueries(BaseModel):
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN events on classes.id = events.class_id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
                         INNER JOIN account_details on classes.instructor_id = account_details.account_id
+                        where events.date_time >= current_date
+                        group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
                         """
                     )
                     return [
@@ -100,7 +103,7 @@ class ClassQueries(BaseModel):
             print(e)
             return {"message": "could not get all classes"}
 
-    def get_featured(self) -> Union[Error, List[ClassOutDetail]]:
+    def get_featured(self) -> Union[List[ClassOutDetail], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -134,9 +137,12 @@ class ClassQueries(BaseModel):
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN events on classes.id = events.class_id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
                         INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where classes.featured = true
+                        and events.date_time >= current_date
+                        group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
                         """
                     )
                     return [
@@ -147,7 +153,7 @@ class ClassQueries(BaseModel):
             print(e)
             return {"message": "could not get all classes"}
 
-    def get_upcoming(self) -> Union[Error, List[ClassOutDetail]]:
+    def get_upcoming(self) -> Union[List[ClassOutDetail], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -186,6 +192,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where events.date_time <= current_date + interval '14 days'
                         and events.date_time >= current_date
+                        group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
                         """
                     )
                     return [
@@ -196,7 +203,7 @@ class ClassQueries(BaseModel):
             print(e)
             return {"message": "could not get all classes"}
 
-    def get_nearby(self, account_id) -> Union[Error, List[ClassOutDetail]]:
+    def get_nearby(self, account_id) -> Union[List[ClassOutDetail], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -238,6 +245,7 @@ class ClassQueries(BaseModel):
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN events on classes.id = events.class_id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
                         INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         INNER JOIN account_location
@@ -245,6 +253,8 @@ class ClassQueries(BaseModel):
                             and cast(locations.latitude as decimal) <= account_location.latitude + 0.5
                             and cast(locations.longitude as decimal) >= account_location.longitude - 0.5
                             and cast(locations.longitude as decimal) <= account_location.longitude + 0.5
+                        where events.date_time >= current_date
+                        group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
                         """,
                         [account_id],
                     )
@@ -256,7 +266,7 @@ class ClassQueries(BaseModel):
             print(e)
             return {"message": "could not get all classes"}
 
-    def get_category(self, category_id) -> Union[Error, List[ClassOutDetail]]:
+    def get_category(self, category_id) -> Union[List[ClassOutDetail], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -290,9 +300,12 @@ class ClassQueries(BaseModel):
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN events on classes.id = events.class_id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
                         INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         where classes.category_id = %s
+                        and events.date_time >= current_date
+                        group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
                         """,
                         [category_id],
                     )
@@ -306,7 +319,7 @@ class ClassQueries(BaseModel):
 
     def get_by_instructor(
         self, instructor_id
-    ) -> Union[Error, List[ClassOutDetail]]:
+    ) -> Union[List[ClassOutDetail], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:

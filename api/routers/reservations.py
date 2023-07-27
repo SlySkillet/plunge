@@ -15,17 +15,17 @@ from queries.reservations import (
 router = APIRouter()
 
 
-@router.post("/reservations", response_model=Union[ReservationOut, Error])
+@router.post("/api/reservations", response_model=Union[ReservationOut, Error])
 def create_reservation(
     reservation: ReservationIn,
     query: ReservationQuery = Depends(),
     account_data: dict = Depends(authenticator.get_current_account_data),
-):
+) -> Union[ReservationOut, Error]:
     return query.create(account_data.get("id"), reservation)
 
 
 @router.put(
-    "/reservations/{reservation_id}",
+    "/api/reservations/{reservation_id}",
     response_model=Union[ReservationStatusOut, Error],
 )
 def update_reservation(
@@ -49,7 +49,7 @@ def update_reservation(
 
 
 @router.get(
-    "/reservations/{reservation_id}",
+    "/api/reservations/{reservation_id}",
     response_model=Optional[ReservationDetailsOut],
 )
 def get_one_reservation(
@@ -64,22 +64,22 @@ def get_one_reservation(
 
 
 @router.get(
-    "/student/reservations/{student_id}",
+    "/api/student/reservations/{student_id}",
     response_model=Union[List[ReservationDetailsOut], Error],
 )
 def get_student_reservations(
     student_id: int,
     query: ReservationQuery = Depends(),
-) -> ReservationDetailsOut:
+) -> Union[List[ReservationDetailsOut], Error]:
     return query.get_student(student_id)
 
 
 @router.get(
-    "/reservations/instructors/{instructor_id}",
+    "/api/reservations/instructors/{instructor_id}",
     response_model=Union[List[ReservationDetailsOut], Error],
 )
 def get_reservations_by_instructor(
     instructor_id: int,
     query: ReservationQuery = Depends(),
-) -> ReservationDetailsOut:
+) -> Union[List[ReservationDetailsOut], Error]:
     return query.get_reservations_by_instructor(instructor_id)

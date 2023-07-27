@@ -8,12 +8,13 @@ volumes:
 services:
   fastapi:
     environment:
-      CORS_HOST: http://localhost:3000
+      CORS_HOST: ${FAST_API_CORS_HOST}
       DATABASE_URL: postgresql://plunge:plunge@postgres/plunge_db
       SIGNING_KEY: b229658610a28f3fb4a6e274c17a261913900036e36c3addf0720824c576c6e3f66b2ef0538d98856278c1374a5a055df262a8b6697ad3c9190bf1c3d403bcab
       WAIT_HOSTS: postgres:5432
       WAIT_BEFORE: 5
       WAIT_TIMEOUT: 60
+      OPEN_WEATHER_API_KEY: ${FAST_API_OPEN_WEATHER_API_KEY}
     build:
       context: api
       dockerfile: Dockerfile.dev
@@ -57,7 +58,6 @@ services:
       HOST_OS: ${OS}
       NODE_ENV: development
       HOST: "0.0.0.0"
-      PUBLIC_URL: http://localhost:3000
+      PUBLIC_URL: ${REACT_APP_PUBLIC_URL}
       REACT_APP_API_HOST: ${REACT_APP_API_HOST}
-      REACT_APP_SAMPLE_SERVICE_API_HOST: http://localhost:8000
       REACT_APP_GOOGLE_MAPS_API_KEY: ${REACT_APP_GOOGLE_MAPS_API_KEY}

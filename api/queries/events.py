@@ -31,7 +31,7 @@ class EventDetailOut(BaseModel):
 
 
 class EventQueries(BaseModel):
-    def create(self, event: EventIn) -> EventOut:
+    def create(self, event: EventIn) -> Union[EventOut, Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -99,7 +99,6 @@ class EventQueries(BaseModel):
                     )
         except Exception as e:
             print(e)
-            return {"message": "could not get that event"}
 
     def get_all_future(self, class_id) -> Union[List[EventDetailOut], Error]:
         try:

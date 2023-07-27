@@ -1,5 +1,7 @@
-from .keys import PEXELS_API_KEY, OPEN_WEATHER_API_KEY
 import requests
+import os
+
+OPEN_WEATHER_API_KEY = os.environ.get("OPEN_WEATHER_API_KEY")
 
 
 def get_location_data(zip_code):

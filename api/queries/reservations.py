@@ -97,7 +97,7 @@ class ReservationQuery:
 
     def get_student(
         self, student_id: int
-    ) -> Union[Error, List[ReservationDetailsOut]]:
+    ) -> Union[List[ReservationDetailsOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -136,11 +136,11 @@ class ReservationQuery:
                     ]
         except Exception as e:
             print(e)
-            return {"message": "Could not get that reservation"}
+            return {"message": "Could not get reservations for that student"}
 
     def get_reservations_by_instructor(
         self, instructor_id: int
-    ) -> Union[Error, List[ReservationDetailsOut]]:
+    ) -> Union[List[ReservationDetailsOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:

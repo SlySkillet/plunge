@@ -12,19 +12,6 @@ code {
     monospace;
 }
 
-/* Simons Development Styles (TEMP) */
-
-/* * {
-  border: 1px solid red;
-} */
-
-/* NAVBAR STYLES */
-
-/* choose something for background here (remove 'bg-light' from nav className in jsx) */
-/* nav.navbar.navbar-light.navbar-expand-lg {
-  background-color: aqua;
-} */
-
 div#root {
   display: flex;
   flex-direction: column;

@@ -13,7 +13,7 @@ from queries.events import (
 router = APIRouter()
 
 
-@router.post("/events", response_model=Union[EventOut, Error])
+@router.post("/api/events", response_model=Union[EventOut, Error])
 def create_event(
     response: Response,
     event: EventIn,
@@ -28,35 +28,43 @@ def create_event(
 
 
 @router.get(
-    "/events/future/{class_id}",
+    "/api/events/future/{class_id}",
     response_model=Union[List[EventDetailOut], Error],
 )
-def get_all_future(class_id: int, query: EventQueries = Depends()):
+def get_all_future(
+    class_id: int, query: EventQueries = Depends()
+) -> Union[List[EventDetailOut], Error]:
     return query.get_all_future(class_id)
 
 
 @router.get(
-    "/events/instructor/{instructor_id}",
+    "/api/events/instructor/{instructor_id}",
     response_model=Union[List[EventDetailOut], Error],
 )
-def get_all_by_instructor(instructor_id: int, query: EventQueries = Depends()):
+def get_all_by_instructor(
+    instructor_id: int, query: EventQueries = Depends()
+) -> Union[List[EventDetailOut], Error]:
     return query.get_all_by_instructor(instructor_id)
 
 
-@router.get("/events/{event_id}", response_model=Optional[EventDetailOut])
+@router.get(
+    "/api/events/{event_id}",
+    response_model=Union[Optional[EventDetailOut], Error],
+)
 def get_one_event(
     event_id: int,
     response: Response,
     query: EventQueries = Depends(),
-) -> EventDetailOut:
+) -> Union[Optional[EventDetailOut], Error]:
     event = query.get_one(event_id)
     if event is None:
         response.status_code = 404
+        return {"message": "could not get that event"}
     return event
 
 
 @router.put(
-    "/events/{event_id}",
+    "/api/events/{event_id}",
     response_model=Union[EventOut, Error],
 )
 def update_event(
@@ -76,7 +84,7 @@ def update_event(
         }
 
 
-@router.delete("/events/{event_id}", response_model=bool)
+@router.delete("/api/events/{event_id}", response_model=bool)
 def delete_event(
     event_id: int,
     query: EventQueries = Depends(),

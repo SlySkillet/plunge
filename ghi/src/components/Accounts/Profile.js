@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
-import { useGetTokenQuery, useLogoutMutation } from "../../store/authApi";
+import { useGetTokenQuery } from "../../store/authApi";
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const {
-    data: tokenData,
-    error: tokenError,
-    isLoading: tokenIsLoading,
-  } = useGetTokenQuery();
+  const { data: tokenData, isLoading: tokenIsLoading } = useGetTokenQuery();
 
   const navigate = useNavigate();
 
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
+  const baseUrl = process.env.REACT_APP_API_HOST;
 
   const [profileDetails, setProfileDetails] = useState({
     id: "",
@@ -34,7 +30,7 @@ function Profile() {
 
   const fetchData = async () => {
     if (tokenData) {
-      const url = `${baseUrl}/account`;
+      const url = `${baseUrl}/api/account_details`;
       const fetchConfig = {
         method: "get",
         headers: {

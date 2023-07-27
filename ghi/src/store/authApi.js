@@ -4,7 +4,7 @@ export const authApi = createApi({
   reducerPath: "authentication",
   tagTypes: ["Token"],
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_SAMPLE_SERVICE_API_HOST,
+    baseUrl: process.env.REACT_APP_API_HOST,
   }),
   endpoints: (builder) => ({
     login: builder.mutation({

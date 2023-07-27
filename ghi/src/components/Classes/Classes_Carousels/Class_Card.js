@@ -3,23 +3,19 @@ import "./styles.css";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useGetTokenQuery, useLogoutMutation } from "../../../store/authApi";
+import { useGetTokenQuery } from "../../../store/authApi";
 import Slider from "react-slick";
 
 function ClassesList() {
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
-  const {
-    data: tokenData,
-    error: tokenError,
-    isLoading: tokenIsLoading,
-  } = useGetTokenQuery();
+  const baseUrl = process.env.REACT_APP_API_HOST;
+  const { data: tokenData } = useGetTokenQuery();
   const [featured, setFeatured] = useState([]);
   const [upcoming, setUpcoming] = useState([]);
   const [nearby, setNearby] = useState([]);
 
   const fetchData = async () => {
-    const url_featured = `${baseUrl}/classes?feed=featured`;
-    const url_upcoming = `${baseUrl}/classes?feed=upcoming`;
+    const url_featured = `${baseUrl}/api/classes?feed=featured`;
+    const url_upcoming = `${baseUrl}/api/classes?feed=upcoming`;
     const response_featured = await fetch(url_featured);
     const response_upcoming = await fetch(url_upcoming);
     if (response_featured.ok) {
@@ -39,7 +35,7 @@ function ClassesList() {
           Authorization: `Bearer ${tokenData.access_token}`,
         },
       };
-      const url_nearby = `${baseUrl}/classes?feed=nearby`;
+      const url_nearby = `${baseUrl}/api/classes?feed=nearby`;
       const response_nearby = await fetch(url_nearby, fetchConfig);
       if (response_nearby.ok) {
         const data = await response_nearby.json();
@@ -86,11 +82,7 @@ function ClassesList() {
     upcoming.map((classes_details) => (
       <div key={classes_details.id}>
         <a className="nav-link" href={"classes/" + classes_details.id}>
-          <div
-            className="card mx-2"
-            style={{ maxWidth: "275px" }}
-            href="http://localhost:3000/categories"
-          >
+          <div className="card mx-2" style={{ maxWidth: "275px" }}>
             <div className="card-body">
               <img
                 src={classes_details.image_1}

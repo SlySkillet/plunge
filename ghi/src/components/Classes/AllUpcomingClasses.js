@@ -3,11 +3,11 @@ import { React, useState, useEffect } from "react";
 function AllUpcomingClasses() {
   const [classes, setClasses] = useState([]);
 
+  const baseUrl = process.env.REACT_APP_API_HOST;
+
   useEffect(() => {
     async function loadClasses() {
-      const response = await fetch(
-        "http://localhost:8000/classes?feed=upcoming"
-      );
+      const response = await fetch(`${baseUrl}/api/classes?feed=upcoming`);
       if (response.ok) {
         const data = await response.json();
         setClasses(data);

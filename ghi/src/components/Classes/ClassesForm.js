@@ -57,7 +57,7 @@ const ClassesForm = () => {
   const createLocation = async (event) => {
     event.preventDefault();
     const location = { ...locationData, user_id: tokenData.account.id };
-    const url = `${baseUrl}/locations`;
+    const url = `${baseUrl}/api/locations`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(location),
@@ -82,12 +82,8 @@ const ClassesForm = () => {
     }
   };
 
-  const {
-    data: tokenData,
-    error: tokenError,
-    isLoading: tokenIsLoading,
-  } = useGetTokenQuery();
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
+  const { data: tokenData } = useGetTokenQuery();
+  const baseUrl = process.env.REACT_APP_API_HOST;
 
   const [formData, setFormData] = useState({
     class_name: "",
@@ -110,7 +106,7 @@ const ClassesForm = () => {
 
   const fetchFormData = async () => {
     if (classId) {
-      const url = `${baseUrl}/classes/${classId}`;
+      const url = `${baseUrl}/api/classes/${classId}`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
@@ -134,7 +130,7 @@ const ClassesForm = () => {
   const [categories, setCategories] = useState([]);
 
   const fetchCategories = async () => {
-    const url = `${baseUrl}/categories`;
+    const url = `${baseUrl}/api/categories`;
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
@@ -146,7 +142,7 @@ const ClassesForm = () => {
 
   const fetchLocations = async () => {
     if (tokenData) {
-      const url = `${baseUrl}/locations/${tokenData.account.id}`;
+      const url = `${baseUrl}/api/locations/${tokenData.account.id}`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
@@ -191,7 +187,7 @@ const ClassesForm = () => {
     if (tokenData) {
       if (classId) {
         const formattedFormData = formatFormData();
-        const url = `${baseUrl}/classes/${classId}`;
+        const url = `${baseUrl}/api/classes/${classId}`;
         const fetchConfig = {
           method: "put",
           body: JSON.stringify(formattedFormData),
@@ -210,7 +206,7 @@ const ClassesForm = () => {
         }
       } else {
         const formattedFormData = formatFormData();
-        const url = `${baseUrl}/classes`;
+        const url = `${baseUrl}/api/classes`;
         const fetchConfig = {
           method: "post",
           body: JSON.stringify(formattedFormData),
@@ -607,9 +603,6 @@ const ClassesForm = () => {
             >
               Success!
             </div>
-            {/* NOTE: need to find a better way to right-align the button.
-            Currently using "modal-footer" class, which isn't really
-            appropriate for this use-case. */}
             <div
               className={
                 createOrUpdateClassStatus.status === "uninitiated"

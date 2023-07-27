@@ -9,13 +9,9 @@ const EventsForm = () => {
 
   const [createOrUpdateEventError, setCreateOrUpdateEventError] = useState();
 
-  const {
-    data: tokenData,
-    error: tokenError,
-    isLoading: tokenIsLoading,
-  } = useGetTokenQuery();
+  const { data: tokenData } = useGetTokenQuery();
 
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
+  const baseUrl = process.env.REACT_APP_API_HOST;
 
   const googleMapsLink = () => {
     if (classDetails.location_address) {
@@ -52,7 +48,7 @@ const EventsForm = () => {
   });
 
   const fetchClassDetails = async () => {
-    const url = `${baseUrl}/classes/${classId}`;
+    const url = `${baseUrl}/api/classes/${classId}`;
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
@@ -67,7 +63,7 @@ const EventsForm = () => {
 
   const fetchFormData = async () => {
     if (eventId) {
-      const url = `${baseUrl}/events/${eventId}`;
+      const url = `${baseUrl}/api/events/${eventId}`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
@@ -106,7 +102,7 @@ const EventsForm = () => {
     if (tokenData) {
       if (eventId) {
         const formattedFormData = formatFormData();
-        const url = `${baseUrl}/events/${eventId}`;
+        const url = `${baseUrl}/api/events/${eventId}`;
         const fetchConfig = {
           method: "put",
           body: JSON.stringify(formattedFormData),
@@ -127,7 +123,7 @@ const EventsForm = () => {
         }
       } else {
         const formattedFormData = formatFormData();
-        const url = `${baseUrl}/events`;
+        const url = `${baseUrl}/api/events`;
         const fetchConfig = {
           method: "post",
           body: JSON.stringify(formattedFormData),

@@ -1,14 +1,9 @@
-import { useEffect, useState } from "react";
-// import Construct from "./Construct.js";
-// import ErrorNotification from "./ErrorNotification";
 import "./App.css";
 // import ClassesList from './components/Classes/Classes_Carousels/Class_Card';
 import MainPage from "./components/Classes/MainPage/Main_Page";
 import "./App.css";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import LoginForm from "./LoginForm";
-import SignupForm from "./SignupForm";
 import ClassDetails from "./components/Classes/ClassDetails";
 import ClassesForm from "./components/Classes/ClassesForm";
 import EventsForm from "./components/Events/EventsForm";
@@ -25,9 +20,7 @@ import Category from "./components/Categories/Category";
 import Locations from "./components/Locations/Locations";
 
 function App() {
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
-  const [launchInfo, setLaunchInfo] = useState([]);
-  const [error, setError] = useState(null);
+  const baseUrl = process.env.REACT_APP_API_HOST;
 
   return (
     <AuthProvider baseUrl={baseUrl}>
@@ -36,8 +29,6 @@ function App() {
         <div className="container">
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/signup" element={<SignupForm />} />
             <Route path="/classes/create" element={<ClassesForm />} />
             <Route path="/classes/:classId/edit" element={<ClassesForm />} />
             <Route path="/classes/:classId" element={<ClassDetails />} />

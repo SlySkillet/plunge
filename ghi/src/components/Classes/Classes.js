@@ -6,11 +6,11 @@ function UpcomingClasses() {
   const [classes1, setClasses1] = useState([]);
   const [classes2, setClasses2] = useState([]);
 
+  const baseUrl = process.env.REACT_APP_API_HOST;
+
   useEffect(() => {
     async function loadClasses() {
-      const response = await fetch(
-        "http://localhost:8000/classes?feed=upcoming"
-      );
+      const response = await fetch(`${baseUrl}/api/classes?feed=upcoming`);
       if (response.ok) {
         const data = await response.json();
         setClasses(data);

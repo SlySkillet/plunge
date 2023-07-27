@@ -1,7 +1,6 @@
 .card {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   justify-content: center;
   background-color: #fff;
   width: 16rem;
@@ -34,9 +33,8 @@
 }
 
 .card-img-top {
-    width: 100%;
-    height: 15vw;
-    object-fit: cover;
-    border-radius: 8px;
-
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
+  border-radius: 8px;
 }

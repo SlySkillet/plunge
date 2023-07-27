@@ -31,7 +31,7 @@ class LocationOut(BaseModel):
 
 
 class LocationQueries(BaseModel):
-    def get_all(self) -> Union[Error, List[LocationOut]]:
+    def get_all(self) -> Union[List[LocationOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -70,7 +70,7 @@ class LocationQueries(BaseModel):
 
     def get_locations_by_account(
         self, account_id: int
-    ) -> Union[Error, List[LocationOut]]:
+    ) -> Union[List[LocationOut], Error]:
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
@@ -107,7 +107,7 @@ class LocationQueries(BaseModel):
                     ]
         except Exception as e:
             print(e)
-            return {"message": "Could not get that reservation"}
+            return {"message": "Could not get locations for that account"}
 
     def create(self, location: LocationIn) -> Union[LocationOut, Error]:
         try:

@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGetTokenQuery, useLogoutMutation } from "../../store/authApi";
-import { useParams } from "react-router-dom";
-import { current } from "@reduxjs/toolkit";
+import { useGetTokenQuery } from "../../store/authApi";
 
 function Reservations() {
   const {
@@ -10,14 +8,14 @@ function Reservations() {
     isLoading: tokenIsLoading,
   } = useGetTokenQuery();
 
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
+  const baseUrl = process.env.REACT_APP_API_HOST;
 
   const [upcomingReservations, setUpcomingReservations] = useState([]);
   const [pastReservations, setPastReservations] = useState([]);
 
   const fetchData = async () => {
     if (tokenData) {
-      const url = `${baseUrl}/student/reservations/${tokenData.account.id}`;
+      const url = `${baseUrl}/api/student/reservations/${tokenData.account.id}`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
@@ -82,7 +80,7 @@ function Reservations() {
     e.preventDefault();
     const data = {};
     data.status = false;
-    const url = `${baseUrl}/reservations/${id}`;
+    const url = `${baseUrl}/api/reservations/${id}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),

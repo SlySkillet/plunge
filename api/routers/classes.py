@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response, Request
+from fastapi import APIRouter, Depends, Response
 from typing import List, Union, Optional
 from authenticator import authenticator
 from queries.classes import (
@@ -12,7 +12,7 @@ from queries.classes import (
 router = APIRouter()
 
 
-@router.get("/classes", response_model=Union[List[ClassOutDetail], Error])
+@router.get("/api/classes", response_model=Union[List[ClassOutDetail], Error])
 def get_all(
     response: Response,
     query: ClassQueries = Depends(),
@@ -41,7 +41,7 @@ def get_all(
         return query.get_all()
 
 
-@router.post("/classes", response_model=Union[ClassOut, Error])
+@router.post("/api/classes", response_model=Union[ClassOut, Error])
 def create_class(
     response: Response, class_info: ClassIn, query: ClassQueries = Depends()
 ) -> Union[ClassOut, Error]:
@@ -54,7 +54,7 @@ def create_class(
 
 
 @router.put(
-    "/classes/{class_id}",
+    "/api/classes/{class_id}",
     response_model=Union[ClassOut, Error],
 )
 def update_class(
@@ -74,12 +74,12 @@ def update_class(
         }
 
 
-@router.get("/classes/{class_id}", response_model=Optional[ClassOutDetail])
+@router.get("/api/classes/{class_id}", response_model=Optional[ClassOutDetail])
 def get_one_class(
     class_id: int,
     response: Response,
     query: ClassQueries = Depends(),
-) -> ClassOutDetail:
+) -> Optional[ClassOutDetail]:
     class_info = query.get_one(class_id)
     if class_info is None:
         response.status_code = 404

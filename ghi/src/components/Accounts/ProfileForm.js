@@ -1,18 +1,14 @@
 import { useState, useEffect } from "react";
 import { useGetTokenQuery } from "../../store/authApi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "react-bootstrap";
 
 const ProfileForm = () => {
-  const {
-    data: tokenData,
-    error: tokenError,
-    isLoading: tokenIsLoading,
-  } = useGetTokenQuery();
+  const { data: tokenData, isLoading: tokenIsLoading } = useGetTokenQuery();
 
   const navigate = useNavigate();
 
-  const baseUrl = process.env.REACT_APP_SAMPLE_SERVICE_API_HOST;
+  const baseUrl = process.env.REACT_APP_API_HOST;
 
   const [updateProfileError, setUpdateProfileError] = useState();
   const [profileSetupStatus, setProfileSetupStatus] = useState({ status: "" });
@@ -52,7 +48,7 @@ const ProfileForm = () => {
   const createLocation = async (event) => {
     event.preventDefault();
     const location = { ...locationData, user_id: tokenData.account.id };
-    const url = `${baseUrl}/locations`;
+    const url = `${baseUrl}/api/locations`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(location),
@@ -96,7 +92,7 @@ const ProfileForm = () => {
 
   const fetchProfileData = async () => {
     if (tokenData) {
-      const url = `${baseUrl}/account`;
+      const url = `${baseUrl}/api/account_details`;
       const fetchConfig = {
         method: "get",
         headers: {
@@ -148,7 +144,7 @@ const ProfileForm = () => {
   const [categories, setCategories] = useState([]);
 
   const fetchCategories = async () => {
-    const url = `${baseUrl}/categories`;
+    const url = `${baseUrl}/api/categories`;
     const response = await fetch(url);
     if (response.ok) {
       const data = await response.json();
@@ -160,7 +156,7 @@ const ProfileForm = () => {
 
   const fetchLocations = async () => {
     if (tokenData) {
-      const url = `${baseUrl}/locations/${tokenData.account.id}`;
+      const url = `${baseUrl}/api/locations/${tokenData.account.id}`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
@@ -253,7 +249,7 @@ const ProfileForm = () => {
     event.preventDefault();
     if (tokenData) {
       const formattedFormData = formatFormData();
-      const url = `${baseUrl}/account_details`;
+      const url = `${baseUrl}/api/account_details`;
       const fetchConfig = {
         method: "put",
         body: JSON.stringify(formattedFormData),
@@ -622,9 +618,6 @@ const ProfileForm = () => {
                     {updateProfileError}
                   </div>
                 </div>
-                {/* NOTE: need to find a better way to right-align the button.
-            Currently using "modal-footer" class, which isn't really
-            appropriate for this use-case. */}
                 <div className="modal-footer mb-3">
                   <button type="submit" className="btn btn-success">
                     Save

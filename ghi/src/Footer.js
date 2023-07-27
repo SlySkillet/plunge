@@ -16,6 +16,7 @@ function Footer() {
       <div></div>
       <div className="footer-item">
         <p>Thanks for visiting Plunge!</p>
+        <p>©2023 Plunge</p>
       </div>
       <div></div>
     </div>

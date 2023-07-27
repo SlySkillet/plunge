@@ -7,19 +7,21 @@ function ClassDetails() {
   const { data: tokenData } = useGetTokenQuery();
   const { classId } = useParams();
 
+  const baseUrl = process.env.REACT_APP_API_HOST;
+
   const [classes, setClasses] = useState("");
   const [events, setEvents] = useState("");
   const [eventForm, setEventForm] = useState("");
   const [registered, setRegistered] = useState("");
 
   const fetchData = async () => {
-    let url = `http://localhost:8000/classes/${classId}`;
+    let url = `${baseUrl}/api/classes/${classId}`;
     let response = await fetch(url);
     if (response.ok) {
       let data = await response.json();
       setClasses(data);
     }
-    url = `http://localhost:8000/events/future/${classId}`;
+    url = `${baseUrl}/api/events/future/${classId}`;
     response = await fetch(url);
     if (response.ok) {
       let data = await response.json();
@@ -29,7 +31,7 @@ function ClassDetails() {
 
   const registeredStatus = async () => {
     if (tokenData) {
-      const url = `http://localhost:8000/student/reservations/${tokenData.account.id}`;
+      const url = `${baseUrl}/api/student/reservations/${tokenData.account.id}`;
       const response = await fetch(url);
       if (response.ok) {
         let data = await response.json();
@@ -115,7 +117,7 @@ function ClassDetails() {
     data.student_id = tokenData.account.id;
     data.total_price = classes.price;
     data.status = true;
-    const url = "http://localhost:8000/reservations";
+    const url = `${baseUrl}/api/reservations`;
     const fetchConfig = {
       method: "post",
       body: JSON.stringify(data),
@@ -134,7 +136,7 @@ function ClassDetails() {
     e.preventDefault();
     const data = {};
     data.status = false;
-    const url = `http://localhost:8000/reservations/${registered.id}`;
+    const url = `${baseUrl}/api/reservations/${registered.id}`;
     const fetchConfig = {
       method: "put",
       body: JSON.stringify(data),
