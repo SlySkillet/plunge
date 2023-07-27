@@ -33,7 +33,6 @@ function Map() {
         // const url = `http://localhost:8000/account/${tokenData.account.id}`;
         if (response.ok) {
           const data = await response.json();
-          console.log("data: ", data);
           setUser(data);
         } else {
           console.error(response);
@@ -52,6 +51,7 @@ function Map() {
       );
       if (response.ok) {
         const data = await response.json();
+        console.log("data: ", data);
         setClasses(data);
       } else {
         console.error(response);
@@ -113,14 +113,14 @@ function Map() {
                     lng: parseFloat(classIterable.location_longitude),
                   }}
                   icon={icons[classIterable.category_id - 1]}
-                  size="32px"
+                  // size="32px"
                 />
               );
             })}
           </div>
         </GoogleMap>
       </div>
-      <div className="card-container">
+      <div className="card-container location-page">
         {classes.map((classIterable, Idx) => {
           const classDetailUrl = `classes/${classIterable.id}`;
           return (
