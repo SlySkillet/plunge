@@ -9,12 +9,12 @@ class Error(BaseModel):
 
 class CategoryIn(BaseModel):
     name: str
-
+    image_1: str
 
 class CategoryOut(BaseModel):
     id: int
     name: str
-
+    image_1: str
 
 class CategoryQueries(BaseModel):
     def get_all(self) -> Union[Error, List[CategoryOut]]:
@@ -23,7 +23,9 @@ class CategoryQueries(BaseModel):
                 with conn.cursor() as db:
                     db.execute(
                         """
-                        SELECT id, name
+                        SELECT id
+                            , name
+                            , image_1
                         FROM categories;
                         """
                     )
@@ -31,6 +33,7 @@ class CategoryQueries(BaseModel):
                         CategoryOut(
                             id=record[0],
                             name=record[1],
+                            image_1=record[2]
                         )
                         for record in db
                     ]

@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 // import Construct from "./Construct.js";
 // import ErrorNotification from "./ErrorNotification";
+import './App.css';
+// import ClassesList from './components/Classes/Classes_Carousels/Class_Card';
+import MainPage from './components/Classes/MainPage/Main_Page';
 import "./App.css";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -29,6 +32,7 @@ function App() {
         <Nav />
         <div className="container">
           <Routes>
+            <Route path="/" element={<MainPage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/signup" element={<SignupForm />} />
             <Route path="/classes/create" element={<ClassesForm />} />
