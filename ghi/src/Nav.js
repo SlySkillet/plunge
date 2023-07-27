@@ -173,7 +173,9 @@ function Nav() {
             </button>
             <ul className="dropdown-menu">
               <li className="nav-item">
-                <Link className="dropdown-item">By Location</Link>
+                <Link to="/locations" className="dropdown-item">
+                  By Location
+                </Link>
               </li>
               <li className="nav-item">
                 <Link to="/browse-categories" className="dropdown-item">
