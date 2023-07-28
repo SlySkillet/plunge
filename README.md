@@ -11,7 +11,7 @@ Plunge - dive into a new adventure
 
 - [Wireframe](docs/Wireframe.png)
 - [Data model](docs/data_model.png)
-- [API documentation](docs/fastapi.png)
+- [API documentation](docs/fastapi.md)
 
 # Intended Market
 
