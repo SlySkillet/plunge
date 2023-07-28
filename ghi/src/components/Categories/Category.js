@@ -45,11 +45,13 @@ function Category() {
           return (
             <div className="card location-card mx-2" key={idx}>
               <div className="card-body location-card">
-                <img
-                  src={classIterable.image_1}
-                  className="card-img-top"
-                  alt="..."
-                />
+                <a href={classDetailUrl}>
+                  <img
+                    src={classIterable.image_1}
+                    className="card-img-top"
+                    alt="..."
+                  />
+                </a>
                 <h5 className="card-title location-card">
                   {classIterable.class_name}
                 </h5>
@@ -66,11 +68,6 @@ function Category() {
                         ? classIterable.location_address.substr(0, 13) + "..."
                         : classIterable.location_address}
                     </p>
-                  </li>
-                  <li className="list-group-item">
-                    <a href={classDetailUrl} className="btn btn-primary">
-                      Class Details
-                    </a>
                   </li>
                 </ul>
               </div>

@@ -37,28 +37,32 @@ function UpcomingClasses() {
 
   return (
     <div className="upcoming-container">
-      <h1 className="upcoming-title">Upcoming</h1>
-      <a href="/all-upcoming" className="more-classes-btn">
-        <button
-          type="button"
-          className="btn btn-outline-primary more-classes-btn"
-        >
-          See More...
-        </button>
-      </a>
+      <div className="carousel-title-row">
+        <h1 className="upcoming-title">Upcoming</h1>
+        <a href="/all-upcoming" className="more-classes-btn">
+          <button
+            type="button"
+            className="btn btn-outline-primary more-classes-btn"
+          >
+            See More...
+          </button>
+        </a>
+      </div>
       <Carousel variant="dark" className="upcoming-carousel">
         <Carousel.Item>
-          <Stack className="card-stack" direction="horizontal" gap={3}>
+          <Stack className="card-stack" direction="horizontal" gap={0}>
             {classes1.map((classIterable, Idx) => {
               const classDetailUrl = `classes/${classIterable.id}`;
               return (
-                <div className="card location-card mx-2" key={Idx}>
+                <div className="card location-card mx-1" key={Idx}>
                   <div className="card-body location-card">
-                    <img
-                      src={classIterable.image_1}
-                      className="card-img-top"
-                      alt="..."
-                    />
+                    <a href={classDetailUrl}>
+                      <img
+                        src={classIterable.image_1}
+                        className="card-img-top"
+                        alt="..."
+                      />
+                    </a>
                     <h5 className="card-title location-card">
                       {classIterable.class_name}
                     </h5>
@@ -77,11 +81,6 @@ function UpcomingClasses() {
                             : classIterable.location_address}
                         </p>
                       </li>
-                      <li className="list-group-item">
-                        <a href={classDetailUrl} className="btn btn-primary">
-                          Class Details
-                        </a>
-                      </li>
                     </ul>
                   </div>
                 </div>
@@ -94,13 +93,15 @@ function UpcomingClasses() {
             {classes2.map((classIterable, Idx) => {
               const classDetailUrl = `classes/${classIterable.id}`;
               return (
-                <div className="card location-card mx-2" key={Idx}>
+                <div className="card location-card mx-1" key={Idx}>
                   <div className="card-body location-card">
-                    <img
-                      src={classIterable.image_1}
-                      className="card-img-top"
-                      alt="..."
-                    />
+                    <a href={classDetailUrl}>
+                      <img
+                        src={classIterable.image_1}
+                        className="card-img-top"
+                        alt="..."
+                      />
+                    </a>
                     <h5 className="card-title location-card">
                       {classIterable.class_name}
                     </h5>
@@ -117,11 +118,6 @@ function UpcomingClasses() {
                               "..."
                             : classIterable.location_address}
                         </p>
-                      </li>
-                      <li className="list-group-item">
-                        <a href={classDetailUrl} className="btn btn-primary">
-                          Class Details
-                        </a>
                       </li>
                     </ul>
                   </div>

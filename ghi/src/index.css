@@ -61,6 +61,10 @@ button.btn.btn-danger {
   padding-right: 50px;
 }
 
+nav.navbar.p-3.bg-light.navbar-light.navbar-expand-lg {
+  margin-bottom: 40px;
+}
+
 /* FOOTER STYLES */
 
 .footer.navbar.navbar-expand-lg.navbar-light.bg-light {
@@ -100,13 +104,6 @@ ul {
 
 /* CARD STYLES */
 
-.card-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-items: center;
-  padding: 40px;
-}
-
 .card.location-card.mx-2 {
   width: 275px;
   margin: 10px;
@@ -125,8 +122,6 @@ p.card-text.location-card {
   justify-content: center;
 }
 
-/* CARD STYLES */
-
 .all-upcoming-card-container {
   display: flex;
   flex-direction: column;
@@ -136,14 +131,13 @@ p.card-text.location-card {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 40px;
 }
 
-.card.location-card.mx-2 {
-  width: 260px;
+.card.location-card.mx-1 {
+  width: 300px;
   margin-top: 10px;
   margin-bottom: 10px;
-  height: 530px;
+  height: 550px;
 }
 
 .card-body.location-card {
@@ -155,7 +149,8 @@ p.card-text.location-card {
 }
 
 img.card-img-top {
-  height: 260px;
+  height: 300px;
+  border-radius: 4px;
 }
 
 p.card-text.location-card {
@@ -164,6 +159,7 @@ p.card-text.location-card {
   font-weight: 400;
   display: flex;
   justify-content: center;
+  font-size: medium;
 }
 
 ul.list-group.list-group-flush.location-card {
@@ -171,20 +167,31 @@ ul.list-group.list-group-flush.location-card {
 }
 
 h5.card-title.location-card {
+  margin-left: 15px;
+  margin-right: 15px;
   margin-top: 5px;
+  font-size: medium;
 }
 /* CAROUSEL UPCOMING STYLES */
+
+.carousel-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 
 .upcoming-container {
   display: flex;
   flex-direction: column;
+  height: 650px;
 }
 
 .upcoming-title {
   font-weight: 900;
   align-self: center;
-  margin-top: 60px;
-  margin-bottom: 30px;
+  margin-top: 20px;
 }
 
 a.more-classes-btn {
@@ -192,10 +199,9 @@ a.more-classes-btn {
 }
 
 .upcoming-carousel {
-  margin-top: 10px;
-  margin-bottom: 100px;
-  background-color: rgb(248, 249, 250);
+  margin-bottom: 50px;
   padding-bottom: 50px;
+  min-width: 1300px;
 }
 
 .card-stack {
