@@ -1,4 +1,3 @@
-from pydantic import BaseModel
 from fastapi.testclient import TestClient
 from main import app
 from queries.locations import LocationQueries

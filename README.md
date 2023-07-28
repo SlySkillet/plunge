@@ -1,141 +1,97 @@
-# Module3 Project Gamma
+# Plunge
 
-## Getting started
+- Greg Herren
+- Travis Semeniv
+- Henry Kim
+- Simon Conrad
 
-You have a project repository, now what? The next section
-lists all of the deliverables that are due at the end of the
-week. Below is some guidance for getting started on the
-tasks for this week.
+Plunge - dive into a new adventure
 
-## Install Extensions
+# Design
 
-- Prettier: <https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode>
-- Black Formatter: <https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter>
+- [Wireframe](docs/Wireframe.png)
+- [Data model](docs/data_model.png)
 
-## Deliverables
+# Intended Market
 
-- [ ] Wire-frame diagrams
-- [ ] API documentation
-- [ ] Project is deployed to Caprover (BE, DB) & GitLab-pages (FE)
-- [ ] GitLab issue board is setup and in use (or project management tool of choice)
-- [ ] Journals
+Plunge is a peer-to-peer application for informal teaching, learning and community building. It is a platform for people to pursue and share their passions. We intend to foster creativity and collaboration in our communities.
 
-## Project layout
+# Functionality
 
-The layout of the project is just like all of the projects
-you did with `docker-compose` in module #2. You will create
-a directory in the root of the repository for each service
-that you add to your project just like those previous
-projects were setup.
+- Visitors to the site can view existing classes from 11 categories and can choose to explore by their interests
+  - visitors can narrow their search by featured classes (determined by Plunge)
+  - visitors can narrow their search by the next upcoming events
+  - from the 'Browse' dropdown in the navbar, visitors can explore classes offered by category
+- After getting a sense for the existing classes/events, the visitors can choose to join the application and take the plunge themselves by creating an account
+- All pages show classes in the form of cards displaying an image, the class title, description and address.
+  - clicking the link navigates the user to a page displaying the full details of the class
+  - class details includes the full class description, up to four images, class requirements, the image, name and bio of the instructor who created the class, and a link to either login (create an account) or register for a specific class time.
+- A user can enter personal details to improve their experience
+  - entering a location allows them to view nearby classes on the map provided on the browse-locations page, accessed from the navbar 'Browse' dropdown.
+- Once authenticated, a user has access to the user features located in the pulldown in the top right corner of the navbar available on all pages.
+  - Clicking reservations navigates the user to the reservations page where all upcoming and past attended classes are rendered
+  - Clicking 'my profile' navigates the user to their profile page where they have the option to edit their information
+  - Clicking 'instructor dashboard' navigates the user to the dashboard which is the center for actions in creating classes to offer
+- When the user has navigated to the instructor dashboard there is a link to create a class. They can enter all the necessary inputs for their class, including location.
+  - location is selected from a dropdown. If their desired location is not in the dropdown, a button next to the input brings up a modal where they can input the desired location. When that modal closes, their location comes up in the dropdown.
+  - clicking create publishes the class and the user is prompted to schedule events for it. An event is just the meeting time for the class and many events can be created for each class.
+  - all classes and events that the user has created will appear in the instructor dashboard where they have the ability to edit and delete events and classes.
+  - the user can view the registration status for each class to tell how many people to expect
+  - the user who has created the class can deny entry to a student if they choose to. Once denied, the instructor can change that status back to enrolled.
 
-### Directories
+## Getting Started
 
-Several directories have been added to your project. The
-directories `docs` and `journals` are places for you and
-your team-mates to, respectively, put any documentation
-about your project that you create and to put your
-project-journal entries. See the _README.md_ file in each
-directory for more info.
+- Install Extensions
+  - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+  - [Flake8 Formatter](https://marketplace.visualstudio.com/items?itemName=ms-python.flake8)
+- Create an env file in your top level directory, following env.sample example
+- Build the containers in docker by running "docker compose build" in your top-level directory
+- Bring up the containers in docker by running "docker compose up" in your top-level directory
 
-The other directories, `ghi` and `api`, are services, that
-you can start building off of.
+## Stretch Functionality
 
-Inside of `ghi` is a minimal React app that has an "under
-construction" page. It is setup similarly to all of the
-other React projects that you have worked on.
+Functionality improvements we would like to make, but have not had time to do by the time of submission:
 
-Inside of `api` is a minimal FastAPI application.
-"Where are all the files?" you might ask? Well, the
-`main.py` file is the whole thing, and go take look inside
-of it... There's not even much in there..., hmm? That is
-FastAPI, we'll learn more about it in the coming days. Can
-you figure out what this little web-application does even
-though you haven't learned about FastAPI yet?
+- More advanced search with fuzzy matching
+- Showing an image preview on forms after a URL is added
+- Add an "account setup" prompt to remind users to add more personal information after account creation
+- Add a reviews component so users can review classes they've attended and prospective students can view class reviews
+- Deploy the service
+- Show a class details modal when a user clicks a class icon on the browse by location page
+- Protect the delete event api call so only the instructor can delete an event
 
-Also in `api` is a directory for your migrations.
-If you choose to use PostgreSQL, then you'll want to use
-migrations to control your database. Unlike Django, where
-migrations were automatically created for you, you'll write
-yours by hand using DDL. Don't worry about not knowing what
-DDL means; we have you covered. There's a sample migration
-in there that creates two tables so you can see what they
-look like.
+## Issue Tracking
 
-The Dockerfile and Dockerfile.dev run your migrations
-for you automatically.
+We opted to use [Linear](https://linear.app/) for issue tracking. Linear supports a Gitlab integration through a webhook that associates merge requests with their relevant ticket. Below is an example of one issue and corresponding merge request for each member of the team:
 
-### Other files
+- Greg:
 
-The following project files have been created as a minimal
-starting point. Please follow the guidance for each one for
-a most successful project.
+  - [Merge Request](https://gitlab.com/hnrykm/plunge/-/merge_requests/16)
+  - [Issue](https://linear.app/lucky-13/issue/LUC-59/create-class-page)
+  - [Screenshot of issue](docs/greg_linear_issue.png)
 
-- `docker-compose.yaml`: there isn't much in here, just a
-  **really** simple UI and FastAPI service. Add services
-  (like a database) to this file as you did with previous
-  projects in module #2.
-- `.gitlab-ci.yml`: This is your "ci/cd" file where you will
-  configure automated unit tests, code quality checks, and
-  the building and deployment of your production system.
-  Currently, all it does is deploy an "under construction"
-  page to your production UI on GitLab and a sample backend
-  to CapRover. We will learn much more about this file.
-- `.gitignore`: This is a file that prevents unwanted files
-  from getting added to your repository, files like
-  `pyc` files, `__pycache__`, etc. We've set it up so that
-  it has a good default configuration for Python projects.
-- `.env.sample`: This file is a template to copy when
-  creating environment variables for your team. Create a
-  copy called `.env` and put your own passwords in here
-  without fear of it being committed to git (see `.env`
-  listed in `.gitignore`). You can also put team related
-  environment variables in here, things like api and signing
-  keys that shouldn't be committed; these should be
-  duplicated in your deployed environments.
+- Henry:
 
-## How to complete the initial deploy
+  - [Merge Request](https://gitlab.com/hnrykm/plunge/-/merge_requests/13)
+  - [Issue](https://linear.app/lucky-13/issue/LUC-44/create-register-for-event-component)
+  - [Screenshot of issue](docs/henry_linear_issue.png)
 
-There will be further guidance on completing the initial
-deployment, but it just consists of these steps:
+- Simon:
 
-### Setup GitLab repo/project
+  - [Merge Request](https://gitlab.com/hnrykm/plunge/-/merge_requests/23)
+  - [Issue](https://linear.app/lucky-13/issue/LUC-50/browse-by-location)
+  - [Screenshot of issue](docs/simon_linear_issue.png)
 
-- make sure this project is in a group. If it isn't, stop
-  now and move it to a GitLab group
-- remove the fork relationship: In GitLab go to:
+- Travis:
 
-  Settings -> General -> Advanced -> Remove fork relationship
+  - [Merge Request](https://gitlab.com/hnrykm/plunge/-/merge_requests/37)
+  - [Issue](https://linear.app/lucky-13/issue/LUC-18/create-class-card-carousel-component)
+  - [Screenshot of issue](docs/travis_linear_issue.png)
 
-- add these GitLab CI/CD variables:
-  - PUBLIC_URL : this is your gitlab pages URL
-  - REACT_APP_API_HOST: enter "blank" for now
+## How Plunge was built
 
-#### Your GitLab pages URL
+Plunge was built using FastAPI and a relational database for the back-end. The front-end is React-based using a combination of bootstrap and react-bootstrap components. We also leveraged a few third-party services, such as:
 
-You can't find this in GitLab until after you've done a deploy
-but you can figure it out yourself from your GitLab project URL.
-
-If this is your project URL
-
-https://gitlab.com/GROUP_NAME/PROJECT_NAME
-
-then your GitLab pages URL will be
-
-https://GROUP_NAME.gitlab.io/PROJECT_NAME
-
-### Initialize CapRover
-
-1. Attain IP address and domain from an instructor
-1. Follow the steps in the CD Cookbook in Learn.
-
-### Update GitLab CI/CD variables
-
-Copy the service URL for your CapRover service and then paste
-that into the value for the REACT_APP_API_HOST CI/CD variable
-in GitLab.
-
-### Deploy it
-
-Merge a change into main to kick off the initial deploy. Once the build pipeline
-finishes you should be able to see an "under construction" page on your GitLab
-pages site.
+- [React Google Maps API](https://www.npmjs.com/package/@react-google-maps/api) for the browse by location page
+- [React Spring 3D Carousel](https://www.npmjs.com/package/react-spring-3d-carousel) for the main page hero component
+- [React Slick](https://react-slick.neostack.com/docs/api/) for the main page featured, upcoming, and nearby carousels
