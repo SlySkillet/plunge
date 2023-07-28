@@ -18,7 +18,6 @@ import BrowseCategories from "./components/Categories/Categories";
 import Category from "./components/Categories/Category";
 import Locations from "./components/Locations/Locations";
 import SearchResults from "./components/Classes/SearchResults";
-
 function App() {
   const baseUrl = process.env.REACT_APP_API_HOST;
 

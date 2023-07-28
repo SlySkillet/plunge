@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "./styles.css";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useGetTokenQuery } from "../../../store/authApi";
 import Slider from "react-slick";
+import { trim } from "jquery";
 
 function ClassesList() {
   const baseUrl = process.env.REACT_APP_API_HOST;
@@ -20,11 +20,11 @@ function ClassesList() {
     const response_upcoming = await fetch(url_upcoming);
     if (response_featured.ok) {
       const data = await response_featured.json();
-      setFeatured(data.slice(0, 7));
+      setFeatured(data.slice(0, 8));
     }
     if (response_upcoming.ok) {
       const data = await response_upcoming.json();
-      setUpcoming(data.slice(0, 7));
+      setUpcoming(data.slice(0, 8));
     }
 
     if (tokenData) {
@@ -39,7 +39,7 @@ function ClassesList() {
       const response_nearby = await fetch(url_nearby, fetchConfig);
       if (response_nearby.ok) {
         const data = await response_nearby.json();
-        setNearby(data.slice(0, 7));
+        setNearby(data.slice(0, 8));
       }
     }
   };
@@ -57,20 +57,22 @@ function ClassesList() {
     featured.map((classes_details) => (
       <div key={classes_details.id}>
         <a className="nav-link" href={"classes/" + classes_details.id}>
-          <div className="card mx-2" style={{ maxWidth: "275px" }}>
+          <div className="card mx-2 border-0" style={{ maxWidth: "275px" }}>
             <div className="card-body">
               <img
                 src={classes_details.image_1}
                 className="card-img-top"
                 alt=""
               ></img>
-              <h5 className="card-title">{classes_details.class_name}</h5>
+              <div className="crop-text-2">
+                <h5 className="card-title">{classes_details.class_name}</h5>
+              </div>
               <p className="card-text">
                 {classes_details.location_city},{" "}
                 {classes_details.location_state}
               </p>
               <div className="price">
-                <div>${classes_details.price} person</div>
+                <span className="Header">${classes_details.price}</span> person
               </div>
             </div>
           </div>
@@ -82,20 +84,22 @@ function ClassesList() {
     upcoming.map((classes_details) => (
       <div key={classes_details.id}>
         <a className="nav-link" href={"classes/" + classes_details.id}>
-          <div className="card mx-2" style={{ maxWidth: "275px" }}>
+          <div className="card mx-2 border-0" style={{ maxWidth: "275px" }}>
             <div className="card-body">
               <img
                 src={classes_details.image_1}
                 className="card-img-top"
                 alt=""
               ></img>
-              <h5 className="card-title">{classes_details.class_name}</h5>
+              <div className="crop-text-2">
+                <h5 className="card-title">{classes_details.class_name}</h5>
+              </div>
               <p className="card-text">
                 {classes_details.location_city},{" "}
                 {classes_details.location_state}
               </p>
               <div className="price">
-                <div>${classes_details.price} person</div>
+                <span className="Header">${classes_details.price}</span> person
               </div>
             </div>
           </div>
@@ -107,20 +111,22 @@ function ClassesList() {
     nearby.map((classes_details) => (
       <div key={classes_details.id}>
         <a className="nav-link" href={"classes/" + classes_details.id}>
-          <div className="card mx-2" style={{ maxWidth: "275px" }}>
+          <div className="card mx-2 border-0" style={{ maxWidth: "275px" }}>
             <div className="card-body">
               <img
                 src={classes_details.image_1}
                 className="card-img-top"
                 alt=""
               ></img>
-              <h5 className="card-title">{classes_details.class_name}</h5>
+              <div className="crop-text-2">
+                <h5 className="card-title">{classes_details.class_name}</h5>
+              </div>
               <p className="card-text">
                 {classes_details.location_city},{" "}
                 {classes_details.location_state}
               </p>
               <div className="price">
-                <div>${classes_details.price} person</div>
+                <span className="Header">${classes_details.price}</span> person
               </div>
             </div>
           </div>
@@ -142,46 +148,54 @@ function ClassesList() {
     }
     return { maxWidth: `1236px` };
   };
+
+  const setHeader = () => {
+    if (nearby.length == 0) {
+      return null;
+    }
+    return "Nearby";
+  };
   return (
     <div className="Class_Card">
       <div className="carousel" style={maxCarouselWidth(featured)}>
-        <h1>Featured</h1>
+        <h1 className="Header">Featured</h1>
         <Slider
           slidesToShow={minCards(featured)}
-          slidesToScroll={2}
+          slidesToScroll={4}
           autoplay={true}
           autoplaySpeed={4000}
-          swipeToSlide={true}
           dots={true}
-          speed={1500}
+          speed={2000}
+          infinite={true}
+          swipe={false}
         >
           {renderSlides_Featured()}
         </Slider>
       </div>
       <div className="carousel" style={maxCarouselWidth(upcoming)}>
-        <h1>Upcoming</h1>
+        <h1 className="Header">Upcoming</h1>
         <Slider
           slidesToShow={minCards(upcoming)}
-          slidesToScroll={2}
+          slidesToScroll={4}
           autoplay={true}
           autoplaySpeed={4000}
-          swipeToSlide={true}
           dots={true}
-          speed={1500}
+          speed={2000}
+          infinite={true}
         >
           {renderSlides_Upcoming()}
         </Slider>
       </div>
       <div className="carousel" style={maxCarouselWidth(nearby)}>
-        <h1>Nearby</h1>
+        <h1 className="Header">{setHeader()}</h1>
         <Slider
           slidesToShow={minCards(nearby)}
-          slidesToScroll={2}
+          slidesToScroll={4}
           autoplay={true}
           autoplaySpeed={4000}
-          swipeToSlide={true}
           dots={true}
-          speed={1500}
+          speed={2000}
+          infinite={true}
         >
           {renderSlides_Nearby()}
         </Slider>
