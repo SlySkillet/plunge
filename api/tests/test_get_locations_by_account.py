@@ -5,18 +5,6 @@ from queries.locations import LocationQueries
 client = TestClient(app)
 
 
-# class FakeLocationOut(BaseModel):
-#     id: int
-#     name: str
-#     address: str
-#     city: str
-#     state: str
-#     zip_code: int
-#     latitude: str = None
-#     longitude: str = None
-#     user_id: int
-
-
 class FakeLocationQueries:
     def get_locations_by_account(self, account_id):
         return []

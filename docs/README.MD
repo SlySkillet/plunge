@@ -11,6 +11,7 @@ Plunge - dive into a new adventure
 
 - [Wireframe](Wireframe.png)
 - [Data model](data_model.png)
+- [API documentation](fastapi.png)
 
 # Intended Market
 
@@ -44,9 +45,11 @@ Plunge is a peer-to-peer application for informal teaching, learning and communi
 - Install Extensions
   - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
   - [Flake8 Formatter](https://marketplace.visualstudio.com/items?itemName=ms-python.flake8)
+- Clone the repo to your machine
 - Create an env file in your top level directory, following env.sample example
-- Build the containers in docker by running "docker compose build" in your top-level directory
-- Bring up the containers in docker by running "docker compose up" in your top-level directory
+- Create a docker volume for the database `docker volume create plunge-data`
+- Build the docker images `docker compose build`
+- Build up the docker containers `docker compose up`
 
 ## Stretch Functionality
 

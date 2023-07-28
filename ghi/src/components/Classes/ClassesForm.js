@@ -152,9 +152,9 @@ const ClassesForm = () => {
   };
 
   useEffect(() => {
-    fetchFormData();
     fetchCategories();
     fetchLocations();
+    fetchFormData();
   }, [tokenData]);
 
   useEffect(() => {
@@ -408,9 +408,7 @@ const ClassesForm = () => {
                   name="location_id"
                   className="form-select"
                 >
-                  <option hidden value="">
-                    Select a location
-                  </option>
+                  <option hidden>Select a location</option>
                   {locations &&
                     locations.map((location) => {
                       return (
