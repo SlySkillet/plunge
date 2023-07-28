@@ -74,7 +74,7 @@ class LocationQueries(BaseModel):
         try:
             with pool.connection() as conn:
                 with conn.cursor() as db:
-                    result = db.execute(
+                    db.execute(
                         """
                         SELECT id
                             , name

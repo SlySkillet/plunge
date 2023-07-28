@@ -81,9 +81,9 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
-							, accounts.first_name
-							, accounts.last_name
-							, account_details.biography
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
                             , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
@@ -130,9 +130,9 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
-							, accounts.first_name
-							, accounts.last_name
-							, account_details.biography
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
                             , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
@@ -180,9 +180,9 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
-							, accounts.first_name
-							, accounts.last_name
-							, account_details.biography
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
                             , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
@@ -238,9 +238,9 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
-							, accounts.first_name
-							, accounts.last_name
-							, account_details.biography
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
                             , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
@@ -293,9 +293,9 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
-							, accounts.first_name
-							, accounts.last_name
-							, account_details.biography
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
                             , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
@@ -346,9 +346,9 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
-							, accounts.first_name
-							, accounts.last_name
-							, account_details.biography
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
                             , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
@@ -366,6 +366,57 @@ class ClassQueries(BaseModel):
         except Exception as e:
             print(e)
             return {"message": "could not get that instructor's classes"}
+
+    def get_by_search_term(self, search_term) -> Union[List[ClassOutDetail], Error]:
+        try:
+            with pool.connection() as conn:
+                with conn.cursor() as db:
+                    db.execute(
+                        """
+                        SELECT classes.id
+                            , class_name
+                            , instructor_id
+                            , requirements
+                            , category_id
+                            , categories.name
+                            , description
+                            , price
+                            , featured
+                            , classes.image_1
+                            , image_2
+                            , image_3
+                            , image_4
+                            , classes.location_id
+                            , locations.name
+                            , locations.address
+                            , locations.city
+                            , locations.state
+                            , locations.zip_code
+                            , locations.latitude
+                            , locations.longitude
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
+                            , account_details.avatar
+                        FROM classes
+                        INNER JOIN categories on classes.category_id = categories.id
+                        INNER JOIN locations on classes.location_id = locations.id
+                        INNER JOIN events on classes.id = events.class_id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
+                        where events.date_time >= current_date
+                        and lower(classes.class_name) like lower(%s)
+                        group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
+                        """,
+                        [search_term],
+                    )
+                    return [
+                        self.record_to_class_detail_out(record)
+                        for record in db
+                    ]
+        except Exception as e:
+            print(e)
+            return {"message": "could not get all classes"}
 
     def create(self, class_info: ClassIn) -> Union[ClassOut, Error]:
         try:
@@ -488,15 +539,15 @@ class ClassQueries(BaseModel):
                             , locations.zip_code
                             , locations.latitude
                             , locations.longitude
-							, accounts.first_name
-							, accounts.last_name
-							, account_details.biography
+                            , accounts.first_name
+                            , accounts.last_name
+                            , account_details.biography
                             , account_details.avatar
                         FROM classes
                         INNER JOIN categories on classes.category_id = categories.id
                         INNER JOIN locations on classes.location_id = locations.id
-						INNER JOIN accounts on classes.instructor_id = accounts.id
-						INNER JOIN account_details on classes.instructor_id = account_details.account_id
+                        INNER JOIN accounts on classes.instructor_id = accounts.id
+                        INNER JOIN account_details on classes.instructor_id = account_details.account_id
                         WHERE classes.id = %s
                         """,
                         [class_id],

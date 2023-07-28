@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Response
+from fastapi import APIRouter, Depends
 from typing import List, Union
 from queries.locations import Error, LocationIn, LocationOut, LocationQueries
 from .acls import get_location_data

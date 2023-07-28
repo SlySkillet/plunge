@@ -19,6 +19,7 @@ def get_all(
     feed: str | None = None,
     category: int | None = None,
     instructor: int | None = None,
+    search_term: str | None = None,
     account_data: Optional[dict] = Depends(
         authenticator.try_get_current_account_data
     ),
@@ -37,6 +38,8 @@ def get_all(
         return query.get_category(category)
     elif instructor is not None:
         return query.get_by_instructor(instructor)
+    elif search_term is not None:
+        return query.get_by_search_term(search_term)
     else:
         return query.get_all()
 

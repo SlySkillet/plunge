@@ -11,5 +11,5 @@ def get_location_data(zip_code):
     content = response.json()
     try:
         return {"latitude": content["lat"], "longitude": content["lon"]}
-    except:
+    except KeyError:
         return {"latitude": None, "longitude": None}

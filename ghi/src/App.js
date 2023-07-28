@@ -1,5 +1,4 @@
 import "./App.css";
-// import ClassesList from './components/Classes/Classes_Carousels/Class_Card';
 import MainPage from "./components/Classes/MainPage/Main_Page";
 import "./App.css";
 import { AuthProvider } from "@galvanize-inc/jwtdown-for-react";
@@ -18,6 +17,7 @@ import AllUpcomingClasses from "./components/Classes/AllUpcomingClasses";
 import BrowseCategories from "./components/Categories/Categories";
 import Category from "./components/Categories/Category";
 import Locations from "./components/Locations/Locations";
+import SearchResults from "./components/Classes/SearchResults";
 
 function App() {
   const baseUrl = process.env.REACT_APP_API_HOST;
@@ -49,6 +49,7 @@ function App() {
             <Route path="/browse-categories" element={<BrowseCategories />} />
             <Route path="categories/:Id" element={<Category />} />
             <Route path="/locations" element={<Locations />} />
+            <Route path="/search" element={<SearchResults />} />
           </Routes>
         </div>
         <Footer />

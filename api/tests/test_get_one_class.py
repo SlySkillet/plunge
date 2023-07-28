@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from fastapi.testclient import TestClient
 from main import app
 from queries.classes import ClassQueries
-from authenticator import authenticator
 
 client = TestClient(app)
 
@@ -125,4 +124,4 @@ def test_get_invalid_class_details():
 
     # Assert
     assert response.status_code == 404
-    assert response.json() == None
+    assert response.json() is None
