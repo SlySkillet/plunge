@@ -16,35 +16,16 @@
   border-radius: 8px;
 }
 
-/* .card h2 {
-  margin: 0;
-  margin-top: 1rem;
+.card div {
+  text-align: right;
+  font-weight: bold;
+  margin: 3px;
+  margin-right: 15px;
+}
+.plunge_into {
   text-align: center;
-} */
+}
 
-/* .card p {
-  margin: 0;
-  margin-top: 0.5rem;
-  margin-bottom: 1.5rem;
-} */
-
-/* .card .btnn {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-} */
-
-/* .card-img-top {
-  width: 100%;
-  height: 15vw;
-  border-radius: 50%;
-} */
-/* .plunge_into {
-  text-align: center;
-} */
-/* .Plunge {
-  margin: 0;
-} */
 .card div {
   text-align: right;
   font-weight: bold;
