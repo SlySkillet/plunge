@@ -198,3 +198,23 @@ Today we worked on
 - README.md
 
 Created graphics for hero carousel. Helped team mates with their merge. Applied logo to the website and overall last minute tweaks.
+
+## Tasks/Features completed for this project:
+
+Team:
+
+- Designed app concept, structure, and features on ExcaliDraw
+
+Pair:
+
+- Developed login/create-user modal and form with Greg
+- Created account detail when user account is created with Greg
+
+Individual:
+
+- Created plunge.sql to create all tables with foreign-key/references to other tables. Populated the file with seed data with 11 categories, 26 accounts/account_details, 17 locations, 242 events, and 122 reservations to demonstrate the functionality of the site.
+- Created routers/queries endpoints for events and reservations tables.
+- Created and implemented logo to navbar, created modal for footer
+- Added feature where when a location is added, the zip code is used to fetch the latitude/longitude
+- Create instructor dashboard page which fetches all classes, events, and reservations for the instructor and organizes them in an accordion. Buttons to create/edit/delete classes and events. Displays roster in a table with a button to enroll or withdraw a student. Additional feature is the number of slots remaining or full status.
+- Created class details page that displays all class data and ability to register for an account if the user is logged in. Once registered, the dropdown becomes a label
