@@ -43,6 +43,7 @@ class ReservationDetailsOut(BaseModel):
     status: bool
     class_id: int
     event_id: int
+    avatar: str
 
 
 class ReservationStatusIn(BaseModel):
@@ -78,11 +79,13 @@ class ReservationQuery:
                             , status
                             , classes.id
                             , events.id
+                            , account_details.avatar
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
                         INNER JOIN accounts ON reservations.student_id = accounts.id
                         INNER JOIN locations ON classes.location_id = locations.id
+                        INNER JOIN account_details ON account_details.id = reservations.student_id
                         WHERE reservations.id = %s
                         """,
                         [reservation_id],
@@ -120,11 +123,13 @@ class ReservationQuery:
                             , status
                             , classes.id
                             , events.id
+                            , account_details.avatar
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
                         INNER JOIN accounts ON reservations.student_id = accounts.id
                         INNER JOIN locations ON classes.location_id = locations.id
+                        INNER JOIN account_details ON account_details.id = reservations.student_id
                         WHERE student_id = %s
                         order by events.date_time asc;
                         """,
@@ -163,11 +168,13 @@ class ReservationQuery:
                             , status
                             , classes.id
                             , events.id
+                            , account_details.avatar
                         FROM reservations
                         INNER JOIN events ON reservations.event_id = events.id
                         INNER JOIN classes ON reservations.class_id = classes.id
                         INNER JOIN accounts ON reservations.student_id = accounts.id
                         INNER JOIN locations ON classes.location_id = locations.id
+                        INNER JOIN account_details ON account_details.id = reservations.student_id
                         WHERE classes.instructor_id = %s;
                         """,
                         [instructor_id],
@@ -276,4 +283,5 @@ class ReservationQuery:
             status=record[14],
             class_id=record[15],
             event_id=record[16],
+            avatar=record[17],
         )

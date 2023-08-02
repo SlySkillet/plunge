@@ -288,6 +288,14 @@ function InstructorDashboard() {
 																									return (
 																										<tr key={index}>
 																											<td>
+																												<img
+																													className="rounded-circle"
+																													height="35px"
+																													src={
+																														reservation.avatar
+																													}
+																												/>
+																												&nbsp;&nbsp;&nbsp;
 																												{
 																													reservation.student_first_name
 																												}{' '}
@@ -385,6 +393,14 @@ function InstructorDashboard() {
 																										return (
 																											<tr key={index}>
 																												<td>
+																													<img
+																														className="rounded-circle"
+																														height="35px"
+																														src={
+																															reservation.avatar
+																														}
+																													/>
+																													&nbsp;&nbsp;&nbsp;
 																													{
 																														reservation.student_first_name
 																													}{' '}
