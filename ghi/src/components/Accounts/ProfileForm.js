@@ -25,6 +25,9 @@ const ProfileForm = () => {
     location_id: "",
     mock_credit_card: "",
   });
+  const [categories, setCategories] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [query, setQuery] = useState("");
 
   // Location Modal: states and functions
   const [show, setShow] = useState(false);
@@ -58,7 +61,7 @@ const ProfileForm = () => {
     };
     const response = await fetch(url, fetchConfig);
     if (response.ok) {
-      fetchLocations();
+      setQuery(response);
       handleClose();
       setLocationData({
         name: "",
@@ -90,91 +93,98 @@ const ProfileForm = () => {
     }
   };
 
-  const fetchProfileData = async () => {
-    if (tokenData) {
-      const url = `${baseUrl}/api/account_details`;
-      const fetchConfig = {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenData.access_token}`,
-        },
-      };
-      const response = await fetch(url, fetchConfig);
-      if (response.ok) {
-        const data = await response.json();
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      if (tokenData) {
+        const url = `${baseUrl}/api/account_details`;
+        const fetchConfig = {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenData.access_token}`,
+          },
+        };
+        const response = await fetch(url, fetchConfig);
+        if (response.ok) {
+          const data = await response.json();
+          setFormData({
+            first_name: tokenData.account.first_name,
+            last_name: tokenData.account.last_name,
+            email: tokenData.account.email,
+            username: tokenData.account.username,
+            avatar:
+              data.avatar ===
+              "https://www.seekpng.com/png/full/143-1435868_headshot-silhouette-person-placeholder.png"
+                ? ""
+                : data.avatar,
+            phone: data.phone_number
+              ? formatPhoneNumber(data.phone_number)
+              : "",
+            biography: data.biography ? data.biography : "",
+            interests: data.interests ? data.interests : "",
+            location_id: data.location_id ? data.location_id : "",
+            mock_credit_card: data.mock_credit_card
+              ? formatCreditCardNumber(data.mock_credit_card)
+              : "",
+          });
+          setProfileSetupStatus({
+            status: data.phone_number ? "finished" : "in progress",
+          });
+        }
+      } else {
         setFormData({
-          first_name: tokenData.account.first_name,
-          last_name: tokenData.account.last_name,
-          email: tokenData.account.email,
-          username: tokenData.account.username,
-          avatar:
-            data.avatar ===
-            "https://www.seekpng.com/png/full/143-1435868_headshot-silhouette-person-placeholder.png"
-              ? ""
-              : data.avatar,
-          phone: data.phone_number ? formatPhoneNumber(data.phone_number) : "",
-          biography: data.biography ? data.biography : "",
-          interests: data.interests ? data.interests : "",
-          location_id: data.location_id ? data.location_id : "",
-          mock_credit_card: data.mock_credit_card
-            ? formatCreditCardNumber(data.mock_credit_card)
-            : "",
-        });
-        setProfileSetupStatus({
-          status: data.phone_number ? "finished" : "in progress",
+          first_name: "",
+          last_name: "",
+          email: "",
+          username: "",
+          avatar: "",
+          phone: "",
+          biography: "",
+          interests: "",
+          location_id: "",
+          mock_credit_card: "",
         });
       }
-    } else {
-      setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        username: "",
-        avatar: "",
-        phone: "",
-        biography: "",
-        interests: "",
-        location_id: "",
-        mock_credit_card: "",
-      });
-    }
-  };
+    };
 
-  const [categories, setCategories] = useState([]);
-
-  const fetchCategories = async () => {
-    const url = `${baseUrl}/api/categories`;
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      setCategories(data);
-    }
-  };
-
-  const [locations, setLocations] = useState([]);
-
-  const fetchLocations = async () => {
-    if (tokenData) {
-      const url = `${baseUrl}/api/locations/${tokenData.account.id}`;
+    const fetchCategories = async () => {
+      const url = `${baseUrl}/api/categories`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        setLocations(data);
+        setCategories(data);
       }
-    }
-  };
+    };
 
-  useEffect(() => {
+    const fetchLocations = async () => {
+      if (tokenData) {
+        const url = `${baseUrl}/api/locations/${tokenData.account.id}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          setLocations(data);
+        }
+      }
+    };
+
     fetchProfileData();
     fetchCategories();
     fetchLocations();
-  }, []);
+  }, [baseUrl, tokenData]);
 
   useEffect(() => {
-    fetchProfileData();
+    const fetchLocations = async () => {
+      if (tokenData) {
+        const url = `${baseUrl}/api/locations/${tokenData.account.id}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          setLocations(data);
+        }
+      }
+    };
     fetchLocations();
-  }, [tokenData]);
+  }, [query, baseUrl, tokenData]);
 
   const formatPhoneNumber = (phoneNumber) => {
     const phoneNumberStr = String(phoneNumber);

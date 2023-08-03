@@ -1,7 +1,6 @@
 import Styles from './Card.module.css';
 import React, { useState } from 'react';
 import { useSpring, animated } from 'react-spring';
-import Button from './Button';
 import { Link } from 'react-router-dom';
 
 function Card({ imagen, title, urlCategory }) {

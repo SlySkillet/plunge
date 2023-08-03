@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useGetTokenQuery } from "../../../store/authApi";
 import Slider from "react-slick";
-import { trim } from "jquery";
+import { Link } from "react-router-dom";
 
 function ClassesList() {
   const baseUrl = process.env.REACT_APP_API_HOST;
@@ -13,50 +13,45 @@ function ClassesList() {
   const [upcoming, setUpcoming] = useState([]);
   const [nearby, setNearby] = useState([]);
 
-  const fetchData = async () => {
-    const url_featured = `${baseUrl}/api/classes?feed=featured`;
-    const url_upcoming = `${baseUrl}/api/classes?feed=upcoming`;
-    const response_featured = await fetch(url_featured);
-    const response_upcoming = await fetch(url_upcoming);
-    if (response_featured.ok) {
-      const data = await response_featured.json();
-      setFeatured(data.slice(0, 8));
-    }
-    if (response_upcoming.ok) {
-      const data = await response_upcoming.json();
-      setUpcoming(data.slice(0, 8));
-    }
-
-    if (tokenData) {
-      const fetchConfig = {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenData.access_token}`,
-        },
-      };
-      const url_nearby = `${baseUrl}/api/classes?feed=nearby`;
-      const response_nearby = await fetch(url_nearby, fetchConfig);
-      if (response_nearby.ok) {
-        const data = await response_nearby.json();
-        setNearby(data.slice(0, 8));
+  useEffect(() => {
+    const fetchData = async () => {
+      const url_featured = `${baseUrl}/api/classes?feed=featured`;
+      const url_upcoming = `${baseUrl}/api/classes?feed=upcoming`;
+      const response_featured = await fetch(url_featured);
+      const response_upcoming = await fetch(url_upcoming);
+      if (response_featured.ok) {
+        const data = await response_featured.json();
+        setFeatured(data.slice(0, 8));
       }
-    }
-  };
+      if (response_upcoming.ok) {
+        const data = await response_upcoming.json();
+        setUpcoming(data.slice(0, 8));
+      }
 
-  useEffect(() => {
+      if (tokenData) {
+        const fetchConfig = {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenData.access_token}`,
+          },
+        };
+        const url_nearby = `${baseUrl}/api/classes?feed=nearby`;
+        const response_nearby = await fetch(url_nearby, fetchConfig);
+        if (response_nearby.ok) {
+          const data = await response_nearby.json();
+          setNearby(data.slice(0, 8));
+        }
+      }
+    };
     fetchData();
-  }, [tokenData]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [tokenData, baseUrl]);
 
   const renderSlides_Featured = () =>
     featured &&
     featured.map((classes_details) => (
       <div key={classes_details.id}>
-        <a className="nav-link" href={"classes/" + classes_details.id}>
+        <Link className="nav-link" to={"classes/" + classes_details.id}>
           <div className="card mx-2 border-0" style={{ maxWidth: "275px" }}>
             <div className="card-body">
               <img
@@ -76,14 +71,14 @@ function ClassesList() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       </div>
     ));
 
   const renderSlides_Upcoming = () =>
     upcoming.map((classes_details) => (
       <div key={classes_details.id}>
-        <a className="nav-link" href={"classes/" + classes_details.id}>
+        <Link className="nav-link" to={"classes/" + classes_details.id}>
           <div className="card mx-2 border-0" style={{ maxWidth: "275px" }}>
             <div className="card-body">
               <img
@@ -103,14 +98,14 @@ function ClassesList() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       </div>
     ));
 
   const renderSlides_Nearby = () =>
     nearby.map((classes_details) => (
       <div key={classes_details.id}>
-        <a className="nav-link" href={"classes/" + classes_details.id}>
+        <Link className="nav-link" to={"classes/" + classes_details.id}>
           <div className="card mx-2 border-0" style={{ maxWidth: "275px" }}>
             <div className="card-body">
               <img
@@ -130,7 +125,7 @@ function ClassesList() {
               </div>
             </div>
           </div>
-        </a>
+        </Link>
       </div>
     ));
 
@@ -150,7 +145,7 @@ function ClassesList() {
   };
 
   const setHeader = () => {
-    if (nearby.length == 0) {
+    if (nearby.length === 0) {
       return null;
     }
     return "Nearby";

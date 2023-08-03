@@ -21,34 +21,36 @@ import SearchResults from "./components/Classes/SearchResults";
 function App() {
   const baseUrl = process.env.REACT_APP_API_HOST;
 
+  const domain = /https:\/\/[^/]+/;
+  const basename = process.env.PUBLIC_URL.replace(domain, "");
   return (
     <AuthProvider baseUrl={baseUrl}>
-      <BrowserRouter>
+      <BrowserRouter basename={basename}>
         <Nav />
         <div className="container">
           <Routes>
             <Route path="/" element={<MainPage />} />
-            <Route path="/classes/create" element={<ClassesForm />} />
-            <Route path="/classes/:classId/edit" element={<ClassesForm />} />
-            <Route path="/classes/:classId" element={<ClassDetails />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="classes/create" element={<ClassesForm />} />
+            <Route path="classes/:classId/edit" element={<ClassesForm />} />
+            <Route path="classes/:classId" element={<ClassDetails />} />
+            <Route path="dashboard" element={<Dashboard />} />
             <Route
-              path="/classes/:classId/events/create"
+              path="classes/:classId/events/create"
               element={<EventsForm />}
             />
             <Route
-              path="/classes/:classId/events/:eventId/edit"
+              path="classes/:classId/events/:eventId/edit"
               element={<EventsForm />}
             />
-            <Route path="/reservations" element={<Reservations />} />
-            <Route path="/profile/edit" element={<ProfileForm />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/upcoming" element={<UpcomingClasses />} />
-            <Route path="/all-upcoming" element={<AllUpcomingClasses />} />
-            <Route path="/browse-categories" element={<BrowseCategories />} />
+            <Route path="reservations" element={<Reservations />} />
+            <Route path="profile/edit" element={<ProfileForm />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="upcoming" element={<UpcomingClasses />} />
+            <Route path="all-upcoming" element={<AllUpcomingClasses />} />
+            <Route path="browse-categories" element={<BrowseCategories />} />
             <Route path="categories/:Id" element={<Category />} />
-            <Route path="/locations" element={<Locations />} />
-            <Route path="/search" element={<SearchResults />} />
+            <Route path="locations" element={<Locations />} />
+            <Route path="search" element={<SearchResults />} />
           </Routes>
         </div>
         <Footer />

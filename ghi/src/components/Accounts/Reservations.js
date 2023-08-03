@@ -2,49 +2,44 @@ import { useState, useEffect } from "react";
 import { useGetTokenQuery } from "../../store/authApi";
 
 function Reservations() {
-  const {
-    data: tokenData,
-    error: tokenError,
-    isLoading: tokenIsLoading,
-  } = useGetTokenQuery();
+  const { data: tokenData, isLoading: tokenIsLoading } = useGetTokenQuery();
 
   const baseUrl = process.env.REACT_APP_API_HOST;
 
   const [upcomingReservations, setUpcomingReservations] = useState([]);
   const [pastReservations, setPastReservations] = useState([]);
+  const [query, setQuery] = useState("");
 
-  const fetchData = async () => {
-    if (tokenData) {
-      const url = `${baseUrl}/api/student/reservations/${tokenData.account.id}`;
-      const response = await fetch(url);
-      if (response.ok) {
-        const data = await response.json();
-        let currentTimestamp = new Date(0);
-        currentTimestamp.setUTCSeconds(Math.floor(Date.now() / 1000));
-        let past = [];
-        let upcoming = [];
-        for (let reservation of data) {
-          if (reservation.status != false) {
-            if (new Date(reservation.date_time) > currentTimestamp) {
-              upcoming.push(reservation);
-            } else {
-              past.push(reservation);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (tokenData) {
+        setQuery(tokenData.account.id);
+      }
+      if (query) {
+        const url = `${baseUrl}/api/student/reservations/${query}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          let currentTimestamp = new Date(0);
+          currentTimestamp.setUTCSeconds(Math.floor(Date.now() / 1000));
+          let past = [];
+          let upcoming = [];
+          for (let reservation of data) {
+            if (reservation.status !== false) {
+              if (new Date(reservation.date_time) > currentTimestamp) {
+                upcoming.push(reservation);
+              } else {
+                past.push(reservation);
+              }
             }
           }
+          setUpcomingReservations(upcoming);
+          setPastReservations(past);
         }
-        setUpcomingReservations(upcoming);
-        setPastReservations(past);
       }
-    }
-  };
-
-  useEffect(() => {
+    };
     fetchData();
-  }, [tokenData]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [query, baseUrl, tokenData]);
 
   const googleMapsLink = (address, city, state, zip_code) => {
     address = address.split(" ").join("+");
@@ -91,7 +86,7 @@ function Reservations() {
     };
     const response = await fetch(url, fetchConfig);
     if (response.ok) {
-      fetchData();
+      setQuery("");
     }
   };
 
@@ -132,7 +127,7 @@ function Reservations() {
                                   <tr key={index}>
                                     <td>
                                       <a
-                                        href={`/classes/${upcomingReservation.class_id}`}
+                                        href={`classes/${upcomingReservation.class_id}`}
                                       >
                                         {upcomingReservation.class_name}
                                       </a>
@@ -151,6 +146,7 @@ function Reservations() {
                                           upcomingReservation.zip_code
                                         )}
                                         target="_blank"
+                                        rel="noreferrer"
                                       >
                                         {upcomingReservation.location_name}
                                       </a>
@@ -198,7 +194,7 @@ function Reservations() {
                                 <tr key={index}>
                                   <td>
                                     <a
-                                      href={`/classes/${pastReservation.class_id}`}
+                                      href={`classes/${pastReservation.class_id}`}
                                     >
                                       {pastReservation.class_name}
                                     </a>
@@ -215,6 +211,7 @@ function Reservations() {
                                         pastReservation.zip_code
                                       )}
                                       target="_blank"
+                                      rel="noreferrer"
                                     >
                                       {pastReservation.location_name}
                                     </a>

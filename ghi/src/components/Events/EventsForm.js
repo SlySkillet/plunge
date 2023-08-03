@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGetTokenQuery } from "../../store/authApi";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 
 const EventsForm = () => {
   const navigate = useNavigate();
@@ -47,41 +47,39 @@ const EventsForm = () => {
     location_longitude: "",
   });
 
-  const fetchClassDetails = async () => {
-    const url = `${baseUrl}/api/classes/${classId}`;
-    const response = await fetch(url);
-    if (response.ok) {
-      const data = await response.json();
-      setClassDetails(data);
-    }
-  };
-
   const [formData, setFormData] = useState({
     date_time: "",
     capacity: "",
   });
 
-  const fetchFormData = async () => {
-    if (eventId) {
-      const url = `${baseUrl}/api/events/${eventId}`;
+  useEffect(() => {
+    const fetchFormData = async () => {
+      if (eventId) {
+        const url = `${baseUrl}/api/events/${eventId}`;
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          setFormData({
+            date_time:
+              data.date_time.length > 16
+                ? data.date_time.slice(0, 16)
+                : data.date_time,
+            capacity: data.capacity,
+          });
+        }
+      }
+    };
+    const fetchClassDetails = async () => {
+      const url = `${baseUrl}/api/classes/${classId}`;
       const response = await fetch(url);
       if (response.ok) {
         const data = await response.json();
-        setFormData({
-          date_time:
-            data.date_time.length > 16
-              ? data.date_time.slice(0, 16)
-              : data.date_time,
-          capacity: data.capacity,
-        });
+        setClassDetails(data);
       }
-    }
-  };
-
-  useEffect(() => {
+    };
     fetchClassDetails();
     fetchFormData();
-  }, []);
+  }, [baseUrl, classId, eventId]);
 
   const handleFormChange = async (e) => {
     const name = e.target.name;
@@ -173,15 +171,15 @@ const EventsForm = () => {
             </h5>
             <div className="row card-body">
               <div className="pt-1 col d-flex justify-content-center">
-                <img height="88px" src={classDetails.image_1} />
+                <img height="88px" src={classDetails.image_1} alt="Class" />
               </div>
               <div className="col" style={{ minWidth: "237px" }}>
                 <p className="card-text">
                   <strong>{classDetails.location_name}</strong> <br />
-                  <a href={googleMapsLink()} target="_blank">
+                  <Link to={googleMapsLink()} target="_blank" rel="noreferrer">
                     {classDetails.location_address} <br />
                     {classDetails.location_city}, {classDetails.location_state}
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
@@ -193,7 +191,9 @@ const EventsForm = () => {
           }
         >
           <div className="card mb-3" style={{ width: "359px" }}>
-            <h5 className="card-header" style={{ height: "41px" }}></h5>
+            <h5 className="card-header" style={{ height: "41px" }}>
+              &nbsp;
+            </h5>
             <div className="card-body text-center" style={{ height: "128px" }}>
               <div className="spinner-border text-secondary" role="status">
                 <span className="sr-only"></span>

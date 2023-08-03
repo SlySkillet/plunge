@@ -1,22 +1,11 @@
 import { React, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 function Category() {
   let { Id } = useParams();
   const [classes, setClasses] = useState([]);
 
   const baseUrl = process.env.REACT_APP_API_HOST;
-
-  const fetchData = async () => {
-    let url = `${baseUrl}/api/classes?category=${Id}`;
-    let response = await fetch(url);
-    if (response.ok) {
-      let data = await response.json();
-      setClasses(data);
-    } else {
-      console.error(response);
-    }
-  };
 
   const categoriesTable = {
     1: "Music",
@@ -33,25 +22,35 @@ function Category() {
   };
 
   useEffect(() => {
+    const fetchData = async () => {
+      let url = `${baseUrl}/api/classes?category=${Id}`;
+      let response = await fetch(url);
+      if (response.ok) {
+        let data = await response.json();
+        setClasses(data);
+      } else {
+        console.error(response);
+      }
+    };
     fetchData();
-  }, []);
+  }, [baseUrl, Id]);
 
   return (
     <div className="all-upcoming-card-container">
       <h1 className="upcoming-title">{categoriesTable[Id]}</h1>
       <div className="card-container">
         {classes.map((classIterable, idx) => {
-          const classDetailUrl = `/classes/${classIterable.id}`;
+          const classDetailUrl = `../../classes/${classIterable.id}`;
           return (
             <div className="card location-card mx-2" key={idx}>
               <div className="card-body location-card">
-                <a href={classDetailUrl}>
+                <Link to={classDetailUrl}>
                   <img
                     src={classIterable.image_1}
                     className="card-img-top"
                     alt="..."
                   />
-                </a>
+                </Link>
                 <h5 className="card-title location-card">
                   {classIterable.class_name}
                 </h5>

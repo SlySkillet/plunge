@@ -1,9 +1,10 @@
 stages:
   - test
   - build
+  - deploy
 
 variables:
-  SIGNING_KEY: b229658610a28f3fb4a6e274c17a261913900036e36c3addf0720824c576c6e3f66b2ef0538d98856278c1374a5a055df262a8b6697ad3c9190bf1c3d403bcab
+  SIGNING_KEY: ${FAST_API_SIGNING_KEY}
 
 fast-api-unit-test-job:
   image: python:3.10-bullseye
@@ -19,3 +20,74 @@ lint-python-project-job:
   script:
     - pip install flake8
     - flake8 api
+
+ghi-build-job:
+  # rules:
+  # Only run if pushing to the main branch
+  # - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  stage: build
+  image: node:lts-bullseye
+  needs:
+    - fast-api-unit-test-job
+    - lint-python-project-job
+  script:
+    - cd ghi
+    - npm install
+    - npm run build
+    - cp build/index.html build/404.html
+  artifacts:
+    paths:
+      - ghi/build/
+  variables:
+    PUBLIC_URL: ${PUBLIC_URL}
+    REACT_APP_API_HOST: ${REACT_APP_API_HOST}
+    REACT_APP_GOOGLE_MAPS_API_KEY: ${REACT_APP_GOOGLE_MAPS_API_KEY}
+  only:
+    - main
+
+build-api-image:
+  stage: build
+  image: docker
+  services:
+    - docker:git
+  variables:
+    GITLAB_IMAGE: ${CI_REGISTRY_IMAGE}/service
+  before_script:
+    # $CI_JOB_TOKEN is variable automatically added by Gitlab: see https://docs.gitlab.com/ee/ci/variables/predefined_variables.html#variables-reference
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
+  script:
+    - docker build --tag $GITLAB_IMAGE:latest api
+    - docker push $GITLAB_IMAGE:latest
+  only:
+    - main
+
+pages:
+  stage: deploy
+  # rules:
+  #   # Only run if pushing to the main branch
+  #   - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  dependencies:
+    - ghi-build-job
+  needs:
+    - ghi-build-job
+  script:
+    - mv ghi/build public
+  artifacts:
+    paths: [public]
+  only:
+    - main
+
+build-db-image:
+  stage: build
+  image: docker
+  services:
+    - docker:git
+  variables:
+    GITLAB_DB_IMAGE: ${CI_REGISTRY_IMAGE}/postgres
+  before_script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token registry.gitlab.com --password-stdin
+  script:
+    - docker build -f data/Dockerfile.dev --tag $GITLAB_DB_IMAGE:latest data
+    - docker push $GITLAB_DB_IMAGE:latest
+  only:
+    - main

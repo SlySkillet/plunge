@@ -1,32 +1,26 @@
 import { React, useState, useEffect } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 
 function SearchResults() {
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams] = useSearchParams();
   const term = searchParams.get("term");
-  let { Id } = useParams();
   const [classes, setClasses] = useState([]);
 
   const baseUrl = process.env.REACT_APP_API_HOST;
 
-  const fetchData = async () => {
-    let url = `${baseUrl}/api/classes?search_term=${term}`;
-    let response = await fetch(url);
-    if (response.ok) {
-      let data = await response.json();
-      setClasses(data);
-    } else {
-      console.error(response);
-    }
-  };
-
   useEffect(() => {
+    const fetchData = async () => {
+      let url = `${baseUrl}/api/classes?search_term=${term}`;
+      let response = await fetch(url);
+      if (response.ok) {
+        let data = await response.json();
+        setClasses(data);
+      } else {
+        console.error(response);
+      }
+    };
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [searchParams]);
+  }, [baseUrl, searchParams, term]);
 
   return (
     <div className="all-upcoming-card-container">
@@ -36,7 +30,7 @@ function SearchResults() {
       ) : (
         <div className="card-container">
           {classes.map((classIterable, idx) => {
-            const classDetailUrl = `/classes/${classIterable.id}`;
+            const classDetailUrl = `../classes/${classIterable.id}`;
             return (
               <div className="card location-card mx-2" key={idx}>
                 <div className="card-body location-card">
@@ -63,9 +57,9 @@ function SearchResults() {
                       </p>
                     </li>
                     <li className="list-group-item">
-                      <a href={classDetailUrl} className="btn btn-primary">
+                      <Link to={classDetailUrl} className="btn btn-primary">
                         Class Details
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>

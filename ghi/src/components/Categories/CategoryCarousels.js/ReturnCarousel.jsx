@@ -1,6 +1,6 @@
 import React from "react";
 import { Carousel, Stack } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 function ReturnCarousel({ stack1, stack2, title, categoryId }) {
   const categoryPagePath = `/categories/${categoryId}`;
@@ -27,17 +27,17 @@ function ReturnCarousel({ stack1, stack2, title, categoryId }) {
           <Carousel.Item>
             <Stack className="card-stack" direction="horizontal" gap={0}>
               {stack1.map((classIterable, Idx) => {
-                const classDetailUrl = `classes/${classIterable.id}`;
+                const classDetailUrl = `../classes/${classIterable.id}`;
                 return (
                   <div className="card location-card mx-1" key={Idx}>
                     <div className="card-body location-card">
-                      <a href={classDetailUrl}>
+                      <Link to={classDetailUrl}>
                         <img
                           src={classIterable.image_1}
                           className="card-img-top"
                           alt="..."
                         />
-                      </a>
+                      </Link>
                       <h5 className="card-title location-card">
                         {classIterable.class_name}
                       </h5>
@@ -66,17 +66,17 @@ function ReturnCarousel({ stack1, stack2, title, categoryId }) {
           <Carousel.Item>
             <Stack className="card-stack" direction="horizontal" gap={0}>
               {stack2.map((classIterable, Idx) => {
-                const classDetailUrl = `classes/${classIterable.id}`;
+                const classDetailUrl = `../classes/${classIterable.id}`;
                 return (
                   <div className="card location-card mx-1" key={Idx}>
                     <div className="card-body location-card">
-                      <a href={classDetailUrl}>
+                      <Link to={classDetailUrl}>
                         <img
                           src={classIterable.image_1}
                           className="card-img-top"
                           alt="..."
                         />
-                      </a>
+                      </Link>
                       <h5 className="card-title location-card">
                         {classIterable.class_name}
                       </h5>

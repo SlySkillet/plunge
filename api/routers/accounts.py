@@ -37,6 +37,11 @@ class HttpError(BaseModel):
 router = APIRouter()
 
 
+@router.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
 @router.get("/token", response_model=AccountToken | None)
 async def get_token(
     request: Request,

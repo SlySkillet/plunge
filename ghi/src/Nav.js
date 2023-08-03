@@ -32,27 +32,27 @@ function Nav() {
   });
   const [avatar, setAvatar] = useState("");
 
-  const fetchAvatar = async () => {
-    if (tokenData) {
-      const url = `${baseUrl}/api/account_details`;
-      const fetchConfig = {
-        method: "get",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${tokenData.access_token}`,
-        },
-      };
-      const response = await fetch(url, fetchConfig);
-
-      if (response.ok) {
-        let data = await response.json();
-        setAvatar(data.avatar);
-      }
-    }
-  };
   useEffect(() => {
+    const fetchAvatar = async () => {
+      if (tokenData) {
+        const url = `${baseUrl}/api/account_details`;
+        const fetchConfig = {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenData.access_token}`,
+          },
+        };
+        const response = await fetch(url, fetchConfig);
+
+        if (response.ok) {
+          let data = await response.json();
+          setAvatar(data.avatar);
+        }
+      }
+    };
     fetchAvatar();
-  }, [tokenData]);
+  }, [baseUrl, tokenData]);
 
   const [searchTerm, setSearchTerm] = useState({
     searchTerm: "",
@@ -75,7 +75,12 @@ function Nav() {
   const userButton = () => {
     return (
       <div className="align-middle">
-        <img className="rounded-circle" height="35px" src={avatar} />
+        <img
+          className="rounded-circle"
+          height="35px"
+          src={avatar}
+          alt="Avatar"
+        />
         &nbsp;&nbsp; {tokenData.account.first_name}
       </div>
     );
@@ -125,7 +130,7 @@ function Nav() {
         confirmPassword: "",
       });
     }
-  }, [createAccountStatus]);
+  }, [createAccountIsSuccess, createAccountStatus]);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -155,7 +160,7 @@ function Nav() {
       setUsername("");
       setPassword("");
     }
-  }, [loginStatus]);
+  }, [loginIsSuccess, loginStatus]);
 
   return (
     <>
@@ -165,7 +170,8 @@ function Nav() {
             <img
               className="m-2"
               width="175px"
-              src="http://henrykimphotography.com/plunge/banner.png"
+              src="https://henrykimphotography.com/plunge/banner.png"
+              alt="Plunge logo"
             />
           </Link>
         </div>
@@ -183,7 +189,7 @@ function Nav() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <div className="dropdown">
             <button
-              className="btn btn-outline-success dropdown-toggle"
+              className="btn btn-outline-primary dropdown-toggle"
               type="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
@@ -257,9 +263,9 @@ function Nav() {
                 </Link>
               </li>
               <li className="nav-item">
-                <a href="#" onClick={logout} className="dropdown-item">
+                <button onClick={logout} className="dropdown-item btn btn-link">
                   Logout
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -316,7 +322,7 @@ function Nav() {
                 <div
                   id="errorMessage"
                   className={
-                    loginStatus == "rejected"
+                    loginStatus === "rejected"
                       ? "alert alert-danger text-center"
                       : "alert alert-danger text-center d-none"
                   }
@@ -326,10 +332,17 @@ function Nav() {
                 </div>
                 <div>
                   <div className="text-center">
-                    <a href="#" onClick={showCreateAccountModal}>
+                    <button
+                      type="button"
+                      className="btn btn-link"
+                      onClick={showCreateAccountModal}
+                    >
                       Create an account
-                    </a>{" "}
-                    &nbsp;|&nbsp; <a href="#">Forgot password?</a>{" "}
+                    </button>{" "}
+                    &nbsp;|&nbsp;{" "}
+                    <button type="button" className="btn btn-link">
+                      Forgot password?
+                    </button>{" "}
                     &nbsp;&nbsp;&nbsp;
                   </div>
                 </div>
@@ -448,7 +461,7 @@ function Nav() {
                 </div>
                 <div
                   className={
-                    registrationData.password !=
+                    registrationData.password !==
                     registrationData.confirmPassword
                       ? "alert alert-warning"
                       : "alert alert-warning d-none"
@@ -504,7 +517,7 @@ These terms and conditions are a basic starting point, and you may need to inclu
                   <br />
                   <div
                     className={
-                      createAccountStatus == "rejected"
+                      createAccountStatus === "rejected"
                         ? "alert alert-danger text-center"
                         : "alert alert-danger text-center d-none"
                     }
@@ -515,9 +528,9 @@ These terms and conditions are a basic starting point, and you may need to inclu
                 </div>
                 <div>
                   <div className="text-center">
-                    <a href="#" onClick={showLoginModal}>
+                    <button onClick={showLoginModal} className="btn btn-link">
                       Already have an account?
-                    </a>
+                    </button>
                   </div>
                 </div>
               </div>

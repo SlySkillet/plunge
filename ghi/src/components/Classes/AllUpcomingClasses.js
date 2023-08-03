@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function AllUpcomingClasses() {
   const [classes, setClasses] = useState([]);
@@ -16,24 +17,24 @@ function AllUpcomingClasses() {
       }
     }
     loadClasses();
-  }, []);
+  }, [baseUrl]);
 
   return (
     <div className="all-upcoming-card-container">
       <h1 className="upcoming-title">All Upcoming Classes</h1>
       <div className="card-container">
         {classes.map((classIterable, idx) => {
-          const classDetailUrl = `classes/${classIterable.id}`;
+          const classDetailUrl = `../classes/${classIterable.id}`;
           return (
             <div className="card location-card mx-1" key={idx}>
               <div className="card-body location-card">
-                <a href={classDetailUrl}>
+                <Link to={classDetailUrl}>
                   <img
                     src={classIterable.image_1}
                     className="card-img-top"
                     alt="..."
                   />
-                </a>
+                </Link>
                 <h5 className="card-title location-card">
                   {classIterable.class_name}
                 </h5>

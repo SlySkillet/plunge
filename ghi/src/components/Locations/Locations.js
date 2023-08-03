@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useGetTokenQuery } from "../../store/authApi";
+import { Link } from "react-router-dom";
 
 function Map() {
   const center = useMemo(() => ({ lat: 38.909677, lng: -77.029657 }), []);
@@ -39,7 +40,7 @@ function Map() {
       }
     }
     loadUserLocation();
-  }, [tokenData]);
+  }, [baseUrl, tokenData]);
 
   // LOAD CLASSES IN AREA
   useEffect(() => {
@@ -54,7 +55,7 @@ function Map() {
     }
 
     loadClasses();
-  }, []);
+  }, [baseUrl]);
 
   return (
     <div>
@@ -116,17 +117,17 @@ function Map() {
       </div>
       <div className="card-container location-page">
         {classes.map((classIterable, Idx) => {
-          const classDetailUrl = `classes/${classIterable.id}`;
+          const classDetailUrl = `../classes/${classIterable.id}`;
           return (
             <div className="card location-card mx-1" key={Idx}>
               <div className="card-body location-card">
-                <a href={classDetailUrl}>
+                <Link to={classDetailUrl}>
                   <img
                     src={classIterable.image_1}
                     className="card-img-top"
                     alt="..."
                   />
-                </a>
+                </Link>
                 <h5 className="card-title location-card">
                   {classIterable.class_name}
                 </h5>

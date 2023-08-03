@@ -1,10 +1,12 @@
 import { React, useEffect, useState } from "react";
 import { Carousel, Stack } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
 
 function UpcomingClasses() {
   const [classes, setClasses] = useState([]);
   const [classes1, setClasses1] = useState([]);
   const [classes2, setClasses2] = useState([]);
+  const navigate = useNavigate();
 
   const baseUrl = process.env.REACT_APP_API_HOST;
 
@@ -19,7 +21,7 @@ function UpcomingClasses() {
       }
     }
     loadClasses();
-  }, []);
+  }, [baseUrl]);
 
   useEffect(() => {
     function setStack() {
@@ -39,30 +41,32 @@ function UpcomingClasses() {
     <div className="upcoming-container">
       <div className="carousel-title-row">
         <h1 className="upcoming-title">Upcoming</h1>
-        <a href="/all-upcoming" className="more-classes-btn">
-          <button
-            type="button"
-            className="btn btn-outline-primary more-classes-btn"
-          >
-            See More...
-          </button>
-        </a>
+        <button
+          type="button"
+          className="btn btn-outline-primary more-classes-btn"
+          onClick={() => {
+            navigate("/all-upcoming");
+          }}
+          style={{ maxWidth: "200px" }}
+        >
+          See More...
+        </button>
       </div>
       <Carousel variant="dark" className="upcoming-carousel">
         <Carousel.Item>
           <Stack className="card-stack" direction="horizontal" gap={0}>
             {classes1.map((classIterable, Idx) => {
-              const classDetailUrl = `classes/${classIterable.id}`;
+              const classDetailUrl = `../classes/${classIterable.id}`;
               return (
                 <div className="card location-card mx-1" key={Idx}>
                   <div className="card-body location-card">
-                    <a href={classDetailUrl}>
+                    <Link to={classDetailUrl}>
                       <img
                         src={classIterable.image_1}
                         className="card-img-top"
                         alt="..."
                       />
-                    </a>
+                    </Link>
                     <h5 className="card-title location-card">
                       {classIterable.class_name}
                     </h5>
@@ -91,17 +95,17 @@ function UpcomingClasses() {
         <Carousel.Item>
           <Stack className="card-stack" direction="horizontal" gap={3}>
             {classes2.map((classIterable, Idx) => {
-              const classDetailUrl = `classes/${classIterable.id}`;
+              const classDetailUrl = `../classes/${classIterable.id}`;
               return (
                 <div className="card location-card mx-1" key={Idx}>
                   <div className="card-body location-card">
-                    <a href={classDetailUrl}>
+                    <Link to={classDetailUrl}>
                       <img
                         src={classIterable.image_1}
                         className="card-img-top"
                         alt="..."
                       />
-                    </a>
+                    </Link>
                     <h5 className="card-title location-card">
                       {classIterable.class_name}
                     </h5>
