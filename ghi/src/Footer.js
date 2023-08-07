@@ -193,8 +193,8 @@ function Footer() {
 				</div>
 
 				<div className="col">
-					<button onClick={handleShow} className="btn btn-primary">
-						Meet the Plunge Production Team
+					<button onClick={handleShow} className="btn btn-sm btn-primary px-4">
+						Meet the Plunge Team
 					</button>
 				</div>
 				<ul class="nav justify-content-end list-unstyled d-flex">
@@ -207,7 +207,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/javascript.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="JavaScript"
 							/>
 						</Link>
@@ -217,7 +217,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/python.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="Python 3"
 							/>
 						</Link>
@@ -231,7 +231,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/html5.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="HTML 5"
 							/>
 						</Link>
@@ -245,7 +245,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/css3.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="CSS 3"
 							/>
 						</Link>
@@ -255,7 +255,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/react.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="React.js"
 							/>
 						</Link>
@@ -269,7 +269,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/fastapi.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 							/>
 						</Link>
 					</li>
@@ -278,7 +278,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/redux.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 							/>
 						</Link>
 					</li>
@@ -291,7 +291,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/bootstrap.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 							/>
 						</Link>
 					</li>
@@ -304,7 +304,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/postgresql.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 							/>
 						</Link>
 					</li>
@@ -313,7 +313,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/docker.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="Docker"
 							/>
 						</Link>
@@ -323,7 +323,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/gitlab.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="Gitlab"
 							/>
 						</Link>
@@ -337,7 +337,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/vscode.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="Visual Studio Code"
 							/>
 						</Link>
@@ -347,7 +347,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/linear.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="Linear"
 							/>
 						</Link>
@@ -357,7 +357,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/slack.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="Slack"
 							/>
 						</Link>
@@ -371,7 +371,7 @@ function Footer() {
 							<img
 								src="https://henrykimphotography.com/plunge/googlemaps.png"
 								alt="Logo"
-								height="31px"
+								height="25px"
 								title="Google Maps API"
 							/>
 						</Link>
