@@ -190,7 +190,7 @@ class ClassQueries(BaseModel):
                         INNER JOIN events on classes.id = events.class_id
                         INNER JOIN accounts on classes.instructor_id = accounts.id
                         INNER JOIN account_details on classes.instructor_id = account_details.account_id
-                        where events.date_time <= current_date + interval '14 days'
+                        where events.date_time <= current_date + interval '12 months'
                         and events.date_time >= current_date
                         group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25
                         """

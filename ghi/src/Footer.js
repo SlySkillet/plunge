@@ -14,11 +14,11 @@ function Footer() {
 			<br />
 			<br />
 			<br />
-			<div class="d-flex flex-wrap justify-content-between align-items-center px-5 py-3 my-4 border-top">
-				<div class="col-md-4 d-flex align-items-center mt-3">
+			<div className="d-flex flex-wrap justify-content-between align-items-center px-5 py-3 my-4 border-top">
+				<div className="col-md-4 d-flex align-items-center mt-3">
 					<Link
 						to="/"
-						class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
+						className="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1"
 					>
 						<img
 							src="https://henrykimphotography.com/plunge/logo.png"
@@ -27,7 +27,7 @@ function Footer() {
 							className="mx-2"
 						/>
 					</Link>
-					<span class="mb-3 mb-md-0 text-muted">
+					<span className="mb-3 mb-md-0 text-muted">
 						Copyright © 2023 Plunge, LLC. All Rights Reserved.
 						<Modal show={show} onHide={handleClose}>
 							<Modal.Header closeButton>
@@ -197,8 +197,8 @@ function Footer() {
 						Meet the Plunge Production Team
 					</button>
 				</div>
-				<ul class="nav justify-content-end list-unstyled d-flex">
-					<li class="ms-3">
+				<ul className="nav justify-content-end list-unstyled d-flex">
+					<li className="ms-3">
 						<Link
 							to="https://www.javascript.com/"
 							target="_blank"
@@ -212,7 +212,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link to="https://www.python.org/" target="_blank" rel="noreferrer">
 							<img
 								src="https://henrykimphotography.com/plunge/python.png"
@@ -222,7 +222,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link
 							to="https://html.spec.whatwg.org/"
 							target="_blank"
@@ -236,7 +236,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link
 							to="https://www.w3.org/TR/CSS/"
 							target="_blank"
@@ -250,7 +250,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link to="https://react.dev/" target="_blank" rel="noreferrer">
 							<img
 								src="https://henrykimphotography.com/plunge/react.png"
@@ -260,7 +260,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link
 							to="https://fastapi.tiangolo.com/"
 							target="_blank"
@@ -273,7 +273,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link to="https://redux.js.org/" target="_blank" rel="noreferrer">
 							<img
 								src="https://henrykimphotography.com/plunge/redux.png"
@@ -282,7 +282,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link
 							to="https://getbootstrap.com/"
 							target="_blank"
@@ -295,7 +295,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link
 							to="https://www.postgresql.org/"
 							target="_blank"
@@ -308,7 +308,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link to="https://www.docker.com/" target="_blank" rel="noreferrer">
 							<img
 								src="https://henrykimphotography.com/plunge/docker.png"
@@ -318,7 +318,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link to="https://gitlab.com/" target="_blank" rel="noreferrer">
 							<img
 								src="https://henrykimphotography.com/plunge/gitlab.png"
@@ -328,7 +328,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link
 							to="https://code.visualstudio.com/"
 							target="_blank"
@@ -342,7 +342,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link to="https://linear.app/" target="_blank" rel="noreferrer">
 							<img
 								src="https://henrykimphotography.com/plunge/linear.png"
@@ -352,7 +352,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link to="https://slack.com/" target="_blank" rel="noreferrer">
 							<img
 								src="https://henrykimphotography.com/plunge/slack.png"
@@ -362,7 +362,7 @@ function Footer() {
 							/>
 						</Link>
 					</li>
-					<li class="ms-3">
+					<li className="ms-3">
 						<Link
 							to="https://developers.google.com/maps"
 							target="_blank"
